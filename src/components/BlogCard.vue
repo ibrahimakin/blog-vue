@@ -21,15 +21,13 @@
 </template>
 
 <script>
-import Arrow from "../assets/icons/arrow-right-light.svg";
-import Edit from "../assets/icons/edit-regular.svg";
-import Delete from "../assets/icons/trash-regular.svg";
+import Arrow from '../assets/icons/arrow-right-light.svg';
+import Delete from '../assets/icons/trash-regular.svg';
+import Edit from '../assets/icons/edit-regular.svg';
 export default {
-    name: "BlogCard",
-    props: ["post"],
-    components: {
-        Arrow, Edit, Delete
-    },
+    name: 'BlogCard',
+    props: ['post'],
+    components: { Arrow, Delete, Edit },
     computed: {
         image() {
             return new URL(`../assets/cards/${this.post.photo}.jpg`, import.meta.url).href;

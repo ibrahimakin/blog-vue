@@ -67,7 +67,7 @@ header {
     padding: 0 25px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .86);
     position: sticky;
-    z-index: 1;
+    z-index: 2;
     top: 0;
 
     .link {

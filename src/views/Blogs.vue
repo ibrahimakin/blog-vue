@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import BlogCard from "../components/BlogCard.vue";
+import BlogCard from '../components/BlogCard.vue';
 export default {
-    name: "Blogs",
+    name: 'Blogs',
     components: { BlogCard },
     computed: {
         blogCards() {
@@ -24,12 +24,12 @@ export default {
                 return this.$store.getters.edit;
             },
             set(payload) {
-                this.$store.commit("toggleEdit", payload);
+                this.$store.commit('toggleEdit', payload);
             }
         }
     },
     beforeUnmount() {
-        this.$store.commit("toggleEdit", false);
+        this.$store.commit('toggleEdit', false);
     }
 }
 </script>
@@ -53,7 +53,7 @@ export default {
             position: relative;
             border: none;
             -webkit-appearance: none;
-            background: #fff;
+            background-color: #fff;
             outline: none;
             width: 80px;
             height: 30px;

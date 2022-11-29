@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Arrow from "../assets/icons/arrow-right-light.svg";
+import Arrow from '../assets/icons/arrow-right-light.svg';
 export default {
     name: 'BlogPost',
     props: ['post'],
