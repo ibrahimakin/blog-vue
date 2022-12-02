@@ -22,30 +22,30 @@
 </template>
 
 <script>
-import BlogPost from "../components/BlogPost.vue";
-import BlogCard from "../components/BlogCard.vue";
-import Arrow from "../assets/icons/arrow-right-light.svg";
+import BlogPost from '../components/BlogPost.vue';
+import BlogCard from '../components/BlogCard.vue';
+import Arrow from '../assets/icons/arrow-right-light.svg';
 export default {
-    name: "Home",
+    name: 'Home',
     components: { BlogPost, BlogCard, Arrow },
     data() {
         return {
             sampleBlogPosts: [
                 {
-                    title: "Welcome!",
-                    blog: "Weekly blog articles with all things programming including HTML, CSS, JavaScript and more. Register today to never miss a post!",
-                    photo: "coding",
+                    title: 'Welcome!',
+                    blog: 'Weekly blog articles with all things programming including HTML, CSS, JavaScript and more. Register today to never miss a post!',
+                    photo: 'coding',
                     welcome: true
                 },
                 {
-                    title: "This is a Filler Title 1!",
-                    blog: "This is a filler blog post title 1!",
-                    photo: "beautiful-stories"
+                    title: 'This is a Filler Title 1!',
+                    blog: 'This is a filler blog post title 1!',
+                    photo: 'beautiful-stories'
                 },
                 {
-                    title: "This is a Filler Title 2!",
-                    blog: "This is a filler blog post title 2!",
-                    photo: "designed-for-everyone"
+                    title: 'This is a Filler Title 2!',
+                    blog: 'This is a filler blog post title 2!',
+                    photo: 'designed-for-everyone'
                 }
             ]
         };
@@ -78,6 +78,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
+
         @media (min-width: 800px) {
             padding: 125px 25px;
             flex-direction: row;
@@ -87,6 +88,7 @@ export default {
             display: flex;
             font-size: 14px;
             text-decoration: none;
+
             @media (min-width: 800px) {
                 margin-left: auto;
             }
@@ -99,6 +101,7 @@ export default {
             width: 100%;
             text-align: center;
             text-transform: uppercase;
+
             @media (min-width: 800px) {
                 text-align: initial;
                 font-size: 40px;

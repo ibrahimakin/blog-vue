@@ -44,18 +44,13 @@
 </template>
 
 <script>
-import YouTube from "../assets/icons/youtube-brands.svg";
-import Twitter from "../assets/icons/twitter-brands.svg";
-import Instagram from "../assets/icons/instagram-brands.svg";
-import Linkedin from "../assets/icons/linkedin-brands.svg";
+import YouTube from '../assets/icons/youtube-brands.svg';
+import Twitter from '../assets/icons/twitter-brands.svg';
+import Instagram from '../assets/icons/instagram-brands.svg';
+import Linkedin from '../assets/icons/linkedin-brands.svg';
 export default {
-    name: "Footer",
-    components: {
-        YouTube,
-        Twitter,
-        Instagram,
-        Linkedin
-    },
+    name: 'Footer',
+    components: { YouTube, Twitter, Instagram, Linkedin },
     computed: {
         user() {
             // return this.$store.state.user;
@@ -72,7 +67,7 @@ footer {
     margin-top: auto;
     padding: 100px 25px;
     background-color: #303030;
-    z-index: 1;
+    z-index: 2;
 
     .container {
         display: flex;
