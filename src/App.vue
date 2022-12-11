@@ -7,12 +7,37 @@ import Footer from './components/Footer.vue';
 <template>
     <div class="app-wrapper">
         <div class="app">
-            <Navigation />
+            <Navigation v-if="!navigation" />
             <RouterView />
-            <Footer />
+            <Footer v-if="!navigation" />
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return { navigation: null };
+    },
+    created() {
+        this.checkRoute();
+    },
+    methods: {
+        checkRoute() {
+            if (['Login', 'Register', 'ForgotPassword'].includes(this.$route.name)) {
+                this.navigation = true;
+                return;
+            }
+            this.navigation = false;
+        }
+    },
+    watch: {
+        $route() {
+            this.checkRoute();
+        }
+    }
+};
+</script>
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
@@ -108,9 +133,9 @@ button,
 }
 
 .button-inactive {
-    pointer-events: none !important;
-    cursor: none !important;
-    background-color: rgba(128, 128, 128, 0.5) !important;
+    pointer-events: none;
+    cursor: none;
+    background-color: rgba(128, 128, 128, 0.5);
 }
 
 .blog-card-wrap {
