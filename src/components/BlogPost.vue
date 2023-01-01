@@ -1,5 +1,5 @@
 <template>
-    <div class="blog-wrapper">
+    <div class="blog-wrapper" :class="{ 'no-user': post.welcome }">
         <div class="blog-content">
             <div>
                 <h2>{{ post.title }}</h2>
@@ -38,7 +38,7 @@ export default {
 .blog-wrapper {
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .86);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 
     @media (min-width: 700px) {
         min-height: 650px;
@@ -120,7 +120,7 @@ export default {
     .blog-photo {
         order: 1;
         flex: 3;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .86);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 
         @media (min-width: 700px) {
             order: 2;
@@ -147,12 +147,12 @@ export default {
             order: 1;
         }
     }
+}
 
-    &:first-child {
-        .blog-content {
-            background-color: #303030;
-            color: #fff;
-        }
+.no-user {
+    .blog-content {
+        background-color: #303030;
+        color: #fff;
     }
 }
 </style>

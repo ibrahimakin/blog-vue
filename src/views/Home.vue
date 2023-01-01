@@ -1,5 +1,6 @@
 <template>
     <div class="home">
+        <BlogPost v-if="!user" :post="welcomePost" />
         <BlogPost :post="post" v-for="(post, index) in sampleBlogPosts" :key="index" />
         <div class="blog-card-wrap">
             <div class="container">
@@ -9,10 +10,10 @@
                 </div>
             </div>
         </div>
-        <div class="updates">
+        <div v-if="!user" class="updates">
             <div class="container">
                 <h2>Never miss a post. Register for your free account today!</h2>
-                <router-link class="router-button" to="#">
+                <router-link class="router-button" :to="{ name: 'Register' }">
                     Register for Blogs
                     <Arrow class="arrow arrow-light" />
                 </router-link>
@@ -30,13 +31,13 @@ export default {
     components: { BlogPost, BlogCard, Arrow },
     data() {
         return {
+            welcomePost: {
+                title: 'Welcome!',
+                blog: 'Weekly blog articles with all things programming including HTML, CSS, JavaScript and more. Register today to never miss a post!',
+                photo: 'coding',
+                welcome: true
+            },
             sampleBlogPosts: [
-                {
-                    title: 'Welcome!',
-                    blog: 'Weekly blog articles with all things programming including HTML, CSS, JavaScript and more. Register today to never miss a post!',
-                    photo: 'coding',
-                    welcome: true
-                },
                 {
                     title: 'This is a Filler Title 1!',
                     blog: 'This is a filler blog post title 1!',

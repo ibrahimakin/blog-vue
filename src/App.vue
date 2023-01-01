@@ -15,11 +15,18 @@ import Footer from './components/Footer.vue';
 </template>
 
 <script>
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 export default {
     data() {
         return { navigation: null };
     },
     created() {
+        onAuthStateChanged(getAuth(), user => {
+            this.$store.commit('updateUser', user);
+            if (user) {
+                this.$store.dispatch('getCurrentUser', user);
+            }
+        });
         this.checkRoute();
     },
     methods: {
@@ -87,8 +94,9 @@ export default {
 }
 
 button,
+.create-post label,
 .router-button {
-    transition: 500ms ease all;
+    transition: .5s ease all;
     cursor: pointer;
     margin-top: 24px;
     padding: 12px 24px;
@@ -103,7 +111,7 @@ button,
     }
 
     &:hover {
-        background-color: rgba(48, 48, 48, 0.7);
+        background-color: rgba(48, 48, 48, .7);
     }
 }
 
@@ -136,6 +144,12 @@ button,
     pointer-events: none;
     cursor: none;
     background-color: rgba(128, 128, 128, 0.5);
+}
+
+.error {
+    text-align: center;
+    font-size: 12px;
+    color: #f00;
 }
 
 .blog-card-wrap {

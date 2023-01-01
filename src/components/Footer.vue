@@ -53,10 +53,10 @@ export default {
     components: { YouTube, Twitter, Instagram, Linkedin },
     computed: {
         user() {
-            // return this.$store.state.user;
+            return this.$store.state.user;
         },
         admin() {
-            // return this.$store.state.profileAdmin;
+            return this.$store.state.admin;
         }
     }
 };
