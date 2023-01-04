@@ -29,8 +29,9 @@
                     <input type="password" placeholder="password" v-model="password">
                     <password class="icon" />
                 </div>
+                <div v-show="error" class="error">{{ this.errorMsg }}</div>
             </div>
-            <button>Sign Up</button>
+            <button @click.prevent="register">Sign Up</button>
             <div class="angle"></div>
         </form>
         <div class="background"></div>
@@ -38,20 +39,50 @@
 </template>
 
 <script>
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import user from '../assets/icons/user-alt-light.svg';
 import email from '../assets/icons/envelope-regular.svg';
 import password from '../assets/icons/lock-alt-solid.svg';
+import db from '../firebase/init';
 export default {
     name: 'Register',
     components: { user, email, password },
     data() {
         return {
-            firstName: null,
-            lastName: null,
-            username: null,
-            email: null,
-            password: null
+            firstName: '',
+            lastName: '',
+            username: '',
+            email: '',
+            password: '',
+            errorMsg: '',
+            error: null
         };
+    },
+    methods: {
+        async register() {
+            if (this.email !== '' &&
+                this.password !== '' &&
+                this.firstName !== '' &&
+                this.lastName !== '' &&
+                this.username !== '') {
+                this.errorMsg = '';
+                this.error = false;
+                const auth = await getAuth();
+                const result = await createUserWithEmailAndPassword(auth, this.email, this.password);
+                await setDoc(doc(db, 'users', result.user.uid), {
+                    firstname: this.firstName,
+                    lastname: this.lastName,
+                    username: this.username,
+                    email: this.email
+                });
+                this.$router.push({ name: 'Home' });
+                return;
+            }
+            this.errorMsg = 'Please fill out all the fields!';
+            this.error = true;
+            return;
+        }
     }
 };
 </script>

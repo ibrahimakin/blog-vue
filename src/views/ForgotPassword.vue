@@ -2,6 +2,12 @@
     <div class="reset-password">
         <div class="form-wrap">
             <form class="reset">
+                <p class="login-register">
+                    Back to
+                    <RouterLink class="router-link" :to="{ name: 'Login' }">
+                        Login
+                    </RouterLink>
+                </p>
                 <h2>Reset Password</h2>
                 <p>Forgot your password? Enter your email to reset it.</p>
                 <div class="inputs">
@@ -10,17 +16,18 @@
                         <email class="icon" />
                     </div>
                 </div>
-                <button>Reset</button>
+                <button @click.prevent="resetPassword">Reset</button>
                 <div class="angle"></div>
             </form>
             <div class="background"></div>
         </div>
         <Loading v-if="loading" />
-        <Modal v-if="modalActive" v-on:close-modal="close" />
+        <Modal v-if="modalActive" :message="modalMessage" v-on:close-modal="close" />
     </div>
 </template>
 
 <script>
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import email from '../assets/icons/envelope-regular.svg';
 import Loading from '../components/Loading.vue';
 import Modal from '../components/Modal.vue';
@@ -29,13 +36,26 @@ export default {
     components: { email, Loading, Modal },
     data() {
         return {
-            email: null,
+            email: '',
             loading: null,
             modalActive: null,
             modalMessage: ''
         };
     },
     methods: {
+        resetPassword() {
+            this.loading = true;
+            const auth = getAuth();
+            sendPasswordResetEmail(auth, this.email).then(() => {
+                this.modalMessage = 'If your account exists, you will receive an email.';
+                this.loading = false;
+                this.modalActive = true;
+            }).catch(err => {
+                this.modalMessage = err.message;
+                this.loading = false;
+                this.modalActive = true;
+            });
+        },
         close() {
             this.modalActive = !this.modalActive;
             this.email = '';
