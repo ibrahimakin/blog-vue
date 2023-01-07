@@ -27,7 +27,7 @@ export default {
 <style lang="scss" scoped>
 .modal {
     top: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, .5);
     z-index: 99;
     position: fixed;
     display: flex;
@@ -45,7 +45,7 @@ export default {
         height: 400px;
         width: 600px;
         padding: 50px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 
         .icon {
             width: 24px;
@@ -63,7 +63,7 @@ export default {
             display: block;
             width: auto;
             height: 100%;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
         }
     }
 }

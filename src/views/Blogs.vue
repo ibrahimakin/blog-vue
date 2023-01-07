@@ -1,7 +1,7 @@
 <template>
     <div class="blog-card-wrap">
         <div class="blog-cards container">
-            <div class="toggle-edit">
+            <div class="toggle-edit" v-if="this.$store.state.admin">
                 <span>Toggle Editing Post</span>
                 <input type="checkbox" v-model="edit">
             </div>
@@ -59,7 +59,7 @@ export default {
             width: 80px;
             height: 30px;
             border-radius: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
         }
 
         input[type="checkbox"]:before {
@@ -73,7 +73,7 @@ export default {
             background: #303030;
             transform: scale(1.1);
             transition: 750ms ease all;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
         }
 
         input:checked[type="checkbox"]:before {

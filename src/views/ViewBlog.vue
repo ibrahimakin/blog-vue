@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: 'PostPreview',
+    name: 'ViewBlog',
     computed: {
         blogTitle() {
             return this.$store.state.blogTitle;

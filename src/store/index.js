@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import { getAuth } from 'firebase/auth';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, getDocs, orderBy, updateDoc } from 'firebase/firestore';
 import db from '../firebase/init';
 
 export default createStore({
@@ -11,6 +11,7 @@ export default createStore({
             { title: 'Blog Card #3', photo: 'stock-3', date: 'May 1, 2021' },
             { title: 'Blog Card #4', photo: 'stock-4', date: 'May 1, 2021' }
         ],
+        blogPosts: [],
         postLoaded: null,
         blogHTML: 'Write your blog here...',
         blogTitle: '',
@@ -78,8 +79,6 @@ export default createStore({
             if (result.exists()) {
                 commit('setProfile', result);
                 commit('setInitials');
-                // const token = await user.getIdTokenResult();
-                // const admin = await token.claims.admin;
                 commit('setAdmin', result.data().admin);
             }
         },
@@ -90,6 +89,23 @@ export default createStore({
                 username: state.username
             });
             commit('setInitials');
+        },
+        async getPosts({ state }) {
+            const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
+            const result = await getDocs(q);
+            result.forEach(doc => {
+                if (!state.blogPosts.some(post => post.id === doc.id)) {
+                    console.log(doc.data());
+                    state.blogPosts.push({
+                        id: doc.data().id,
+                        html: doc.data().html,
+                        title: doc.data().title,
+                        photo: doc.data().cover_photo,
+                        date: doc.data().date
+                    });
+                }
+            });
+            state.postLoaded = true;
         }
     },
     getters: {
