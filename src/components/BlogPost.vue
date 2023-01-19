@@ -4,7 +4,7 @@
             <div>
                 <h2>{{ post.title }}</h2>
                 <p :class="!post.welcome && 'content-preview'">{{ post.blog }}</p>
-                <router-link class="link link-light" v-if="post.welcome" to="#">
+                <router-link class="link link-light" v-if="post.welcome" :to="{ name: 'Login' }">
                     Login / Register
                     <Arrow class="arrow arrow-light" />
                 </router-link>

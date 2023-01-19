@@ -13,6 +13,7 @@
                     <div v-if="user" @click="toggleMenu" class="profile" ref="profile">
                         <span>{{ this.$store.state.initials }}</span>
                         <div v-show="profileMenu" class="profile-menu">
+                            <span></span>
                             <div class="info">
                                 <p class="initials">{{ this.$store.state.initials }}</p>
                                 <div class="right">
@@ -40,15 +41,13 @@
                 </ul>
             </div>
         </nav>
-        <div @click.stop="toggleMobileNav" v-show="mobile" ref="menu">
-            <Menu :class="{ 'open': mobileNav }" class="menu-icon" />
+        <div @click.stop="toggleMobileNav" v-show="mobile" ref="menu" :class="{ 'open': mobileNav }" class="con">
+            <div class="bar arrow-top"></div>
+            <div class="bar"></div>
+            <div class="bar arrow-bottom"></div>
         </div>
         <transition name="mobile-nav">
             <ul class="mobile-nav" v-show="mobileNav">
-                <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-                <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
-                <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
-                <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login / Register</router-link>
                 <div v-if="user" class="profile-menu">
                     <div class="info">
                         <p class="initials">{{ this.$store.state.initials }}</p>
@@ -58,21 +57,14 @@
                             <p>{{ this.$store.state.email }}</p>
                         </div>
                     </div>
-                    <div class="options">
-                        <router-link class="option" :to="{ name: 'Profile' }">
-                            <User class="icon" />
-                            <p>Profile</p>
-                        </router-link>
-                        <router-link v-if="admin" class="option" :to="{ name: 'Admin' }">
-                            <Admin class="icon" />
-                            <p>Admin</p>
-                        </router-link>
-                        <div @click="signOut" class="option">
-                            <SignOut class="icon" />
-                            <p>Sign Out</p>
-                        </div>
-                    </div>
                 </div>
+                <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
+                <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
+                <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
+                <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login / Register</router-link>
+                <router-link v-if="user" class="link" :to="{ name: 'Profile' }">Profile</router-link>
+                <router-link v-if="admin" class="link" :to="{ name: 'Admin' }">Admin</router-link>
+                <div v-if="user" @click="signOut" class="link">Sign Out</div>
             </ul>
         </transition>
     </header>
@@ -80,13 +72,12 @@
 
 <script>
 import { getAuth, signOut } from 'firebase/auth';
-import Menu from '../assets/icons/bars-regular.svg';
 import User from '../assets/icons/user-alt-light.svg';
 import Admin from '../assets/icons/user-crown-light.svg';
 import SignOut from '../assets/icons/sign-out-alt-regular.svg';
 export default {
     name: 'Navigation',
-    components: { Menu, User, Admin, SignOut },
+    components: { User, Admin, SignOut },
     data() {
         return {
             mobile: null,
@@ -224,6 +215,15 @@ header {
                     background-color: #303030;
                     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 
+                    span {
+                        position: absolute;
+                        right: 10px;
+                        top: -10px;
+                        border-left: 10px solid transparent;
+                        border-right: 10px solid transparent;
+                        border-bottom: 10px solid #303030;
+                    }
+
                     .info {
                         padding: 15px;
                     }
@@ -260,9 +260,12 @@ header {
             .right {
                 flex: 1;
                 margin-left: 24px;
+                overflow: hidden;
 
                 p {
                     font-size: 12px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 p:first-child {
@@ -299,20 +302,6 @@ header {
         }
     }
 
-    .menu-icon {
-        cursor: pointer;
-        position: absolute;
-        top: 32px;
-        right: 25px;
-        height: 25px;
-        z-index: 2;
-        transition: .5s ease color;
-
-        &.open {
-            color: #fff;
-        }
-    }
-
     .mobile-nav {
         padding: 20px;
         width: 70%;
@@ -322,31 +311,81 @@ header {
         position: fixed;
         height: 100%;
         background-color: #303030;
+        transition: .7s ease transform;
         top: 0;
         right: 0;
         z-index: 1;
+        overflow: auto;
+
+        .profile-menu {
+            margin-bottom: 10px;
+
+            .right>p:first-child {
+                margin-right: 26px;
+            }
+        }
 
         .link {
-            padding: 15px 0;
+            padding: 12px 0;
             color: #fff;
         }
-    }
-
-    .mobile-nav-enter-active,
-    .mobile-nav-leave-active {
-        transition: 1s ease transform;
-    }
-
-    .mobile-nav-enter {
-        transform: translateX(250px);
     }
 
     .mobile-nav-enter-to {
         transform: translateX(0);
     }
 
+    .mobile-nav-enter-from,
     .mobile-nav-leave-to {
         transform: translateX(250px);
+    }
+
+    .con {
+        cursor: pointer;
+        position: absolute;
+        top: 28px;
+        right: 25px;
+        z-index: 2;
+        --arrow-w: 12px;
+        --arrow-x: 8.8px;
+        --arrow-y: -2px;
+    }
+
+    .bar {
+        height: 3px;
+        width: 22px;
+        background-color: #000;
+        margin: 5px auto;
+    }
+
+    .con.open .bar {
+        background-color: #fff;
+    }
+
+    .bar {
+        -webkit-transition: all .7s ease;
+        -moz-transition: all .7s ease;
+        -ms-transition: all .7s ease;
+        -o-transition: all .7s ease;
+        transition: all .7s ease;
+    }
+
+    .con.open .arrow-top {
+        -webkit-transform: rotateZ(45deg) translateY(5px);
+        -moz-transform: rotateZ(45deg) translateY(5px);
+        -ms-transform: rotateZ(45deg) translateY(5px);
+        -o-transform: rotateZ(45deg) translateY(5px);
+        transform: rotateZ(45deg) translateY(var(--arrow-y)) translateX(var(--arrow-x));
+        width: var(--arrow-w);
+    }
+
+    .con.open .arrow-bottom {
+        -webkit-transform: rotateZ(-45deg) translateY(-5px);
+        -moz-transform: rotateZ(-45deg) translateY(-5px);
+        -ms-transform: rotateZ(-45deg) translateY(-5px);
+        -o-transform: rotateZ(-45deg) translateY(-5px);
+        transform: rotateZ(-45deg) translateY(calc(-1 * var(--arrow-y))) translateX(var(--arrow-x));
+        width: var(--arrow-w);
     }
 }
 </style>

@@ -23,30 +23,34 @@
                     @image-added="imageHandler" />
             </div>
             <div class="blog-actions">
-                <button>Publish Blog</button>
+                <button @click="uploadBlog">Publish Blog</button>
                 <router-link class="router-button" :to="{ name: 'BlogPreview' }">Post Preview</router-link>
             </div>
         </div>
     </div>
+    <Loading v-if="loading" />
 </template>
 
 <script>
-import { getStorage, uploadBytesResumable, ref, getDownloadURL } from 'firebase/storage';
+import { getStorage, uploadBytesResumable, ref, getDownloadURL, uploadBytes } from 'firebase/storage';
+import { collection, doc, setDoc, addDoc } from 'firebase/firestore';
 import { VueEditor } from 'vue3-editor';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module-plus';
 import BlogCoverPreview from '../components/BlogCoverPreview.vue';
-import { app } from '../firebase/init';
+import Loading from '../components/Loading.vue';
+import db, { app } from '../firebase/init';
 window.Quill = Quill;
 Quill.register('modules/imageResize', ImageResize);
 export default {
     name: 'CreatePost',
-    components: { VueEditor, BlogCoverPreview },
+    components: { VueEditor, BlogCoverPreview, Loading },
     data() {
         return {
             file: null,
             error: null,
             errorMsg: null,
+            loading: null,
             editorSettings: {
                 modules: {
                     imageResize: {}
@@ -78,11 +82,49 @@ export default {
                     });
                 }
             );
+        },
+        uploadBlog() {
+            if (this.blogTitle.length != 0 && this.blogHTML.length != 0) {
+                if (this.file) {
+                    this.loading = true;
+                    const storage = ref(getStorage(app), `documents/BlogCoverPhotos/${this.blogCoverPhotoName}`);
+                    uploadBytes(storage, this.file)
+                        .then(snapshot => {
+                            getDownloadURL(snapshot.ref).then(async downloadURL => {
+                                const timestamp = Date.now();
+                                const database = collection(db, 'posts');
+                                await addDoc(database, {
+                                    html: this.blogHTML,
+                                    title: this.blogTitle,
+                                    cover_photo: downloadURL,
+                                    cover_photo_name: this.blogCoverPhotoName,
+                                    profile_id: this.profileId,
+                                    date: timestamp
+                                });
+                            });
+                            this.loading = false;
+                            this.$router.push({ name: 'ViewBlog' });
+                        })
+                        .catch(() => {
+                            this.loading = false;
+                        });
+                    return;
+                }
+                this.errorMsg = 'Please ensure you uploaded a cover photo.';
+            }
+            else {
+                this.errorMsg = 'Please ensure Blog Title & Blog Post has been filled.';
+            }
+            this.error = true;
+            setTimeout(() => {
+                this.error = false;
+            }, 5000);
+            return;
         }
     },
     computed: {
         profileId() {
-            return this.$store.state.profileId;
+            return this.$store.state.id;
         },
         blogCoverPhotoName() {
             return this.$store.state.blogPhotoName;
