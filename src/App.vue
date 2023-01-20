@@ -28,6 +28,7 @@ export default {
             }
         });
         this.checkRoute();
+        this.$store.dispatch('getPosts');
     },
     methods: {
         checkRoute() {
@@ -52,7 +53,6 @@ export default {
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     font-family: "Quicksand", sans-serif;
 }
 
@@ -60,6 +60,7 @@ export default {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: #fff;
 }
 
 .container {
@@ -81,10 +82,6 @@ export default {
 .arrow {
     margin-left: 8px;
     width: 12px;
-
-    path {
-        fill: #000;
-    }
 }
 
 .arrow-light {
@@ -152,14 +149,14 @@ button,
     color: #f00;
 }
 
+.content-preview>p:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .blog-card-wrap {
-    position: relative;
     padding: 80px 16px;
     background-color: #f1f1f1;
-
-    @media (min-width: 500px) {
-        padding: 100px 16px;
-    }
 
     .blog-cards {
         display: grid;

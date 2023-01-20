@@ -122,6 +122,7 @@ export default {
                     border: none;
                     background-color: #f2f7f6;
                     padding: 4px 4px 4px 30px;
+                    border-radius: 5px;
                     height: 50px;
 
                     &:focus {
@@ -132,7 +133,7 @@ export default {
                 .icon {
                     width: 12px;
                     position: absolute;
-                    left: 6px;
+                    left: 9px;
                 }
             }
         }

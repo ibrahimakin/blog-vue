@@ -1,9 +1,11 @@
 <template>
     <div class="blog-card-wrap">
         <div class="blog-cards container">
-            <div class="toggle-edit" v-if="this.$store.state.admin">
-                <span>Toggle Editing Post</span>
-                <input type="checkbox" v-model="edit">
+            <div class="toggle-container">
+                <div class="toggle-edit" v-if="this.$store.state.admin">
+                    <span>Toggle Editing Post</span>
+                    <input type="checkbox" v-model="edit">
+                </div>
             </div>
             <BlogCard :post="post" v-for="(post, index) in blogCards" :key="index" />
         </div>
@@ -17,7 +19,7 @@ export default {
     components: { BlogCard },
     computed: {
         blogCards() {
-            return this.$store.getters.blogCards;
+            return this.$store.state.blogPosts;
         },
         edit: {
             get() {
@@ -38,18 +40,29 @@ export default {
 .blog-cards {
     position: relative;
 
+    .toggle-container {
+        display: flex;
+        justify-content: end;
+        position: absolute;
+        top: -80px;
+        right: -10px;
+        z-index: 1;
+    }
+
     .toggle-edit {
         display: flex;
         align-items: center;
-        position: absolute;
-        top: -70px;
-        right: 0;
+        position: fixed;
+        padding: 15px 10px 10px 10px;
+        background-color: #f1f1f1;
+        border-radius: 0 0 0 25px;
 
         span {
             margin-right: 16px;
         }
 
         input[type="checkbox"] {
+            cursor: pointer;
             position: relative;
             border: none;
             -webkit-appearance: none;
@@ -72,7 +85,7 @@ export default {
             left: 0;
             background: #303030;
             transform: scale(1.1);
-            transition: 750ms ease all;
+            transition: .4s ease all;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
         }
 

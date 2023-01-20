@@ -178,6 +178,7 @@ header {
             position: relative;
             display: flex;
             flex: 1;
+            height: 30px;
             align-items: center;
             justify-content: flex-end;
 
@@ -209,7 +210,7 @@ header {
 
                 .profile-menu {
                     position: absolute;
-                    top: 65px;
+                    top: 60px;
                     right: 0;
                     width: 250px;
                     background-color: #303030;
@@ -242,7 +243,7 @@ header {
         .info {
             display: flex;
             align-items: center;
-            padding: 15px 0;
+            padding-bottom: 12px;
             border-bottom: 1px solid #fff;
 
             .initials {
@@ -314,13 +315,13 @@ header {
         transition: .7s ease transform;
         top: 0;
         right: 0;
-        z-index: 1;
         overflow: auto;
 
         .profile-menu {
             margin-bottom: 10px;
 
-            .right>p:first-child {
+            .right>p:nth-child(1),
+            .right>p:nth-child(2) {
                 margin-right: 26px;
             }
         }
@@ -345,7 +346,7 @@ header {
         position: absolute;
         top: 28px;
         right: 25px;
-        z-index: 2;
+        z-index: 1;
         --arrow-w: 12px;
         --arrow-x: 8.8px;
         --arrow-y: -2px;

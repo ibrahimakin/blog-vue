@@ -1,25 +1,30 @@
 <template>
-    <div class="post-view">
+    <Loading v-if="!blog" />
+    <div v-else class="post-view">
         <div class="container quillWrapper">
-            <h2>{{ this.blogTitle }}</h2>
-            <img :src="blogCoverPhoto" alt="" />
-            <div class="post-content ql-editor" v-html="blogHTML"></div>
+            <h2>{{ blog.title }}</h2>
+            <template v-if="!blog.notfound">
+                <h4>Posted on: {{ new Date(blog.date).toLocaleString('en-us', { dateStyle: 'long' }) }}</h4>
+                <img :src="blog.photo" alt="Blog Cover Photo" />
+                <div class="post-content ql-editor" v-html="blog.html"></div>
+            </template>
         </div>
     </div>
 </template>
 
 <script>
+import Loading from '../components/Loading.vue';
 export default {
     name: 'ViewBlog',
+    components: { Loading },
     computed: {
-        blogTitle() {
-            return this.$store.state.blogTitle;
-        },
-        blogHTML() {
-            return this.$store.state.blogHTML;
-        },
-        blogCoverPhoto() {
-            return this.$store.state.blogPhotoFileURL;
+        blog() {
+            if (this.$store.state.postLoaded) {
+                let blog = this.$store.state.blogPosts.find(
+                    post => post.id === this.$route.params.id
+                );
+                return blog || { title: 'Not Found', notfound: true };
+            }
         }
     }
 };
@@ -27,26 +32,10 @@ export default {
 
 <style lang="scss" scoped>
 .post-view {
-    min-height: 100%;
-
-    .container {
-        max-width: 1000px;
-        padding: 60px 25px;
-    }
-
-    .ql-editor {
-        padding: 0;
-    }
-
-    h2 {
-        margin-bottom: 16px;
-        font-weight: 300;
-        font-size: 32px;
-    }
-
-    img {
-        width: 100%;
-        margin-bottom: 32px;
+    h4 {
+        margin-bottom: 24px;
+        font-weight: 400;
+        font-size: 14px;
     }
 }
 </style>

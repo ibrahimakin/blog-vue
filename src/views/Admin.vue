@@ -68,7 +68,7 @@ export default {
                 input {
                     width: 100%;
                     border: none;
-                    background-color: #fff;
+                    background-color: #fbfbfb;
                     padding: 8px;
                     height: 50px;
                     border-radius: 5px;

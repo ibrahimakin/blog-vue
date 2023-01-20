@@ -1,5 +1,11 @@
 <template>
-    <div class="create-post">
+    <Loading v-if="!blog" />
+    <div v-else-if="blog.notfound" class="post-view">
+        <div class="container">
+            <h2>{{ blog.title }}</h2>
+        </div>
+    </div>
+    <div v-else class="create-post">
         <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview" />
         <div class="container">
             <div class="err-message" :class="{ invisible: !error }">
@@ -23,8 +29,8 @@
                     @image-added="imageHandler" />
             </div>
             <div class="blog-actions">
-                <button @click="uploadBlog">Publish Blog</button>
-                <router-link class="router-button" :to="{ name: 'BlogPreview' }">Post Preview</router-link>
+                <button @click="updateBlog">Save Changes</button>
+                <router-link class="router-button" :to="{ name: 'BlogPreview' }">Preview Changes</router-link>
             </div>
         </div>
     </div>
@@ -32,8 +38,8 @@
 </template>
 
 <script>
-import { getStorage, uploadBytesResumable, ref, getDownloadURL, uploadBytes } from 'firebase/storage';
-import { collection, addDoc } from 'firebase/firestore';
+import { ref, getStorage, getDownloadURL, uploadBytes, uploadBytesResumable } from 'firebase/storage';
+import { doc, updateDoc } from 'firebase/firestore';
 import { VueEditor } from 'vue3-editor';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module-plus';
@@ -51,12 +57,16 @@ export default {
             error: null,
             errorMsg: null,
             loading: null,
+            routeID: null,
             editorSettings: {
                 modules: {
                     imageResize: {}
                 }
             }
         };
+    },
+    async mounted() {
+        this.routeID = this.$route.params.id;
     },
     methods: {
         fileChange() {
@@ -83,38 +93,44 @@ export default {
                 }
             );
         },
-        uploadBlog() {
+        async updateBlog() {
             if (this.blogTitle.length != 0 && this.blogHTML.length != 0) {
+                const post = doc(db, 'posts', this.routeID);
+                const timestamp = Date.now();
                 if (this.file) {
                     this.loading = true;
                     const storage = ref(getStorage(app), `documents/BlogCoverPhotos/${this.blogCoverPhotoName}`);
                     uploadBytes(storage, this.file)
                         .then(async snapshot => {
                             const downloadURL = await getDownloadURL(snapshot.ref)
-                            const timestamp = Date.now();
-                            const database = collection(db, 'posts');
-                            const result = await addDoc(database, {
+                            await updateDoc(post, {
                                 html: this.blogHTML,
                                 title: this.blogTitle,
                                 cover_photo: downloadURL,
                                 cover_photo_name: this.blogCoverPhotoName,
-                                profile_id: this.profileId,
-                                date: timestamp
+                                updated: timestamp
                             });
-                            this.$store.dispatch('getPosts');
+                            await this.$store.dispatch('updatePost', this.routeID);
                             this.loading = false;
-                            this.$router.push({ name: 'ViewBlog', params: { id: result.id } });
+                            this.$router.push({ name: 'ViewBlog', params: { id: post.id } });
                         })
                         .catch(() => {
                             this.loading = false;
                         });
                     return;
                 }
-                this.errorMsg = 'Please ensure you uploaded a cover photo.';
+                this.loading = true;
+                await updateDoc(post, {
+                    title: this.blogTitle,
+                    html: this.blogHTML,
+                    updated: timestamp
+                });
+                await this.$store.dispatch('updatePost', this.routeID);
+                this.loading = false;
+                this.$router.push({ name: 'ViewBlog', params: { id: post.id } });
+                return;
             }
-            else {
-                this.errorMsg = 'Please ensure Blog Title & Blog Post has been filled.';
-            }
+            this.errorMsg = 'Please ensure Blog Title & Blog Post has been filled.';
             this.error = true;
             setTimeout(() => {
                 this.error = false;
@@ -143,6 +159,18 @@ export default {
             },
             set(payload) {
                 this.$store.commit('newBlogPost', payload);
+            }
+        },
+        blog() {
+            if (this.$store.state.postLoaded) {
+                let blog = this.$store.state.blogPosts.find(
+                    post => post.id === this.$route.params.id
+                );
+                if (blog) {
+                    this.$store.commit('setBlogState', blog);
+                    return blog;
+                }
+                return { title: 'Not Found', notfound: true };
             }
         }
     }
