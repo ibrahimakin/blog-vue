@@ -1,23 +1,23 @@
 <template>
-    <div class="blog-card">
+    <router-link class="blog-card" :to="{ name: 'ViewBlog', params: { id: post.id } }">
         <div v-show="edit" class="icons">
-            <div class="icon">
+            <div @click.prevent="editPost" class="icon">
                 <Edit class="edit" />
             </div>
-            <div class="icon">
+            <div @click.prevent="deletePost" class="icon">
                 <Delete class="delete" />
             </div>
         </div>
-        <img :src="image" :alt="post.photo">
+        <img :src="post.photo" alt="blog-card">
         <div class="info">
             <h4>{{ post.title }}</h4>
-            <h6>Posted on: {{ post.date }}</h6>
-            <router-link class="link" to="#">
+            <h6>Posted on: {{ new Date(post.date).toLocaleString('en-us', { dateStyle: 'long' }) }}</h6>
+            <div class="link">
                 View The Post
                 <Arrow class="arrow" />
-            </router-link>
+            </div>
         </div>
-    </div>
+    </router-link>
 </template>
 
 <script>
@@ -28,10 +28,15 @@ export default {
     name: 'BlogCard',
     props: ['post'],
     components: { Arrow, Delete, Edit },
-    computed: {
-        image() {
-            return new URL(`../assets/cards/${this.post.photo}.jpg`, import.meta.url).href;
+    methods: {
+        deletePost() {
+            this.$store.dispatch('deletePost', this.post.id);
         },
+        editPost() {
+            this.$router.push({ name: 'EditBlog', params: { id: this.post.id } });
+        }
+    },
+    computed: {
         edit() {
             return this.$store.getters.edit;
         }
@@ -46,9 +51,12 @@ export default {
     display: flex;
     flex-direction: column;
     border-radius: 8px;
-    background-color: white;
+    background-color: #fff;
     min-height: 420px;
     transition: .5s ease transform;
+    text-decoration: none;
+    overflow: hidden;
+    z-index: 0;
 
     &:hover {
         transform: rotateZ(-1deg) scale(1.01);
@@ -66,6 +74,7 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
+            color: #000;
             width: 35px;
             height: 35px;
             border-radius: 50%;
@@ -105,7 +114,7 @@ export default {
     .info {
         display: flex;
         flex-direction: column;
-        height: 100px;
+        height: 100%;
         padding: 32px 16px;
         color: #000;
 
@@ -113,6 +122,8 @@ export default {
             padding-bottom: 8px;
             font-size: 20px;
             font-weight: 300;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
         h6 {

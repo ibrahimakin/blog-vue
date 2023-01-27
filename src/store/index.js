@@ -1,15 +1,27 @@
 import { createStore } from 'vuex';
 import { getAuth } from 'firebase/auth';
-import { doc, getDoc, getDocs, orderBy, updateDoc } from 'firebase/firestore';
+import { doc, query, collection, getDoc, getDocs, updateDoc, deleteDoc, orderBy } from 'firebase/firestore';
 import db from '../firebase/init';
 
 export default createStore({
     state: {
+        sampleBlogPosts: [
+            {
+                title: 'This is a Filler Title 1!',
+                html: 'This is a filler blog post title 1!',
+                photo: '/src/assets/photos/beautiful-stories.jpg'
+            },
+            {
+                title: 'This is a Filler Title 2!',
+                html: 'This is a filler blog post title 2!',
+                photo: '/src/assets/photos/designed-for-everyone.jpg'
+            }
+        ],
         sampleBlogCards: [
-            { title: 'Blog Card #1', photo: 'stock-1', date: 'May 1, 2021' },
-            { title: 'Blog Card #2', photo: 'stock-2', date: 'May 1, 2021' },
-            { title: 'Blog Card #3', photo: 'stock-3', date: 'May 1, 2021' },
-            { title: 'Blog Card #4', photo: 'stock-4', date: 'May 1, 2021' }
+            { title: 'Blog Card #1', photo: '/src/assets/cards/stock-1.jpg', date: 'May 1, 2021' },
+            { title: 'Blog Card #2', photo: '/src/assets/cards/stock-2.jpg', date: 'May 1, 2021' },
+            { title: 'Blog Card #3', photo: '/src/assets/cards/stock-3.jpg', date: 'May 1, 2021' },
+            { title: 'Blog Card #4', photo: '/src/assets/cards/stock-4.jpg', date: 'May 1, 2021' }
         ],
         blogPosts: [],
         postLoaded: null,
@@ -46,6 +58,15 @@ export default createStore({
         },
         toggleEdit(state, payload) {
             state.edit = payload;
+        },
+        setBlogState(state, payload) {
+            state.blogTitle = payload.title;
+            state.blogHTML = payload.html
+            state.blogPhotoFileURL = payload.photo;
+            state.blogPhotoName = payload.photo_name;
+        },
+        filterPosts(state, payload) {
+            state.blogPosts = state.blogPosts.filter(post => post.id !== payload);
         },
         updateUser(state, payload) {
             state.user = payload;
@@ -91,29 +112,39 @@ export default createStore({
             commit('setInitials');
         },
         async getPosts({ state }) {
+            state.postLoaded = false;
             const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
             const result = await getDocs(q);
             result.forEach(doc => {
                 if (!state.blogPosts.some(post => post.id === doc.id)) {
-                    console.log(doc.data());
                     state.blogPosts.push({
-                        id: doc.data().id,
+                        id: doc.id,
                         html: doc.data().html,
                         title: doc.data().title,
                         photo: doc.data().cover_photo,
+                        photo_name: doc.data().cover_photo_name,
                         date: doc.data().date
                     });
                 }
             });
             state.postLoaded = true;
+        },
+        async updatePost({ state, commit, dispatch }, payload) {
+            state.postLoaded = false;
+            commit('filterPosts', payload);
+            await dispatch('getPosts');
+        },
+        async deletePost({ commit }, payload) {
+            await deleteDoc(doc(db, 'posts', payload));
+            commit('filterPosts', payload);
         }
     },
     getters: {
         blogPosts(state) {
-            return state.sampleBlogCards;
+            return state.blogPosts.slice(0, 2);
         },
         blogCards(state) {
-            return state.sampleBlogCards;
+            return state.blogPosts.slice(2, 6);
         },
         edit(state) {
             return state.edit;

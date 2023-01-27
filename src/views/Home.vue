@@ -1,10 +1,10 @@
 <template>
     <div class="home">
-        <BlogPost v-if="!user" :post="welcomePost" />
-        <BlogPost :post="post" v-for="(post, index) in sampleBlogPosts" :key="index" />
+        <BlogPost v-if="!user" :post="welcome" />
+        <BlogPost :post="post" v-for="(post, index) in blogPosts" :key="index" />
         <div class="blog-card-wrap">
             <div class="container">
-                <h3>View More Recent Blogs</h3>
+                <h3 v-if="this.$store.state.blogPosts.length > 2">View More Recent Blogs</h3>
                 <div class="blog-cards">
                     <BlogCard :post="post" v-for="(post, index) in blogCards" :key="index" />
                 </div>
@@ -31,24 +31,12 @@ export default {
     components: { BlogPost, BlogCard, Arrow },
     data() {
         return {
-            welcomePost: {
+            welcome: {
                 title: 'Welcome!',
-                blog: 'Weekly blog articles with all things programming including HTML, CSS, JavaScript and more. Register today to never miss a post!',
-                photo: 'coding',
+                html: 'Weekly blog articles with all things programming including HTML, CSS, JavaScript and more. Register today to never miss a post!',
+                photo: './src/assets/photos/coding.jpg',
                 welcome: true
-            },
-            sampleBlogPosts: [
-                {
-                    title: 'This is a Filler Title 1!',
-                    blog: 'This is a filler blog post title 1!',
-                    photo: 'beautiful-stories'
-                },
-                {
-                    title: 'This is a Filler Title 2!',
-                    blog: 'This is a filler blog post title 2!',
-                    photo: 'designed-for-everyone'
-                }
-            ]
+            }
         };
     },
     computed: {

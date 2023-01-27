@@ -11,17 +11,17 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="https://twitter.com/iibrahimAKIN" target="_blank">
                                 <Twitter class="svg-icon" />
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="https://instagram.com/iibrahimAKIN" target="_blank">
                                 <Instagram class="svg-icon" />
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="https://www.linkedin.com/in/ibrahim-AKIN" target="_blank">
                                 <Linkedin class="svg-icon" />
                             </a>
                         </li>

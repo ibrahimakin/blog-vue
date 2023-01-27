@@ -3,19 +3,19 @@
         <div class="blog-content">
             <div>
                 <h2>{{ post.title }}</h2>
-                <p :class="!post.welcome && 'content-preview'">{{ post.blog }}</p>
+                <p :class="!post.welcome && 'content-preview'" v-html="post.html"></p>
                 <router-link class="link link-light" v-if="post.welcome" :to="{ name: 'Login' }">
                     Login / Register
                     <Arrow class="arrow arrow-light" />
                 </router-link>
-                <router-link class="link" v-else to="#">
+                <router-link class="link" v-else :to="{ name: 'ViewBlog', params: { id: post.id } }">
                     View The Post
                     <Arrow class="arrow" />
                 </router-link>
             </div>
         </div>
         <div class="blog-photo">
-            <img :src="image" :alt="post.photo">
+            <img :src="post.photo" alt="Blog Photo">
         </div>
     </div>
 </template>
@@ -25,18 +25,14 @@ import Arrow from '../assets/icons/arrow-right-light.svg';
 export default {
     name: 'BlogPost',
     props: ['post'],
-    components: { Arrow },
-    computed: {
-        image() {
-            return new URL(`../assets/photos/${this.post.photo}.jpg`, import.meta.url).href;
-        }
-    }
+    components: { Arrow }
 };
 </script>
 
 <style lang="scss" scoped>
 .blog-wrapper {
     display: flex;
+    overflow: hidden;
     flex-direction: column;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 
@@ -75,6 +71,8 @@ export default {
                 font-weight: 300;
                 text-transform: uppercase;
                 margin-bottom: 24px;
+                overflow: hidden;
+                text-overflow: ellipsis;
 
                 @media (min-width: 700px) {
                     font-size: 40px;
@@ -93,7 +91,6 @@ export default {
                 width: 250px;
                 white-space: nowrap;
                 overflow: hidden;
-                text-overflow: ellipsis;
             }
 
             .link {
