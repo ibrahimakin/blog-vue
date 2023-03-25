@@ -66,7 +66,7 @@ export default {
 footer {
     margin-top: auto;
     padding: 100px 25px;
-    background-color: #303030;
+    background-color: var(--blog-clr);
     z-index: 2;
 
     .container {

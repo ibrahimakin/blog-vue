@@ -2,6 +2,9 @@
     <div class="reset-password">
         <div class="form-wrap">
             <form class="reset">
+            <div class="auth-branding">
+                <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+            </div>
                 <p class="login-register">
                     Back to
                     <RouterLink class="router-link" :to="{ name: 'Login' }">

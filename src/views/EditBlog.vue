@@ -1,5 +1,5 @@
 <template>
-    <Loading v-if="!blog" />
+    <Loading v-if="!blog?.loaded" />
     <div v-else-if="blog.notfound" class="post-view">
         <div class="container">
             <h2>{{ blog.title }}</h2>
@@ -15,18 +15,15 @@
                 <input type="text" placeholder="Enter Blog Title" v-model="blogTitle">
                 <div class="upload-file">
                     <label for="blog-photo">Upload Cover Photo</label>
-                    <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange"
-                        accept=".png, .jpg, .jpeg" />
-                    <button @click="openPreview" class="preview"
-                        :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }">
+                    <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, .jpeg" />
+                    <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }">
                         Preview Photo
                     </button>
                     <span>File Chosen: {{ this.$store.state.blogPhotoName }}</span>
                 </div>
             </div>
             <div class="editor">
-                <vue-editor :editorOptions="editorSettings" v-model="blogHTML" useCustomImageHandler
-                    @image-added="imageHandler" />
+                <vue-editor :editorOptions="editorSettings" v-model="blogHTML" useCustomImageHandler @image-added="imageHandler" />
             </div>
             <div class="blog-actions">
                 <button @click="updateBlog">Save Changes</button>
@@ -104,7 +101,7 @@ export default {
                         .then(async snapshot => {
                             const downloadURL = await getDownloadURL(snapshot.ref)
                             await updateDoc(post, {
-                                html: this.blogHTML,
+                                html: this.blogHTML.substr(0, 60),
                                 title: this.blogTitle,
                                 cover_photo: downloadURL,
                                 cover_photo_name: this.blogCoverPhotoName,
@@ -117,24 +114,24 @@ export default {
                         .catch(() => {
                             this.loading = false;
                         });
-                    return;
                 }
-                this.loading = true;
-                await updateDoc(post, {
-                    title: this.blogTitle,
-                    html: this.blogHTML,
-                    updated: timestamp
-                });
-                await this.$store.dispatch('updatePost', this.routeID);
-                this.loading = false;
-                this.$router.push({ name: 'ViewBlog', params: { id: post.id } });
+                else {
+                    this.loading = true;
+                    await updateDoc(post, {
+                        title: this.blogTitle,
+                        html: this.blogHTML.substr(0, 60),
+                        updated: timestamp
+                    });
+                    await this.$store.dispatch('updatePost', this.routeID);
+                    this.loading = false;
+                    this.$router.push({ name: 'ViewBlog', params: { id: post.id } });
+                }
+                await updateDoc(doc(db, 'details', post.id), { html: this.blogHTML })
                 return;
             }
             this.errorMsg = 'Please ensure Blog Title & Blog Post has been filled.';
             this.error = true;
-            setTimeout(() => {
-                this.error = false;
-            }, 5000);
+            setTimeout(() => this.error = false, 5000);
             return;
         }
     },
@@ -167,10 +164,11 @@ export default {
                     post => post.id === this.$route.params.id
                 );
                 if (blog) {
+                    if (!blog.loaded) this.$store.dispatch('getPost', blog);
                     this.$store.commit('setBlogState', blog);
                     return blog;
                 }
-                return { title: 'Not Found', notfound: true };
+                return { title: 'Not Found', loaded: true, notfound: true };
             }
         }
     }
@@ -208,7 +206,7 @@ export default {
         border-radius: 8px;
         color: #fff;
         margin-bottom: 10px;
-        background-color: #303030;
+        background-color: var(--blog-clr);
         opacity: 1;
         transition: .5s ease opacity;
 
@@ -234,11 +232,11 @@ export default {
         input {
             padding: 10px 4px;
             border: none;
-            border-bottom: 1px solid #303030;
+            border-bottom: 1px solid var(--blog-clr);
 
             &:focus {
                 outline: none;
-                box-shadow: 0 1px 0 0 #303030;
+                box-shadow: 0 1px 0 0 var(--blog-clr);
             }
         }
 

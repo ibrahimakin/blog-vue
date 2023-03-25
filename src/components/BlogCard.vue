@@ -1,5 +1,5 @@
 <template>
-    <router-link class="blog-card" :to="{ name: 'ViewBlog', params: { id: post.id } }">
+    <router-link :title="post.title" class="blog-card" :to="{ name: 'ViewBlog', params: { id: post.id } }">
         <div v-show="edit" class="icons">
             <div @click.prevent="editPost" class="icon">
                 <Edit class="edit" />
@@ -82,7 +82,7 @@ export default {
             transition: .5s ease background-color;
 
             &:hover {
-                background-color: #303030;
+                background-color: var(--blog-clr);
 
                 .edit,
                 .delete {
@@ -109,6 +109,7 @@ export default {
         width: 100%;
         min-height: 200px;
         object-fit: cover;
+        height: 200px;
     }
 
     .info {
@@ -123,6 +124,7 @@ export default {
             font-size: 20px;
             font-weight: 300;
             text-overflow: ellipsis;
+            white-space: nowrap;
             overflow: hidden;
         }
 

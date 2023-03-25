@@ -5,13 +5,9 @@ import Footer from './components/Footer.vue';
 </script>
 
 <template>
-    <div class="app-wrapper">
-        <div class="app">
-            <Navigation v-if="!navigation" />
-            <RouterView />
-            <Footer v-if="!navigation" />
-        </div>
-    </div>
+    <Navigation v-if="!navigation" />
+    <RouterView />
+    <Footer v-if="!navigation" />
 </template>
 
 <script>
@@ -50,17 +46,49 @@ export default {
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 
+:root {
+    --blog-clr: #303030;
+    --bg-clr: var(--blog-clr);
+    --nav-clr: var(--blog-clr);
+}
+
+#sidenav-mobile {
+    width: var(--sidenav-width);
+}
+
+.filled {
+    border: 1px solid var(--bg-clr);
+}
+
+.filled::before {
+    transition: .5s ease background-color;
+}
+
+#collapse:hover+.filled::before,
+.pin-menu:hover+.filled::before,
+.filled:hover::before {
+    background-color: rgba(48, 48, 48, .7);
+}
+
+@media screen and (max-width: 450px) {
+    #app .mobile-nav {
+        top: var(--topnav-height);
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
     font-family: "Quicksand", sans-serif;
 }
 
-.app {
+#app {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     background-color: #fff;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
 }
 
 .container {
@@ -93,14 +121,14 @@ export default {
 button,
 .create-post label,
 .router-button {
-    transition: .5s ease all;
     cursor: pointer;
     margin-top: 24px;
     padding: 12px 24px;
-    background-color: #303030;
-    color: #fff;
+    background-color: var(--blog-clr);
+    transition: .5s ease background-color;
     border-radius: 20px;
     border: none;
+    color: #fff;
     text-transform: uppercase;
 
     &:focus {

@@ -31,6 +31,7 @@ const router = createRouter({
             name: 'Login',
             component: Login,
             meta: {
+                noauth: true,
                 title: 'Login'
             }
         },
@@ -39,6 +40,7 @@ const router = createRouter({
             name: 'Register',
             component: Register,
             meta: {
+                noauth: true,
                 title: 'Register'
             }
         },
@@ -47,6 +49,7 @@ const router = createRouter({
             name: 'ForgotPassword',
             component: ForgotPassword,
             meta: {
+                noauth: true,
                 title: 'Forgot Password'
             }
         },
@@ -120,6 +123,7 @@ router.beforeEach((to, from, next) => {
 });
 
 router.beforeEach(async (to, from, next) => {
+    if (to.meta.noauth && getAuth().currentUser) return next({ name: 'Home' });
     if (to.matched.some(res => res.meta.auth)) {
         let user = getAuth().currentUser;
         if (user) {

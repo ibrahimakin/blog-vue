@@ -112,7 +112,7 @@ export default {
                 width: 80px;
                 height: 80px;
                 font-size: 32px;
-                background-color: #303030;
+                background-color: var(--blog-clr);
                 color: #fff;
                 display: flex;
                 align-self: center;
@@ -128,7 +128,7 @@ export default {
                 font-size: 14px;
                 padding: 8px 24px;
                 border-radius: 8px;
-                background-color: #303030;
+                background-color: var(--blog-clr);
                 margin: 16px 0;
                 text-align: center;
                 text-transform: capitalize;

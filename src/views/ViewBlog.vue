@@ -23,7 +23,11 @@ export default {
                 let blog = this.$store.state.blogPosts.find(
                     post => post.id === this.$route.params.id
                 );
-                return blog || { title: 'Not Found', notfound: true };
+                if (blog) {
+                    if (!blog.loaded) this.$store.dispatch('getPost', blog);
+                    return blog;
+                }
+                return { title: 'Not Found', notfound: true };
             }
         }
     }

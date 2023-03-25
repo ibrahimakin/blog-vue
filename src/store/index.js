@@ -129,6 +129,13 @@ export default createStore({
             });
             state.postLoaded = true;
         },
+        async getPost({ state }, payload) {
+            const result = await getDoc(doc(db, 'details', payload.id));
+            if (result.exists()) {
+                payload.html = result.data().html;
+                payload.loaded = true;
+            }
+        },
         async updatePost({ state, commit, dispatch }, payload) {
             state.postLoaded = false;
             commit('filterPosts', payload);

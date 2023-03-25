@@ -27,8 +27,6 @@ export default {
 
 <style lang="scss">
 .post-view {
-    min-height: 100%;
-
     .container {
         max-width: 1000px;
         padding: 60px 25px;
