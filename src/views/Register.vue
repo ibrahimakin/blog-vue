@@ -1,6 +1,9 @@
 <template>
     <div class="form-wrap">
         <form class="register">
+            <div class="auth-branding">
+                <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+            </div>
             <p class="login-register">
                 Already have an account?
                 <RouterLink class="router-link" :to="{ name: 'Login' }">

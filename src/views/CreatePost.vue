@@ -9,18 +9,15 @@
                 <input type="text" placeholder="Enter Blog Title" v-model="blogTitle">
                 <div class="upload-file">
                     <label for="blog-photo">Upload Cover Photo</label>
-                    <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange"
-                        accept=".png, .jpg, .jpeg" />
-                    <button @click="openPreview" class="preview"
-                        :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }">
+                    <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, .jpeg" />
+                    <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }">
                         Preview Photo
                     </button>
                     <span>File Chosen: {{ this.$store.state.blogPhotoName }}</span>
                 </div>
             </div>
             <div class="editor">
-                <vue-editor :editorOptions="editorSettings" v-model="blogHTML" useCustomImageHandler
-                    @image-added="imageHandler" />
+                <vue-editor :editorOptions="editorSettings" v-model="blogHTML" useCustomImageHandler @image-added="imageHandler" />
             </div>
             <div class="blog-actions">
                 <button @click="uploadBlog">Publish Blog</button>
@@ -33,7 +30,7 @@
 
 <script>
 import { getStorage, uploadBytesResumable, ref, getDownloadURL, uploadBytes } from 'firebase/storage';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, setDoc, doc } from 'firebase/firestore';
 import { VueEditor } from 'vue3-editor';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module-plus';
@@ -57,6 +54,14 @@ export default {
                 }
             }
         };
+    },
+    created() {
+        this.$store.commit('setBlogState', {
+            html: 'Write your blog here...',
+            photo_name: '',
+            photo: null,
+            title: ''
+        });
     },
     methods: {
         fileChange() {
@@ -94,20 +99,19 @@ export default {
                             const timestamp = Date.now();
                             const database = collection(db, 'posts');
                             const result = await addDoc(database, {
-                                html: this.blogHTML,
+                                html: this.blogHTML.substr(0, 60),
                                 title: this.blogTitle,
                                 cover_photo: downloadURL,
                                 cover_photo_name: this.blogCoverPhotoName,
                                 profile_id: this.profileId,
                                 date: timestamp
                             });
+                            await setDoc(doc(db, 'details', result.id), { html: this.blogHTML });
                             this.$store.dispatch('getPosts');
                             this.loading = false;
                             this.$router.push({ name: 'ViewBlog', params: { id: result.id } });
                         })
-                        .catch(() => {
-                            this.loading = false;
-                        });
+                        .catch(() => this.loading = false);
                     return;
                 }
                 this.errorMsg = 'Please ensure you uploaded a cover photo.';
@@ -116,9 +120,7 @@ export default {
                 this.errorMsg = 'Please ensure Blog Title & Blog Post has been filled.';
             }
             this.error = true;
-            setTimeout(() => {
-                this.error = false;
-            }, 5000);
+            setTimeout(() => this.error = false, 5000);
             return;
         }
     },
@@ -180,7 +182,7 @@ export default {
         border-radius: 8px;
         color: #fff;
         margin-bottom: 10px;
-        background-color: #303030;
+        background-color: var(--blog-clr);
         opacity: 1;
         transition: .5s ease opacity;
 
@@ -206,11 +208,11 @@ export default {
         input {
             padding: 10px 4px;
             border: none;
-            border-bottom: 1px solid #303030;
+            border-bottom: 1px solid var(--blog-clr);
 
             &:focus {
                 outline: none;
-                box-shadow: 0 1px 0 0 #303030;
+                box-shadow: 0 1px 0 0 var(--blog-clr);
             }
         }
 

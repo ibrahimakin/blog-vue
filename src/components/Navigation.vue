@@ -202,7 +202,7 @@ header {
                 height: 40px;
                 border-radius: 50%;
                 color: #fff;
-                background-color: #303030;
+                background-color: var(--blog-clr);
 
                 span {
                     pointer-events: none;
@@ -213,7 +213,7 @@ header {
                     top: 60px;
                     right: 0;
                     width: 250px;
-                    background-color: #303030;
+                    background-color: var(--blog-clr);
                     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 
                     span {
@@ -222,7 +222,7 @@ header {
                         top: -10px;
                         border-left: 10px solid transparent;
                         border-right: 10px solid transparent;
-                        border-bottom: 10px solid #303030;
+                        border-bottom: 10px solid var(--blog-clr);
                     }
 
                     .info {
@@ -254,7 +254,7 @@ header {
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
-                color: #303030;
+                color: var(--blog-clr);
                 background-color: #fff;
             }
 
@@ -311,7 +311,7 @@ header {
         flex-direction: column;
         position: fixed;
         height: 100%;
-        background-color: #303030;
+        background-color: var(--blog-clr);
         transition: .7s ease transform;
         top: 0;
         right: 0;
@@ -322,7 +322,7 @@ header {
 
             .right>p:nth-child(1),
             .right>p:nth-child(2) {
-                margin-right: 26px;
+                margin-right: 40px;
             }
         }
 

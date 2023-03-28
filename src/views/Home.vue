@@ -34,7 +34,7 @@ export default {
             welcome: {
                 title: 'Welcome!',
                 html: 'Weekly blog articles with all things programming including HTML, CSS, JavaScript and more. Register today to never miss a post!',
-                photo: './src/assets/photos/coding.jpg',
+                photo: 'assets/coding.jpg',
                 welcome: true
             }
         };

@@ -1,6 +1,9 @@
 <template>
     <div class="form-wrap">
         <form class="login">
+            <div class="auth-branding">
+                <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+            </div>
             <p class="login-register">
                 Don't have an account?
                 <RouterLink class="router-link" :to="{ name: 'Register' }">
@@ -61,8 +64,22 @@ export default {
 </script>
 
 <style lang="scss">
+.auth-branding {
+    width: 100%;
+    max-width: 350px;
+
+    .header {
+        position: absolute;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 24px;
+        margin: 25px 0;
+        color: #000;
+        top: 0;
+    }
+}
+
 .form-wrap {
-    overflow: hidden;
     display: flex;
     height: 100vh;
     width: 90%;
@@ -72,6 +89,7 @@ export default {
 
     @media (min-width: 900px) {
         width: 100%;
+        overflow: hidden;
     }
 
     .login-register {
@@ -98,7 +116,7 @@ export default {
         h2 {
             text-align: center;
             font-size: 32px;
-            color: #303030;
+            color: var(--blog-clr);
             margin-bottom: 40px;
 
             @media (min-width: 900px) {
@@ -148,7 +166,7 @@ export default {
             transition: .5s ease border-color;
 
             &:hover {
-                border-color: #303030;
+                border-color: var(--blog-clr);
             }
         }
 

@@ -73,8 +73,10 @@ export default {
                 margin-bottom: 24px;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                max-height: 480px;
 
                 @media (min-width: 700px) {
+                    max-height: 500px;
                     font-size: 40px;
                 }
             }
@@ -102,7 +104,7 @@ export default {
                 transition: .5s ease-in border-bottom-color;
 
                 &:hover {
-                    border-bottom-color: #303030;
+                    border-bottom-color: var(--blog-clr);
                 }
             }
 
@@ -148,7 +150,7 @@ export default {
 
 .no-user {
     .blog-content {
-        background-color: #303030;
+        background-color: var(--blog-clr);
         color: #fff;
     }
 }

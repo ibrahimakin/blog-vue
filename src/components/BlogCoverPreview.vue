@@ -55,7 +55,7 @@ export default {
             position: absolute;
             top: 15px;
             right: 15px;
-            color: #303030;
+            color: var(--blog-clr);
         }
 
         img {
