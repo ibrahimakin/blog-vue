@@ -2,7 +2,7 @@
     <div class="blog-wrapper" :class="{ 'no-user': post.welcome }">
         <div class="blog-content">
             <div>
-                <h2>{{ post.title }}</h2>
+                <h2 lang="tr">{{ post.title }}</h2>
                 <p :class="!post.welcome && 'content-preview'" v-html="post.html"></p>
                 <router-link class="link link-light" v-if="post.welcome" :to="{ name: 'Login' }">
                     Login / Register

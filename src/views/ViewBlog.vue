@@ -2,11 +2,12 @@
     <Loading v-if="!blog" />
     <div v-else class="post-view">
         <div class="container quillWrapper">
-            <h2>{{ blog.title }}</h2>
+            <h2 class="title">{{ blog.title }}</h2>
             <template v-if="!blog.notfound">
                 <h4>Posted on: {{ new Date(blog.date).toLocaleString('en-us', { dateStyle: 'long' }) }}</h4>
-                <img :src="blog.photo" alt="Blog Cover Photo" />
+                <img class="cover" :src="blog.photo" alt="Blog Cover Photo" />
                 <div class="post-content ql-editor" v-html="blog.html"></div>
+                <LoadingInline v-if="!blog.loaded" />
             </template>
         </div>
     </div>
@@ -14,9 +15,10 @@
 
 <script>
 import Loading from '../components/Loading.vue';
+import LoadingInline from '../components/LoadingInline.vue';
 export default {
     name: 'ViewBlog',
-    components: { Loading },
+    components: { Loading, LoadingInline },
     computed: {
         blog() {
             if (this.$store.state.postLoaded) {

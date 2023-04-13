@@ -1,8 +1,8 @@
 <template>
     <div class="post-view">
         <div class="container quillWrapper">
-            <h2>{{ this.blogTitle }}</h2>
-            <img :src="blogCoverPhoto" alt="" />
+            <h2 class="title">{{ this.blogTitle }}</h2>
+            <img class="cover" :src="blogCoverPhoto" alt="" />
             <div class="post-content ql-editor" v-html="blogHTML"></div>
         </div>
     </div>
@@ -33,16 +33,17 @@ export default {
     }
 
     .ql-editor {
+        min-height: unset;
         padding: 0;
     }
 
-    h2 {
+    .title {
         margin-bottom: 16px;
         font-weight: 300;
         font-size: 32px;
     }
 
-    img {
+    .cover {
         width: 100%;
         margin-bottom: 32px;
     }

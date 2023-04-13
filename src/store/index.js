@@ -7,21 +7,23 @@ export default createStore({
     state: {
         sampleBlogPosts: [
             {
+                id: '1',
                 title: 'This is a Filler Title 1!',
                 html: 'This is a filler blog post title 1!',
-                photo: '/src/assets/photos/beautiful-stories.jpg'
+                photo: '/src/assets/photos/beautiful-stories.jpg',
+                date: 'May 1, 2021'
             },
             {
+                id: '2',
                 title: 'This is a Filler Title 2!',
                 html: 'This is a filler blog post title 2!',
-                photo: '/src/assets/photos/designed-for-everyone.jpg'
-            }
-        ],
-        sampleBlogCards: [
-            { title: 'Blog Card #1', photo: '/src/assets/cards/stock-1.jpg', date: 'May 1, 2021' },
-            { title: 'Blog Card #2', photo: '/src/assets/cards/stock-2.jpg', date: 'May 1, 2021' },
-            { title: 'Blog Card #3', photo: '/src/assets/cards/stock-3.jpg', date: 'May 1, 2021' },
-            { title: 'Blog Card #4', photo: '/src/assets/cards/stock-4.jpg', date: 'May 1, 2021' }
+                photo: '/src/assets/photos/designed-for-everyone.jpg',
+                date: 'May 1, 2021'
+            },
+            { id: '3', title: 'Blog Card #1', photo: '/src/assets/cards/stock-1.jpg', date: 'May 1, 2021' },
+            { id: '4', title: 'Blog Card #2', photo: '/src/assets/cards/stock-2.jpg', date: 'May 1, 2021' },
+            { id: '5', title: 'Blog Card #3', photo: '/src/assets/cards/stock-3.jpg', date: 'May 1, 2021' },
+            { id: '6', title: 'Blog Card #4', photo: '/src/assets/cards/stock-4.jpg', date: 'May 1, 2021' }
         ],
         blogPosts: [],
         postLoaded: null,
@@ -137,9 +139,13 @@ export default createStore({
             }
         },
         async updatePost({ state, commit, dispatch }, payload) {
-            state.postLoaded = false;
-            commit('filterPosts', payload);
-            await dispatch('getPosts');
+            const blog = state.blogPosts.find(post => post.id === payload);
+            if (blog) {
+                blog.title = state.blogTitle;
+                blog.html = state.blogHTML;
+                blog.photo = state.blogPhotoFileURL;
+                blog.photo_name = state.blogPhotoName;
+            }
         },
         async deletePost({ commit }, payload) {
             await deleteDoc(doc(db, 'posts', payload));

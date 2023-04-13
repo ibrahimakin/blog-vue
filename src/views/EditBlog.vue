@@ -8,8 +8,8 @@
     <div v-else class="create-post">
         <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview" />
         <div class="container">
-            <div class="err-message" :class="{ invisible: !error }">
-                <p><span>Error:</span> {{ this.errorMsg }}</p>
+            <div class="err-message" :class="{ invisible: !info }">
+                <p>{{ this.infoMsg }}</p>
             </div>
             <div class="blog-info">
                 <input type="text" placeholder="Enter Blog Title" v-model="blogTitle">
@@ -51,8 +51,8 @@ export default {
     data() {
         return {
             file: null,
-            error: null,
-            errorMsg: null,
+            info: null,
+            infoMsg: null,
             loading: null,
             routeID: null,
             editorSettings: {
@@ -100,6 +100,7 @@ export default {
                     uploadBytes(storage, this.file)
                         .then(async snapshot => {
                             const downloadURL = await getDownloadURL(snapshot.ref)
+                            await updateDoc(doc(db, 'details', post.id), { html: this.blogHTML })
                             await updateDoc(post, {
                                 html: this.blogHTML.substr(0, 60),
                                 title: this.blogTitle,
@@ -109,7 +110,6 @@ export default {
                             });
                             await this.$store.dispatch('updatePost', this.routeID);
                             this.loading = false;
-                            this.$router.push({ name: 'ViewBlog', params: { id: post.id } });
                         })
                         .catch(() => {
                             this.loading = false;
@@ -117,6 +117,7 @@ export default {
                 }
                 else {
                     this.loading = true;
+                    await updateDoc(doc(db, 'details', post.id), { html: this.blogHTML })
                     await updateDoc(post, {
                         title: this.blogTitle,
                         html: this.blogHTML.substr(0, 60),
@@ -124,14 +125,15 @@ export default {
                     });
                     await this.$store.dispatch('updatePost', this.routeID);
                     this.loading = false;
-                    this.$router.push({ name: 'ViewBlog', params: { id: post.id } });
                 }
-                await updateDoc(doc(db, 'details', post.id), { html: this.blogHTML })
+                this.infoMsg = 'Changes Saved.';
+                this.info = true;
+                setTimeout(() => this.info = false, 5000);
                 return;
             }
-            this.errorMsg = 'Please ensure Blog Title & Blog Post has been filled.';
-            this.error = true;
-            setTimeout(() => this.error = false, 5000);
+            this.infoMsg = 'Error: Please ensure Blog Title & Blog Post has been filled.';
+            this.info = true;
+            setTimeout(() => this.info = false, 5000);
             return;
         }
     },
