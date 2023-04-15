@@ -46,7 +46,7 @@ import db, { app } from '../firebase/init';
 window.Quill = Quill;
 Quill.register('modules/imageResize', ImageResize);
 export default {
-    name: 'CreatePost',
+    name: 'EditBlog',
     components: { VueEditor, BlogCoverPreview, Loading },
     data() {
         return {
@@ -64,6 +64,14 @@ export default {
     },
     async mounted() {
         this.routeID = this.$route.params.id;
+    },
+    beforeUnmount() {
+        this.$store.commit('setBlogState', {
+            html: 'Write your blog here...',
+            photo_name: '',
+            photo: null,
+            title: ''
+        });
     },
     methods: {
         fileChange() {

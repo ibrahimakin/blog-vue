@@ -55,14 +55,6 @@ export default {
             }
         };
     },
-    created() {
-        this.$store.commit('setBlogState', {
-            html: 'Write your blog here...',
-            photo_name: '',
-            photo: null,
-            title: ''
-        });
-    },
     methods: {
         fileChange() {
             this.file = this.$refs.blogPhoto.files[0];
