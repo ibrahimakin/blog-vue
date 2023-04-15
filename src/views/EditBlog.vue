@@ -173,6 +173,7 @@ export default {
                 let blog = this.$store.state.blogPosts.find(
                     post => post.id === this.$route.params.id
                 );
+                document.title = 'Edit | ' + blog.title;
                 if (blog) {
                     if (!blog.loaded) this.$store.dispatch('getPost', blog);
                     this.$store.commit('setBlogState', blog);

@@ -25,6 +25,7 @@ export default {
                 let blog = this.$store.state.blogPosts.find(
                     post => post.id === this.$route.params.id
                 );
+                document.title = blog.title;
                 if (blog) {
                     if (!blog.loaded) this.$store.dispatch('getPost', blog);
                     return blog;
