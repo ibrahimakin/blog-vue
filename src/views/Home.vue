@@ -25,7 +25,7 @@
 <script>
 import BlogPost from '../components/BlogPost.vue';
 import BlogCard from '../components/BlogCard.vue';
-import Arrow from '../assets/icons/arrow-right-light.svg';
+import Arrow from '../assets/icons/arrow.svg';
 export default {
     name: 'Home',
     components: { BlogPost, BlogCard, Arrow },
@@ -40,9 +40,7 @@ export default {
         };
     },
     created() {
-        if (!this.$store.state.post_loaded) {
-            this.$store.dispatch('getPosts');
-        }
+        this.$store.dispatch('getPosts');
     },
     computed: {
         blogPosts() {

@@ -10,20 +10,20 @@ export default createStore({
                 id: '1',
                 title: 'This is a Filler Title 1!',
                 html: 'This is a filler blog post title 1!',
-                photo: '/src/assets/photos/beautiful-stories.jpg',
+                photo: '/src/assets/cards/stock-0.jpg',
                 date: 'May 1, 2021'
             },
             {
                 id: '2',
                 title: 'This is a Filler Title 2!',
                 html: 'This is a filler blog post title 2!',
-                photo: '/src/assets/photos/designed-for-everyone.jpg',
+                photo: '/src/assets/cards/stock-1.jpg',
                 date: 'May 1, 2021'
             },
-            { id: '3', title: 'Blog Card #1', photo: '/src/assets/cards/stock-1.jpg', date: 'May 1, 2021' },
-            { id: '4', title: 'Blog Card #2', photo: '/src/assets/cards/stock-2.jpg', date: 'May 1, 2021' },
-            { id: '5', title: 'Blog Card #3', photo: '/src/assets/cards/stock-3.jpg', date: 'May 1, 2021' },
-            { id: '6', title: 'Blog Card #4', photo: '/src/assets/cards/stock-4.jpg', date: 'May 1, 2021' }
+            { id: '3', title: 'Blog Card #1', photo: '/src/assets/cards/stock-2.jpg', date: 'May 1, 2021' },
+            { id: '4', title: 'Blog Card #2', photo: '/src/assets/cards/stock-3.jpg', date: 'May 1, 2021' },
+            { id: '5', title: 'Blog Card #3', photo: '/src/assets/cards/stock-4.jpg', date: 'May 1, 2021' },
+            { id: '6', title: 'Blog Card #4', photo: '/src/assets/cards/stock-5.jpg', date: 'May 1, 2021' }
         ],
         post_loaded: null,
         blog_posts: [],
@@ -114,22 +114,23 @@ export default createStore({
             commit('setInitials');
         },
         async getPosts({ state }) {
-            state.post_loaded = false;
-            const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
-            const result = await getDocs(q);
-            result.forEach(doc => {
-                if (!state.blog_posts.some(post => post.id === doc.id)) {
-                    state.blog_posts.push({
-                        id: doc.id,
-                        html: doc.data().html,
-                        title: doc.data().title,
-                        photo: doc.data().cover_photo,
-                        photo_name: doc.data().cover_photo_name,
-                        date: doc.data().date
-                    });
-                }
-            });
-            state.post_loaded = true;
+            if (!state.post_loaded) {
+                const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
+                const result = await getDocs(q);
+                result.forEach(doc => {
+                    if (!state.blog_posts.some(post => post.id === doc.id)) {
+                        state.blog_posts.push({
+                            id: doc.id,
+                            html: doc.data().html,
+                            title: doc.data().title,
+                            photo: doc.data().cover_photo,
+                            photo_name: doc.data().cover_photo_name,
+                            date: doc.data().date
+                        });
+                    }
+                });
+                state.post_loaded = true;
+            }
         },
         async getPost({ state }, payload) {
             if (!payload.title) {

@@ -37,8 +37,8 @@
 
 <script>
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import email from '../assets/icons/envelope-regular.svg';
-import password from '../assets/icons/lock-alt-solid.svg';
+import email from '../assets/icons/envelope.svg';
+import password from '../assets/icons/lock.svg';
 export default {
     name: 'Login',
     components: { email, password },
@@ -95,7 +95,7 @@ export default {
     width: 100%;
     height: 100%;
     background-size: cover;
-    background-image: url('../assets/background.png');
+    background-image: url('background.png');
     overflow: auto;
 }
 
@@ -176,7 +176,7 @@ export default {
             color: #000;
             cursor: pointer;
             font-size: 14px;
-            margin: 16px 0 32px;
+            margin: 16px 0;
             border-bottom: 1px solid transparent;
             transition: .5s ease border-color;
 

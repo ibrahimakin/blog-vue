@@ -47,9 +47,9 @@
 <script>
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import user from '../assets/icons/user-alt-light.svg';
-import email from '../assets/icons/envelope-regular.svg';
-import password from '../assets/icons/lock-alt-solid.svg';
+import user from '../assets/icons/user.svg';
+import email from '../assets/icons/envelope.svg';
+import password from '../assets/icons/lock.svg';
 import db from '../firebase/init';
 export default {
     name: 'Register',

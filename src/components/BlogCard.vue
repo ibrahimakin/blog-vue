@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import Arrow from '../assets/icons/arrow-right-light.svg';
-import Delete from '../assets/icons/trash-regular.svg';
-import Edit from '../assets/icons/edit-regular.svg';
+import Arrow from '../assets/icons/arrow.svg';
+import Delete from '../assets/icons/trash.svg';
+import Edit from '../assets/icons/edit.svg';
 export default {
     name: 'BlogCard',
     props: ['post'],

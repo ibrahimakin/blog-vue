@@ -5,7 +5,7 @@
                 <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
             </div>
             <div class="nav-links">
-                <ul v-show="!mobile">
+                <div class="routers" v-show="!mobile">
                     <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
                     <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
                     <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
@@ -38,7 +38,7 @@
                             </div>
                         </div>
                     </div>
-                </ul>
+                </div>
             </div>
         </nav>
         <div @click.stop="toggleMobileNav" v-show="mobile" ref="menu" :class="{ 'open': mobileNav }" class="con">
@@ -47,7 +47,7 @@
             <div class="bar arrow-bottom"></div>
         </div>
         <transition name="mobile-nav">
-            <ul class="mobile-nav" v-show="mobileNav">
+            <div class="mobile-nav" v-show="mobileNav">
                 <div v-if="user" class="profile-menu">
                     <div class="info">
                         <p class="initials">{{ this.$store.state.initials }}</p>
@@ -65,16 +65,16 @@
                 <router-link v-if="user" class="link" :to="{ name: 'Profile' }">Profile</router-link>
                 <router-link v-if="admin" class="link" :to="{ name: 'Admin' }">Admin</router-link>
                 <div v-if="user" @click="signOut" class="link">Sign Out</div>
-            </ul>
+            </div>
         </transition>
     </header>
 </template>
 
 <script>
 import { getAuth, signOut } from 'firebase/auth';
-import User from '../assets/icons/user-alt-light.svg';
-import Admin from '../assets/icons/user-crown-light.svg';
-import SignOut from '../assets/icons/sign-out-alt-regular.svg';
+import User from '../assets/icons/user.svg';
+import Admin from '../assets/icons/user-crown.svg';
+import SignOut from '../assets/icons/sign-out.svg';
 export default {
     name: 'Navigation',
     components: { User, Admin, SignOut },
@@ -182,7 +182,7 @@ header {
             align-items: center;
             justify-content: flex-end;
 
-            ul {
+            .routers {
                 .link {
                     margin-right: 32px;
                 }

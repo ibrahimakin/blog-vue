@@ -32,7 +32,7 @@
 
 <script>
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import email from '../assets/icons/envelope-regular.svg';
+import email from '../assets/icons/envelope.svg';
 import Loading from '../components/Loading.vue';
 import Modal from '../components/Modal.vue';
 export default {

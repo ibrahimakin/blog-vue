@@ -31,9 +31,7 @@ export default {
         }
     },
     created() {
-        if (!this.$store.state.post_loaded) {
-            this.$store.dispatch('getPosts');
-        }
+        this.$store.dispatch('getPosts');
     },
     beforeUnmount() {
         this.$store.commit('toggleEdit', false);

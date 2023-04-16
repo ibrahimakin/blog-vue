@@ -6,22 +6,22 @@
                     <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
                     <ul>
                         <li>
-                            <a href="#">
-                                <YouTube class="svg-icon" />
+                            <a title="GitHub" href="https://github.com/ibrahimakin" target="_blank">
+                                <Github class="svg-icon" />
                             </a>
                         </li>
                         <li>
-                            <a href="https://twitter.com/iibrahimAKIN" target="_blank">
+                            <a title="Twitter" href="https://twitter.com/iibrahimAKIN" target="_blank">
                                 <Twitter class="svg-icon" />
                             </a>
                         </li>
                         <li>
-                            <a href="https://instagram.com/iibrahimAKIN" target="_blank">
+                            <a title="Instagram" href="https://instagram.com/iibrahimAKIN" target="_blank">
                                 <Instagram class="svg-icon" />
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.linkedin.com/in/ibrahim-AKIN" target="_blank">
+                            <a title="LinkedIn" href="https://www.linkedin.com/in/ibrahim-AKIN" target="_blank">
                                 <Linkedin class="svg-icon" />
                             </a>
                         </li>
@@ -29,10 +29,10 @@
                 </div>
                 <div class="col-2">
                     <ul>
-                        <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-                        <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
-                        <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
-                        <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login / Register</router-link>
+                        <li><router-link class="link" :to="{ name: 'Home' }">Home</router-link></li>
+                        <li><router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link></li>
+                        <li v-if="admin"><router-link class="link" :to="{ name: 'CreatePost' }">Create Post</router-link></li>
+                        <li v-if="!user"><router-link class="link" :to="{ name: 'Login' }">Login / Register</router-link></li>
                     </ul>
                 </div>
             </div>
@@ -44,13 +44,13 @@
 </template>
 
 <script>
-import YouTube from '../assets/icons/youtube-brands.svg';
-import Twitter from '../assets/icons/twitter-brands.svg';
-import Instagram from '../assets/icons/instagram-brands.svg';
-import Linkedin from '../assets/icons/linkedin-brands.svg';
+import Github from '../assets/icons/github.svg';
+import Twitter from '../assets/icons/twitter.svg';
+import Instagram from '../assets/icons/instagram.svg';
+import Linkedin from '../assets/icons/linkedin.svg';
 export default {
     name: 'Footer',
-    components: { YouTube, Twitter, Instagram, Linkedin },
+    components: { Github, Twitter, Instagram, Linkedin },
     computed: {
         user() {
             return this.$store.state.user;
