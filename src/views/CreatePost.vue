@@ -1,6 +1,6 @@
 <template>
     <div class="create-post">
-        <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview" />
+        <BlogCoverPreview v-show="this.$store.state.blog_photo_preview" />
         <div class="container">
             <div class="err-message" :class="{ invisible: !error }">
                 <p><span>Error:</span> {{ this.errorMsg }}</p>
@@ -13,7 +13,7 @@
                     <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }">
                         Preview Photo
                     </button>
-                    <span>File Chosen: {{ this.$store.state.blogPhotoName }}</span>
+                    <span>File Chosen: {{ this.blogPhotoName }}</span>
                 </div>
             </div>
             <div class="editor">
@@ -84,7 +84,7 @@ export default {
             if (this.blogTitle.length != 0 && this.blogHTML.length != 0) {
                 if (this.file) {
                     this.loading = true;
-                    const storage = ref(getStorage(app), `documents/BlogCoverPhotos/${this.blogCoverPhotoName}`);
+                    const storage = ref(getStorage(app), `documents/BlogCoverPhotos/${this.blogPhotoName}`);
                     uploadBytes(storage, this.file)
                         .then(async snapshot => {
                             const downloadURL = await getDownloadURL(snapshot.ref)
@@ -94,7 +94,7 @@ export default {
                                 html: this.blogHTML.substr(0, 60),
                                 title: this.blogTitle,
                                 cover_photo: downloadURL,
-                                cover_photo_name: this.blogCoverPhotoName,
+                                cover_photo_name: this.blogPhotoName,
                                 profile_id: this.profileId,
                                 date: timestamp
                             });
@@ -120,8 +120,8 @@ export default {
         profileId() {
             return this.$store.state.id;
         },
-        blogCoverPhotoName() {
-            return this.$store.state.blogPhotoName;
+        blogPhotoName() {
+            return this.$store.state.blog_photo_name;
         },
         blogTitle: {
             get() {
@@ -133,7 +133,7 @@ export default {
         },
         blogHTML: {
             get() {
-                return this.$store.state.blogHTML;
+                return this.$store.state.blog_html;
             },
             set(payload) {
                 this.$store.commit('newBlogPost', payload);

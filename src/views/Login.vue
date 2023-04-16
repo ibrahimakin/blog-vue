@@ -1,34 +1,37 @@
 <template>
-    <div class="form-wrap">
-        <form class="login">
-            <div class="auth-branding">
-                <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
-            </div>
-            <p class="login-register">
-                Don't have an account?
-                <RouterLink class="router-link" :to="{ name: 'Register' }">
-                    Register
+    <div class="auth-nav">
+        <div class="auth-branding">
+            <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+        </div>
+    </div>
+    <div class="auth-background">
+        <div class="form-wrap">
+            <form class="login">
+                <p class="login-register">
+                    Don't have an account?
+                    <RouterLink class="router-link" :to="{ name: 'Register' }">
+                        Register
+                    </RouterLink>
+                </p>
+                <h2>Login to Blogs</h2>
+                <div class="inputs">
+                    <div class="input">
+                        <input type="text" placeholder="e-mail" v-model="email">
+                        <email class="icon" />
+                    </div>
+                    <div class="input">
+                        <input type="password" placeholder="password" v-model="password">
+                        <password class="icon" />
+                    </div>
+                    <div v-show="error" class="error">{{ this.errorMsg }}</div>
+                </div>
+                <RouterLink class="forgot-password" :to="{ name: 'ForgotPassword' }">
+                    Forgot your password?
                 </RouterLink>
-            </p>
-            <h2>Login to Blogs</h2>
-            <div class="inputs">
-                <div class="input">
-                    <input type="text" placeholder="e-mail" v-model="email">
-                    <email class="icon" />
-                </div>
-                <div class="input">
-                    <input type="password" placeholder="password" v-model="password">
-                    <password class="icon" />
-                </div>
-                <div v-show="error" class="error">{{ this.errorMsg }}</div>
-            </div>
-            <RouterLink class="forgot-password" :to="{ name: 'ForgotPassword' }">
-                Forgot your password?
-            </RouterLink>
-            <button @click.prevent="signIn">Sign In</button>
-            <div class="angle"></div>
-        </form>
-        <div class="background"></div>
+                <button @click.prevent="signIn">Sign In</button>
+            </form>
+            <div class="background"></div>
+        </div>
     </div>
 </template>
 
@@ -64,33 +67,43 @@ export default {
 </script>
 
 <style lang="scss">
-.auth-branding {
+.auth-nav {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    padding: 0 25px;
     width: 100%;
-    max-width: 350px;
+    top: 0;
 
-    .header {
-        position: absolute;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 24px;
-        margin: 25px 0;
-        color: #000;
-        top: 0;
+    .auth-branding {
+        width: 100%;
+        max-width: calc(1440px + 1%);
+
+        .header {
+            position: absolute;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 24px;
+            color: #000;
+            margin-top: 25px;
+            z-index: 1;
+        }
     }
+}
+
+.auth-background {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-image: url('../assets/background.png');
+    overflow: auto;
 }
 
 .form-wrap {
     display: flex;
-    height: 100vh;
-    width: 90%;
     justify-content: center;
-    align-self: center;
-    margin: 0 auto;
-
-    @media (min-width: 900px) {
-        width: 100%;
-        overflow: hidden;
-    }
+    min-height: 100%;
+    width: 100%;
 
     .login-register {
         margin-bottom: 32px;
@@ -107,10 +120,12 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        flex: 1;
+        background-color: #fff;
+        flex: 2;
 
-        @media (min-width: 900px) {
+        @media (min-width: 940px) {
             padding: 0 50px;
+            flex: 1;
         }
 
         h2 {
@@ -119,7 +134,7 @@ export default {
             color: var(--blog-clr);
             margin-bottom: 40px;
 
-            @media (min-width: 900px) {
+            @media (min-width: 750px) {
                 font-size: 40px;
             }
         }
@@ -169,31 +184,27 @@ export default {
                 border-color: var(--blog-clr);
             }
         }
-
-        .angle {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            transform: rotate(3deg);
-            width: 60px;
-            right: -30px;
-            height: 101%;
-
-            @media (min-width: 900px) {
-                display: initial;
-            }
-        }
     }
 
     .background {
         display: none;
+        position: relative;
         flex: 2;
-        background-size: cover;
-        background-image: url('../assets/background.png');
         width: 100%;
-        height: 100%;
+        overflow: hidden;
 
-        @media (min-width: 900px) {
+        &::before {
+            content: '';
+            position: absolute;
+            height: 150%;
+            top: -100px;
+            right: 95%;
+            width: 50%;
+            background-color: #fff;
+            transform: rotate(3deg);
+        }
+
+        @media (min-width: 750px) {
             display: initial;
         }
     }

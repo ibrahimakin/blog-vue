@@ -19,20 +19,18 @@ import LoadingInline from '../components/LoadingInline.vue';
 export default {
     name: 'ViewBlog',
     components: { Loading, LoadingInline },
-    computed: {
-        blog() {
-            if (this.$store.state.postLoaded) {
-                let blog = this.$store.state.blogPosts.find(
-                    post => post.id === this.$route.params.id
-                );
-                document.title = blog.title;
-                if (blog) {
-                    if (!blog.loaded) this.$store.dispatch('getPost', blog);
-                    return blog;
-                }
-                return { title: 'Not Found', notfound: true };
-            }
+    data() { return { blog: null }; },
+    async created() {
+        let m_blog = this.$store.state.blog_posts.find(
+            post => post.id === this.$route.params.id
+        );
+        if (!m_blog) {
+            m_blog = { id: this.$route.params.id };
+            await this.$store.dispatch('getPost', m_blog);
         }
+        else this.$store.dispatch('getPost', m_blog);
+        document.title = m_blog.title;
+        this.blog = m_blog;
     }
 };
 </script>

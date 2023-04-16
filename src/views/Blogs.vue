@@ -19,7 +19,7 @@ export default {
     components: { BlogCard },
     computed: {
         blogCards() {
-            return this.$store.state.blogPosts;
+            return this.$store.state.blog_posts;
         },
         edit: {
             get() {
@@ -28,6 +28,11 @@ export default {
             set(payload) {
                 this.$store.commit('toggleEdit', payload);
             }
+        }
+    },
+    created() {
+        if (!this.$store.state.post_loaded) {
+            this.$store.dispatch('getPosts');
         }
     },
     beforeUnmount() {

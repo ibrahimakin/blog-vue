@@ -1,10 +1,12 @@
 <template>
-    <div class="reset-password">
+    <div class="auth-nav">
+        <div class="auth-branding">
+            <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+        </div>
+    </div>
+    <div class="auth-background">
         <div class="form-wrap">
             <form class="reset">
-            <div class="auth-branding">
-                <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
-            </div>
                 <p class="login-register">
                     Back to
                     <RouterLink class="router-link" :to="{ name: 'Login' }">
@@ -20,7 +22,6 @@
                     </div>
                 </div>
                 <button @click.prevent="resetPassword">Reset</button>
-                <div class="angle"></div>
             </form>
             <div class="background"></div>
         </div>
@@ -68,19 +69,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.reset-password {
-    position: relative;
+.form-wrap {
+    .reset {
+        h2 {
+            margin-bottom: 16px;
+        }
 
-    .form-wrap {
-        .reset {
-            h2 {
-                margin-bottom: 16px;
-            }
-
-            p {
-                text-align: center;
-                margin-bottom: 32px;
-            }
+        p {
+            text-align: center;
+            margin-bottom: 32px;
         }
     }
 }

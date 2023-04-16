@@ -13,10 +13,10 @@ export default {
     name: 'PostPreview',
     computed: {
         blogTitle() {
-            return this.$store.state.blogTitle;
+            return this.$store.state.blog_title;
         },
         blogHTML() {
-            return this.$store.state.blogHTML;
+            return this.$store.state.blog_html;
         },
         blogCoverPhoto() {
             return this.$store.state.blogPhotoFileURL;

@@ -24,7 +24,6 @@ export default {
             }
         });
         this.checkRoute();
-        this.$store.dispatch('getPosts');
     },
     methods: {
         checkRoute() {
@@ -86,6 +85,7 @@ export default {
     display: flex;
     flex-direction: column;
     background-color: #fff;
+    position: relative;
     overflow: auto;
     height: 100%;
     width: 100%;

@@ -4,7 +4,7 @@
         <BlogPost :post="post" v-for="(post, index) in blogPosts" :key="index" />
         <div class="blog-card-wrap">
             <div class="container">
-                <h3 v-if="this.$store.state.blogPosts.length > 2">View More Recent Blogs</h3>
+                <h3 v-if="this.$store.state.blog_posts.length > 2">View More Recent Blogs</h3>
                 <div class="blog-cards">
                     <BlogCard :post="post" v-for="(post, index) in blogCards" :key="index" />
                 </div>
@@ -38,6 +38,11 @@ export default {
                 welcome: true
             }
         };
+    },
+    created() {
+        if (!this.$store.state.post_loaded) {
+            this.$store.dispatch('getPosts');
+        }
     },
     computed: {
         blogPosts() {

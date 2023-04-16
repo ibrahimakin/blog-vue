@@ -1,12 +1,12 @@
 <template>
-    <Loading v-if="!blog?.loaded" />
+    <Loading v-if="!this.loaded" />
     <div v-else-if="blog.notfound" class="post-view">
         <div class="container">
-            <h2>{{ blog.title }}</h2>
+            <h2 class="title">{{ blog.title }}</h2>
         </div>
     </div>
     <div v-else class="create-post">
-        <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview" />
+        <BlogCoverPreview v-show="this.$store.state.blog_photo_preview" />
         <div class="container">
             <div class="err-message" :class="{ invisible: !info }">
                 <p>{{ this.infoMsg }}</p>
@@ -19,7 +19,7 @@
                     <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }">
                         Preview Photo
                     </button>
-                    <span>File Chosen: {{ this.$store.state.blogPhotoName }}</span>
+                    <span>File Chosen: {{ this.blogPhotoName }}</span>
                 </div>
             </div>
             <div class="editor">
@@ -52,6 +52,7 @@ export default {
         return {
             file: null,
             info: null,
+            loaded: null,
             infoMsg: null,
             loading: null,
             routeID: null,
@@ -64,6 +65,10 @@ export default {
     },
     async mounted() {
         this.routeID = this.$route.params.id;
+        await this.$store.dispatch('getPost', this.blog);
+        if (!this.blog.notfound) this.$store.commit('setBlogState', this.blog);
+        document.title = 'Edit | ' + this.blog.title;
+        this.loaded = true;
     },
     beforeUnmount() {
         this.$store.commit('setBlogState', {
@@ -104,7 +109,7 @@ export default {
                 const timestamp = Date.now();
                 if (this.file) {
                     this.loading = true;
-                    const storage = ref(getStorage(app), `documents/BlogCoverPhotos/${this.blogCoverPhotoName}`);
+                    const storage = ref(getStorage(app), `documents/BlogCoverPhotos/${this.blogPhotoName}`);
                     uploadBytes(storage, this.file)
                         .then(async snapshot => {
                             const downloadURL = await getDownloadURL(snapshot.ref)
@@ -113,7 +118,7 @@ export default {
                                 html: this.blogHTML.substr(0, 60),
                                 title: this.blogTitle,
                                 cover_photo: downloadURL,
-                                cover_photo_name: this.blogCoverPhotoName,
+                                cover_photo_name: this.blogPhotoName,
                                 updated: timestamp
                             });
                             await this.$store.dispatch('updatePost', this.routeID);
@@ -149,12 +154,12 @@ export default {
         profileId() {
             return this.$store.state.id;
         },
-        blogCoverPhotoName() {
-            return this.$store.state.blogPhotoName;
+        blogPhotoName() {
+            return this.$store.state.blog_photo_name;
         },
         blogTitle: {
             get() {
-                return this.$store.state.blogTitle;
+                return this.$store.state.blog_title;
             },
             set(payload) {
                 this.$store.commit('updateBlogTitle', payload);
@@ -162,25 +167,16 @@ export default {
         },
         blogHTML: {
             get() {
-                return this.$store.state.blogHTML;
+                return this.$store.state.blog_html;
             },
             set(payload) {
                 this.$store.commit('newBlogPost', payload);
             }
         },
         blog() {
-            if (this.$store.state.postLoaded) {
-                let blog = this.$store.state.blogPosts.find(
-                    post => post.id === this.$route.params.id
-                );
-                document.title = 'Edit | ' + blog.title;
-                if (blog) {
-                    if (!blog.loaded) this.$store.dispatch('getPost', blog);
-                    this.$store.commit('setBlogState', blog);
-                    return blog;
-                }
-                return { title: 'Not Found', loaded: true, notfound: true };
-            }
+            let m_blog = this.$store.state.blog_posts.find(post => post.id === this.$route.params.id);
+            if (!m_blog) m_blog = { id: this.$route.params.id };
+            return m_blog;
         }
     }
 };
