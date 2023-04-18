@@ -4,7 +4,7 @@
         <BlogPost :post="post" v-for="(post, index) in blogPosts" :key="index" />
         <div class="blog-card-wrap">
             <div class="container">
-                <h3 v-if="this.$store.state.blogPosts.length > 2">View More Recent Blogs</h3>
+                <h3 v-if="this.$store.state.blog_posts.length > 2">View More Recent Blogs</h3>
                 <div class="blog-cards">
                     <BlogCard :post="post" v-for="(post, index) in blogCards" :key="index" />
                 </div>
@@ -25,7 +25,7 @@
 <script>
 import BlogPost from '../components/BlogPost.vue';
 import BlogCard from '../components/BlogCard.vue';
-import Arrow from '../assets/icons/arrow-right-light.svg';
+import Arrow from '../assets/icons/arrow.svg';
 export default {
     name: 'Home',
     components: { BlogPost, BlogCard, Arrow },
@@ -38,6 +38,9 @@ export default {
                 welcome: true
             }
         };
+    },
+    created() {
+        this.$store.dispatch('getPosts');
     },
     computed: {
         blogPosts() {

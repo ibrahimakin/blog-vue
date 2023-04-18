@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import Admin from '../assets/icons/user-crown-light.svg';
+import Admin from '../assets/icons/user-crown.svg';
 import Modal from '../components/Modal.vue';
 export default {
     name: 'Profile',

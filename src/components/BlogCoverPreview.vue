@@ -8,7 +8,7 @@
 </template>
   
 <script>
-import close from '../assets/icons/times-circle-light.svg';
+import close from '../assets/icons/times.svg';
 export default {
     components: { close },
     methods: {

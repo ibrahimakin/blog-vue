@@ -24,7 +24,6 @@ export default {
             }
         });
         this.checkRoute();
-        this.$store.dispatch('getPosts');
     },
     methods: {
         checkRoute() {
@@ -44,7 +43,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+@import url(https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap);
 
 :root {
     --blog-clr: #303030;
@@ -86,6 +85,7 @@ export default {
     display: flex;
     flex-direction: column;
     background-color: #fff;
+    position: relative;
     overflow: auto;
     height: 100%;
     width: 100%;

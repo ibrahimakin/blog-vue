@@ -5,68 +5,70 @@ import db from '../firebase/init';
 
 export default createStore({
     state: {
-        sampleBlogPosts: [
+        sample_blog_posts: [
             {
+                id: '1',
                 title: 'This is a Filler Title 1!',
                 html: 'This is a filler blog post title 1!',
-                photo: '/src/assets/photos/beautiful-stories.jpg'
+                photo: '/src/assets/cards/stock-0.jpg',
+                date: 'May 1, 2021'
             },
             {
+                id: '2',
                 title: 'This is a Filler Title 2!',
                 html: 'This is a filler blog post title 2!',
-                photo: '/src/assets/photos/designed-for-everyone.jpg'
-            }
+                photo: '/src/assets/cards/stock-1.jpg',
+                date: 'May 1, 2021'
+            },
+            { id: '3', title: 'Blog Card #1', photo: '/src/assets/cards/stock-2.jpg', date: 'May 1, 2021' },
+            { id: '4', title: 'Blog Card #2', photo: '/src/assets/cards/stock-3.jpg', date: 'May 1, 2021' },
+            { id: '5', title: 'Blog Card #3', photo: '/src/assets/cards/stock-4.jpg', date: 'May 1, 2021' },
+            { id: '6', title: 'Blog Card #4', photo: '/src/assets/cards/stock-5.jpg', date: 'May 1, 2021' }
         ],
-        sampleBlogCards: [
-            { title: 'Blog Card #1', photo: '/src/assets/cards/stock-1.jpg', date: 'May 1, 2021' },
-            { title: 'Blog Card #2', photo: '/src/assets/cards/stock-2.jpg', date: 'May 1, 2021' },
-            { title: 'Blog Card #3', photo: '/src/assets/cards/stock-3.jpg', date: 'May 1, 2021' },
-            { title: 'Blog Card #4', photo: '/src/assets/cards/stock-4.jpg', date: 'May 1, 2021' }
-        ],
-        blogPosts: [],
-        postLoaded: null,
-        blogHTML: 'Write your blog here...',
-        blogTitle: '',
-        blogPhotoName: '',
-        blogPhotoFileURL: null,
-        blogPhotoPreview: false,
-        edit: null,
-        user: null,
-        admin: null,
-        email: null,
+        post_loaded: null,
+        blog_posts: [],
+        blog_title: '',
+        blog_photo_name: '',
+        blog_photo_url: null,
+        blog_photo_preview: false,
+        blog_html: 'Write your blog here...',
         firstname: null,
         lastname: null,
         username: null,
-        id: null,
         initials: null,
+        email: null,
+        admin: null,
+        user: null,
+        edit: null,
+        id: null
     },
     mutations: {
         newBlogPost(state, payload) {
-            state.blogHTML = payload;
+            state.blog_html = payload;
         },
         updateBlogTitle(state, payload) {
-            state.blogTitle = payload;
+            state.blog_title = payload;
         },
         fileNameChange(state, payload) {
-            state.blogPhotoName = payload;
+            state.blog_photo_name = payload;
         },
         createFileURL(state, payload) {
-            state.blogPhotoFileURL = payload;
+            state.blog_photo_url = payload;
         },
         openPhotoPreview(state) {
-            state.blogPhotoPreview = !state.blogPhotoPreview;
+            state.blog_photo_preview = !state.blog_photo_preview;
         },
         toggleEdit(state, payload) {
             state.edit = payload;
         },
         setBlogState(state, payload) {
-            state.blogTitle = payload.title;
-            state.blogHTML = payload.html
-            state.blogPhotoFileURL = payload.photo;
-            state.blogPhotoName = payload.photo_name;
+            state.blog_title = payload.title;
+            state.blog_html = payload.html
+            state.blog_photo_url = payload.photo;
+            state.blog_photo_name = payload.photo_name;
         },
         filterPosts(state, payload) {
-            state.blogPosts = state.blogPosts.filter(post => post.id !== payload);
+            state.blog_posts = state.blog_posts.filter(post => post.id !== payload);
         },
         updateUser(state, payload) {
             state.user = payload;
@@ -112,34 +114,66 @@ export default createStore({
             commit('setInitials');
         },
         async getPosts({ state }) {
-            state.postLoaded = false;
-            const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
-            const result = await getDocs(q);
-            result.forEach(doc => {
-                if (!state.blogPosts.some(post => post.id === doc.id)) {
-                    state.blogPosts.push({
-                        id: doc.id,
-                        html: doc.data().html,
-                        title: doc.data().title,
-                        photo: doc.data().cover_photo,
-                        photo_name: doc.data().cover_photo_name,
-                        date: doc.data().date
-                    });
-                }
-            });
-            state.postLoaded = true;
+            if (!state.post_loaded) {
+                const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
+                const result = await getDocs(q);
+                result.forEach(doc => {
+                    if (!state.blog_posts.some(post => post.id === doc.id)) {
+                        state.blog_posts.push({
+                            id: doc.id,
+                            html: doc.data().html,
+                            title: doc.data().title,
+                            photo: doc.data().cover_photo,
+                            photo_name: doc.data().cover_photo_name,
+                            date: doc.data().date
+                        });
+                    }
+                });
+                state.post_loaded = true;
+            }
         },
         async getPost({ state }, payload) {
-            const result = await getDoc(doc(db, 'details', payload.id));
-            if (result.exists()) {
-                payload.html = result.data().html;
-                payload.loaded = true;
+            if (!payload.title) {
+                if (state.post_loaded) {
+                    payload.title = 'Not Found';
+                    payload.notfound = true;
+                    payload.loaded = true;
+                    return;
+                }
+                let res = await getDoc(doc(db, 'posts', payload.id));
+                if (res.exists()) {
+                    payload.title = res.data().title;
+                    payload.photo = res.data().cover_photo;
+                    payload.photo_name = res.data().cover_photo_name;
+                    payload.date = res.data().date;
+                    state.blog_posts.push(payload);
+                    res = await getDoc(doc(db, 'details', payload.id));
+                    payload.html = res.data().html;
+                    payload.loaded = true;
+                }
+                else {
+                    payload.title = 'Not Found';
+                    payload.notfound = true;
+                    payload.loaded = true;
+                    return;
+                }
+            }
+            else if (!payload.loaded) {
+                const res = await getDoc(doc(db, 'details', payload.id));
+                if (res.exists()) {
+                    payload.html = res.data().html;
+                    payload.loaded = true;
+                }
             }
         },
         async updatePost({ state, commit, dispatch }, payload) {
-            state.postLoaded = false;
-            commit('filterPosts', payload);
-            await dispatch('getPosts');
+            const blog = state.blog_posts.find(post => post.id === payload);
+            if (blog) {
+                blog.title = state.blog_title;
+                blog.html = state.blog_html;
+                blog.photo = state.blog_photo_url;
+                blog.photo_name = state.blog_photo_name;
+            }
         },
         async deletePost({ commit }, payload) {
             await deleteDoc(doc(db, 'posts', payload));
@@ -148,10 +182,10 @@ export default createStore({
     },
     getters: {
         blogPosts(state) {
-            return state.blogPosts.slice(0, 2);
+            return state.blog_posts.slice(0, 2);
         },
         blogCards(state) {
-            return state.blogPosts.slice(2, 6);
+            return state.blog_posts.slice(2, 6);
         },
         edit(state) {
             return state.edit;
