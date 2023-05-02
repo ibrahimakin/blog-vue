@@ -5,7 +5,7 @@
             <h2 class="title">{{ blog.title }}</h2>
             <template v-if="!blog.notfound">
                 <h4>Posted on: {{ new Date(blog.date).toLocaleString('en-us', { dateStyle: 'long' }) }}</h4>
-                <img class="cover" :src="blog.photo" alt="Blog Cover Photo" />
+                <img class="cover" :src="blog.photo" alt="Blog Photo" />
                 <div class="post-content ql-editor" v-html="blog.html"></div>
                 <LoadingInline v-if="!blog.loaded" />
             </template>
@@ -19,18 +19,27 @@ import LoadingInline from '../components/LoadingInline.vue';
 export default {
     name: 'ViewBlog',
     components: { Loading, LoadingInline },
-    data() { return { blog: null }; },
-    async created() {
-        let m_blog = this.$store.state.blog_posts.find(
-            post => post.id === this.$route.params.id
-        );
-        if (!m_blog) {
-            m_blog = { id: this.$route.params.id };
-            await this.$store.dispatch('getPost', m_blog);
+    data() { return { blog: null, routeID: null }; },
+    beforeRouteUpdate(to, from, next) {
+        this.routeID = to.params.id;
+        this.getPost();
+        next();
+    },
+    created() {
+        this.routeID = this.$route.params.id;
+        this.getPost();
+    },
+    methods: {
+        async getPost() {
+            let m_blog = this.$store.state.blog_posts.find(post => post.id === this.routeID);
+            if (!m_blog) {
+                m_blog = { id: this.routeID };
+                await this.$store.dispatch('getPost', m_blog);
+            }
+            else this.$store.dispatch('getPost', m_blog);
+            document.title = m_blog.title;
+            this.blog = m_blog;
         }
-        else this.$store.dispatch('getPost', m_blog);
-        document.title = m_blog.title;
-        this.blog = m_blog;
     }
 };
 </script>

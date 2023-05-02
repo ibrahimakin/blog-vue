@@ -17,15 +17,8 @@
 <script>
 export default {
     name: 'Admin',
-    data() {
-        return {
-            adminEmail: '',
-            functionMsg: null
-        }
-    },
-    methods: {
-        async addAdmin() { }
-    }
+    data() { return { adminEmail: '', functionMsg: null } },
+    methods: { addAdmin() { } }
 };
 </script>
 

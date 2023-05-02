@@ -6,17 +6,13 @@ import App from './App.vue';
 import './assets/base.css';
 
 const auth = getAuth();
-
 let app;
 
 onAuthStateChanged(auth, () => {
     if (!app) {
         app = createApp(App);
-
         app.use(router);
-
         app.use(store);
-
         app.mount('#app');
     }
 });

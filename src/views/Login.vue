@@ -42,17 +42,10 @@ import password from '../assets/icons/lock.svg';
 export default {
     name: 'Login',
     components: { email, password },
-    data() {
-        return {
-            email: '',
-            password: '',
-            errorMsg: '',
-            error: null
-        };
-    },
+    data() { return { email: '', password: '', errorMsg: '', error: null }; },
     methods: {
-        async signIn() {
-            const auth = await getAuth();
+        signIn() {
+            const auth = getAuth();
             signInWithEmailAndPassword(auth, this.email, this.password).then(() => {
                 this.$router.push({ name: 'Home' });
                 this.errorMsg = '';
@@ -95,7 +88,7 @@ export default {
     width: 100%;
     height: 100%;
     background-size: cover;
-    background-image: url('background.png');
+    background-image: url(/assets/images/blog/background.png);
     overflow: auto;
 }
 

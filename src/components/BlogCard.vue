@@ -8,7 +8,7 @@
                 <Delete class="delete" />
             </div>
         </div>
-        <img :src="post.photo" alt="blog-card">
+        <img :src="post.photo" alt="Blog Card">
         <div class="info">
             <h4>{{ post.title }}</h4>
             <h6>Posted on: {{ new Date(post.date).toLocaleString('en-us', { dateStyle: 'long' }) }}</h6>
@@ -29,18 +29,10 @@ export default {
     props: ['post'],
     components: { Arrow, Delete, Edit },
     methods: {
-        deletePost() {
-            this.$store.dispatch('deletePost', this.post.id);
-        },
-        editPost() {
-            this.$router.push({ name: 'EditBlog', params: { id: this.post.id } });
-        }
+        deletePost() { this.$store.dispatch('deletePost', this.post.id); },
+        editPost() { this.$router.push({ name: 'EditBlog', params: { id: this.post.id } }); }
     },
-    computed: {
-        edit() {
-            return this.$store.getters.edit;
-        }
-    }
+    computed: { edit() { return this.$store.getters.edit; } }
 };
 </script>
 

@@ -52,12 +52,8 @@ export default {
     name: 'Footer',
     components: { Github, Twitter, Instagram, Linkedin },
     computed: {
-        user() {
-            return this.$store.state.user;
-        },
-        admin() {
-            return this.$store.state.admin;
-        }
+        admin() { return this.$store.state.admin; },
+        user() { return this.$store.state.user; }
     }
 };
 </script>

@@ -2,7 +2,7 @@
     <div class="post-view">
         <div class="container quillWrapper">
             <h2 class="title">{{ this.blogTitle }}</h2>
-            <img class="cover" :src="blogCoverPhoto" alt="" />
+            <img class="cover" :src="blogCoverPhoto" alt="Blog Photo" />
             <div class="post-content ql-editor" v-html="blogHTML"></div>
         </div>
     </div>
@@ -12,15 +12,9 @@
 export default {
     name: 'PostPreview',
     computed: {
-        blogTitle() {
-            return this.$store.state.blog_title;
-        },
-        blogHTML() {
-            return this.$store.state.blog_html;
-        },
-        blogCoverPhoto() {
-            return this.$store.state.blogPhotoFileURL;
-        }
+        blogCoverPhoto() { return this.$store.state.blog_photo_url; },
+        blogTitle() { return this.$store.state.blog_title; },
+        blogHTML() { return this.$store.state.blog_html; }
     }
 };
 </script>

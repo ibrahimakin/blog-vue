@@ -38,14 +38,7 @@ import Modal from '../components/Modal.vue';
 export default {
     name: 'ForgotPassword',
     components: { email, Loading, Modal },
-    data() {
-        return {
-            email: '',
-            loading: null,
-            modalActive: null,
-            modalMessage: ''
-        };
-    },
+    data() { return { email: '', loading: null, modalActive: null, modalMessage: '' }; },
     methods: {
         resetPassword() {
             this.loading = true;

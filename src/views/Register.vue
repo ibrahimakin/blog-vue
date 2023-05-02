@@ -74,7 +74,7 @@ export default {
                 this.username !== '') {
                 this.errorMsg = '';
                 this.error = false;
-                const auth = await getAuth();
+                const auth = getAuth();
                 const result = await createUserWithEmailAndPassword(auth, this.email, this.password);
                 await setDoc(doc(db, 'users', result.user.uid), {
                     firstname: this.firstName,

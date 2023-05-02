@@ -18,24 +18,14 @@ export default {
     name: 'Blogs',
     components: { BlogCard },
     computed: {
-        blogCards() {
-            return this.$store.state.blog_posts;
-        },
+        blogCards() { return this.$store.state.blog_posts; },
         edit: {
-            get() {
-                return this.$store.getters.edit;
-            },
-            set(payload) {
-                this.$store.commit('toggleEdit', payload);
-            }
+            get() { return this.$store.getters.edit; },
+            set(payload) { this.$store.commit('toggleEdit', payload); }
         }
     },
-    created() {
-        this.$store.dispatch('getPosts');
-    },
-    beforeUnmount() {
-        this.$store.commit('toggleEdit', false);
-    }
+    created() { this.$store.dispatch('getPosts'); },
+    beforeUnmount() { this.$store.commit('toggleEdit', false); }
 }
 </script>
 
@@ -56,7 +46,7 @@ export default {
         display: flex;
         align-items: center;
         position: fixed;
-        padding: 15px 10px 10px 10px;
+        padding: 15px 10px;
         background-color: #f1f1f1;
         border-radius: 0 0 0 25px;
 

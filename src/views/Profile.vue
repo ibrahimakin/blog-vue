@@ -37,49 +37,28 @@ import Modal from '../components/Modal.vue';
 export default {
     name: 'Profile',
     components: { Admin, Modal },
-    data() {
-        return {
-            modalMessage: 'Changes were saved!',
-            modalActive: null
-        };
-    },
+    data() { return { modalMessage: 'Changes were saved!', modalActive: null }; },
     methods: {
         updateProfile() {
             this.$store.dispatch('updateUser');
             this.modalActive = !this.modalActive;
         },
-        close() {
-            this.modalActive = !this.modalActive;
-        }
+        close() { this.modalActive = !this.modalActive; }
     },
     computed: {
         firstname: {
-            get() {
-                return this.$store.state.firstname;
-            },
-            set(payload) {
-                this.$store.commit('changeFirstName', payload);
-            }
+            get() { return this.$store.state.firstname; },
+            set(payload) { this.$store.commit('changeFirstName', payload); }
         },
         lastname: {
-            get() {
-                return this.$store.state.lastname;
-            },
-            set(payload) {
-                this.$store.commit('changeLastName', payload);
-            }
+            get() { return this.$store.state.lastname; },
+            set(payload) { this.$store.commit('changeLastName', payload); }
         },
         username: {
-            get() {
-                return this.$store.state.username;
-            },
-            set(payload) {
-                this.$store.commit('changeUsername', payload);
-            }
+            get() { return this.$store.state.username; },
+            set(payload) { this.$store.commit('changeUsername', payload); }
         },
-        email() {
-            return this.$store.state.email;
-        }
+        email() { return this.$store.state.email; }
     }
 }
 </script>

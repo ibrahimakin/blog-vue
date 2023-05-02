@@ -34,24 +34,16 @@ export default {
             welcome: {
                 title: 'Welcome!',
                 html: 'Weekly blog articles with all things programming including HTML, CSS, JavaScript and more. Register today to never miss a post!',
-                photo: 'assets/coding.jpg',
+                photo: '/assets/images/blog/coding.jpg',
                 welcome: true
             }
         };
     },
-    created() {
-        this.$store.dispatch('getPosts');
-    },
+    created() { this.$store.dispatch('getPosts'); },
     computed: {
-        blogPosts() {
-            return this.$store.getters.blogPosts;
-        },
-        blogCards() {
-            return this.$store.getters.blogCards;
-        },
-        user() {
-            return this.$store.state.user;
-        }
+        blogPosts() { return this.$store.getters.blogPosts; },
+        blogCards() { return this.$store.getters.blogCards; },
+        user() { return this.$store.state.user; }
     }
 };
 </script>

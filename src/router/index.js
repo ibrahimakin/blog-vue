@@ -114,11 +114,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.title) {
-        document.title = `${to.meta.title} | Blogs`;
-    } else {
-        document.title = 'Blogs';
-    }
+    if (to.meta.title) document.title = `${to.meta.title} | Blogs`;
+    else document.title = 'Blogs';
     next();
 });
 
@@ -128,12 +125,8 @@ router.beforeEach(async (to, from, next) => {
         let user = getAuth().currentUser;
         if (user) {
             if (to.matched.some(res => res.meta.admin)) {
-                if (!store.state.id) {
-                    await store.dispatch('getCurrentUser', user);
-                }
-                if (store.state.admin) {
-                    return next();
-                }
+                if (!store.state.id) await store.dispatch('getCurrentUser', user);
+                if (store.state.admin) return next();
                 return next({ name: 'Home' });
             }
             return next();

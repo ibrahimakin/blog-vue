@@ -78,63 +78,34 @@ import SignOut from '../assets/icons/sign-out.svg';
 export default {
     name: 'Navigation',
     components: { User, Admin, SignOut },
-    data() {
-        return {
-            mobile: null,
-            mobileNav: null,
-            windowWidth: null,
-            profileMenu: null
-        };
-    },
+    data() { return { mobile: null, mobileNav: null, windowWidth: null, profileMenu: null }; },
     created() {
         window.addEventListener('resize', this.checkScreen);
         this.checkScreen();
         document.addEventListener('click', e => {
             if (this.profileMenu) {
                 let isClosest = e.target.closest('.profile-menu');
-                if (!isClosest && e.target !== this.$refs.profile) {
-                    this.profileMenu = false;
-                }
+                if (!isClosest && e.target !== this.$refs.profile) this.profileMenu = false;
             }
             if (this.mobileNav) {
                 let isClosest = e.target.closest('.mobile-nav');
-                if (!isClosest && e.target !== this.$refs.menu) {
-                    this.mobileNav = false;
-                }
+                if (!isClosest && e.target !== this.$refs.menu) this.mobileNav = false;
             }
         });
     },
     methods: {
         checkScreen() {
             this.windowWidth = window.innerWidth;
-            if (this.windowWidth <= 750) {
-                this.mobile = true;
-                return;
-            }
-            this.mobile = false;
-            this.mobileNav = false;
-            return;
+            if (this.windowWidth <= 750) this.mobile = true;
+            else { this.mobile = false; this.mobileNav = false; }
         },
-        toggleMobileNav() {
-            this.mobileNav = !this.mobileNav;
-        },
-        toggleMenu(e) {
-            if (e.target === this.$refs.profile) {
-                this.profileMenu = !this.profileMenu;
-            }
-        },
-        signOut() {
-            signOut(getAuth());
-            window.location.reload();
-        }
+        toggleMobileNav() { this.mobileNav = !this.mobileNav; },
+        toggleMenu(e) { if (e.target === this.$refs.profile) this.profileMenu = !this.profileMenu; },
+        signOut() { signOut(getAuth()); window.location.reload(); }
     },
     computed: {
-        user() {
-            return this.$store.state.user;
-        },
-        admin() {
-            return this.$store.state.admin;
-        }
+        admin() { return this.$store.state.admin; },
+        user() { return this.$store.state.user; }
     }
 }
 </script>

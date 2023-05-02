@@ -16,7 +16,7 @@
                 <div class="upload-file">
                     <label for="blog-photo">Upload Cover Photo</label>
                     <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, .jpeg" />
-                    <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }">
+                    <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blog_photo_url }">
                         Preview Photo
                     </button>
                     <span>File Chosen: {{ this.blogPhotoName }}</span>
@@ -52,6 +52,7 @@ export default {
         return {
             file: null,
             info: null,
+            blog: null,
             loaded: null,
             infoMsg: null,
             loading: null,
@@ -63,12 +64,14 @@ export default {
             }
         };
     },
-    async mounted() {
+    beforeRouteUpdate(to, from, next) {
+        this.routeID = to.params.id;
+        this.getPost();
+        next();
+    },
+    mounted() {
         this.routeID = this.$route.params.id;
-        await this.$store.dispatch('getPost', this.blog);
-        if (!this.blog.notfound) this.$store.commit('setBlogState', this.blog);
-        document.title = 'Edit | ' + this.blog.title;
-        this.loaded = true;
+        this.getPost();
     },
     beforeUnmount() {
         this.$store.commit('setBlogState', {
@@ -79,15 +82,22 @@ export default {
         });
     },
     methods: {
+        async getPost() {
+            let m_blog = this.$store.state.blog_posts.find(post => post.id === this.routeID);
+            if (!m_blog) m_blog = { id: this.routeID };
+            await this.$store.dispatch('getPost', m_blog);
+            if (!m_blog.notfound) this.$store.commit('setBlogState', m_blog);
+            document.title = 'Edit | ' + m_blog.title;
+            this.blog = m_blog;
+            this.loaded = true;
+        },
         fileChange() {
             this.file = this.$refs.blogPhoto.files[0];
             const fileName = this.file.name;
             this.$store.commit('fileNameChange', fileName);
             this.$store.commit('createFileURL', URL.createObjectURL(this.file));
         },
-        openPreview() {
-            this.$store.commit('openPhotoPreview');
-        },
+        openPreview() { this.$store.commit('openPhotoPreview'); },
         imageHandler(file, editor, cursorLocation, resetUploader) {
             const storage = getStorage(app);
             const storageRef = ref(storage, `documents/BlogPostPhotos/${file.name}`);
@@ -124,9 +134,7 @@ export default {
                             await this.$store.dispatch('updatePost', this.routeID);
                             this.loading = false;
                         })
-                        .catch(() => {
-                            this.loading = false;
-                        });
+                        .catch(() => this.loading = false);
                 }
                 else {
                     this.loading = true;
@@ -151,32 +159,15 @@ export default {
         }
     },
     computed: {
-        profileId() {
-            return this.$store.state.id;
-        },
-        blogPhotoName() {
-            return this.$store.state.blog_photo_name;
-        },
+        profileId() { return this.$store.state.id; },
+        blogPhotoName() { return this.$store.state.blog_photo_name; },
         blogTitle: {
-            get() {
-                return this.$store.state.blog_title;
-            },
-            set(payload) {
-                this.$store.commit('updateBlogTitle', payload);
-            }
+            get() { return this.$store.state.blog_title; },
+            set(payload) { this.$store.commit('updateBlogTitle', payload); }
         },
         blogHTML: {
-            get() {
-                return this.$store.state.blog_html;
-            },
-            set(payload) {
-                this.$store.commit('newBlogPost', payload);
-            }
-        },
-        blog() {
-            let m_blog = this.$store.state.blog_posts.find(post => post.id === this.$route.params.id);
-            if (!m_blog) m_blog = { id: this.$route.params.id };
-            return m_blog;
+            get() { return this.$store.state.blog_html; },
+            set(payload) { this.$store.commit('newBlogPost', payload); }
         }
     }
 };

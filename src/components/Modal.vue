@@ -10,11 +10,7 @@
 <script>
 export default {
     props: ['message'],
-    methods: {
-        close() {
-            this.$emit('close-modal');
-        }
-    }
+    methods: { close() { this.$emit('close-modal'); } }
 }
 </script>
 

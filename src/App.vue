@@ -13,15 +13,11 @@ import Footer from './components/Footer.vue';
 <script>
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 export default {
-    data() {
-        return { navigation: null };
-    },
+    data() { return { navigation: null }; },
     created() {
         onAuthStateChanged(getAuth(), user => {
             this.$store.commit('updateUser', user);
-            if (user) {
-                this.$store.dispatch('getCurrentUser', user);
-            }
+            if (user) this.$store.dispatch('getCurrentUser', user);
         });
         this.checkRoute();
     },
@@ -34,11 +30,7 @@ export default {
             this.navigation = false;
         }
     },
-    watch: {
-        $route() {
-            this.checkRoute();
-        }
-    }
+    watch: { $route() { this.checkRoute(); } }
 };
 </script>
 

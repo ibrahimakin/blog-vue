@@ -10,7 +10,7 @@
                 <div class="upload-file">
                     <label for="blog-photo">Upload Cover Photo</label>
                     <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, .jpeg" />
-                    <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }">
+                    <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blog_photo_url }">
                         Preview Photo
                     </button>
                     <span>File Chosen: {{ this.blogPhotoName }}</span>
@@ -58,27 +58,20 @@ export default {
     methods: {
         fileChange() {
             this.file = this.$refs.blogPhoto.files[0];
-            const fileName = this.file.name;
-            this.$store.commit('fileNameChange', fileName);
+            this.$store.commit('fileNameChange', this.file.name);
             this.$store.commit('createFileURL', URL.createObjectURL(this.file));
         },
-        openPreview() {
-            this.$store.commit('openPhotoPreview');
-        },
+        openPreview() { this.$store.commit('openPhotoPreview'); },
         imageHandler(file, editor, cursorLocation, resetUploader) {
             const storage = getStorage(app);
             const storageRef = ref(storage, `documents/BlogPostPhotos/${file.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
-            uploadTask.on('state_changed',
-                () => { },
-                () => { },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-                        editor.insertEmbed(cursorLocation, 'image', downloadURL);
-                        resetUploader();
-                    });
-                }
-            );
+            uploadTask.on('state_changed', () => { }, () => { }, () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+                    editor.insertEmbed(cursorLocation, 'image', downloadURL);
+                    resetUploader();
+                });
+            });
         },
         uploadBlog() {
             if (this.blogTitle.length != 0 && this.blogHTML.length != 0) {
@@ -117,27 +110,15 @@ export default {
         }
     },
     computed: {
-        profileId() {
-            return this.$store.state.id;
-        },
-        blogPhotoName() {
-            return this.$store.state.blog_photo_name;
-        },
+        profileId() { return this.$store.state.id; },
+        blogPhotoName() { return this.$store.state.blog_photo_name; },
         blogTitle: {
-            get() {
-                return this.$store.state.blogTitle;
-            },
-            set(payload) {
-                this.$store.commit('updateBlogTitle', payload);
-            }
+            get() { return this.$store.state.blogTitle; },
+            set(payload) { this.$store.commit('updateBlogTitle', payload); }
         },
         blogHTML: {
-            get() {
-                return this.$store.state.blog_html;
-            },
-            set(payload) {
-                this.$store.commit('newBlogPost', payload);
-            }
+            get() { return this.$store.state.blog_html; },
+            set(payload) { this.$store.commit('newBlogPost', payload); }
         }
     }
 };

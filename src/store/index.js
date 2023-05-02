@@ -43,38 +43,11 @@ export default createStore({
         id: null
     },
     mutations: {
-        newBlogPost(state, payload) {
-            state.blog_html = payload;
-        },
-        updateBlogTitle(state, payload) {
-            state.blog_title = payload;
-        },
-        fileNameChange(state, payload) {
-            state.blog_photo_name = payload;
-        },
-        createFileURL(state, payload) {
-            state.blog_photo_url = payload;
-        },
-        openPhotoPreview(state) {
-            state.blog_photo_preview = !state.blog_photo_preview;
-        },
-        toggleEdit(state, payload) {
-            state.edit = payload;
-        },
         setBlogState(state, payload) {
             state.blog_title = payload.title;
             state.blog_html = payload.html
             state.blog_photo_url = payload.photo;
             state.blog_photo_name = payload.photo_name;
-        },
-        filterPosts(state, payload) {
-            state.blog_posts = state.blog_posts.filter(post => post.id !== payload);
-        },
-        updateUser(state, payload) {
-            state.user = payload;
-        },
-        setAdmin(state, payload) {
-            state.admin = payload;
         },
         setProfile(state, payload) {
             state.id = payload.id;
@@ -86,15 +59,18 @@ export default createStore({
         setInitials(state) {
             state.initials = state.firstname.match(/(\b\S)?/g).join('') + state.lastname.match(/(\b\S)?/g).join('');
         },
-        changeFirstName(state, payload) {
-            state.firstname = payload;
-        },
-        changeLastName(state, payload) {
-            state.lastname = payload;
-        },
-        changeUsername(state, payload) {
-            state.username = payload;
-        }
+        filterPosts(state, payload) { state.blog_posts = state.blog_posts.filter(post => post.id !== payload); },
+        openPhotoPreview(state) { state.blog_photo_preview = !state.blog_photo_preview; },
+        fileNameChange(state, payload) { state.blog_photo_name = payload; },
+        createFileURL(state, payload) { state.blog_photo_url = payload; },
+        updateBlogTitle(state, payload) { state.blog_title = payload; },
+        changeFirstName(state, payload) { state.firstname = payload; },
+        changeLastName(state, payload) { state.lastname = payload; },
+        changeUsername(state, payload) { state.username = payload; },
+        newBlogPost(state, payload) { state.blog_html = payload; },
+        toggleEdit(state, payload) { state.edit = payload; },
+        updateUser(state, payload) { state.user = payload; },
+        setAdmin(state, payload) { state.admin = payload; }
     },
     actions: {
         async getCurrentUser({ commit }, user) {
@@ -166,7 +142,7 @@ export default createStore({
                 }
             }
         },
-        async updatePost({ state, commit, dispatch }, payload) {
+        updatePost({ state, commit, dispatch }, payload) {
             const blog = state.blog_posts.find(post => post.id === payload);
             if (blog) {
                 blog.title = state.blog_title;
@@ -181,14 +157,8 @@ export default createStore({
         }
     },
     getters: {
-        blogPosts(state) {
-            return state.blog_posts.slice(0, 2);
-        },
-        blogCards(state) {
-            return state.blog_posts.slice(2, 6);
-        },
-        edit(state) {
-            return state.edit;
-        }
+        blogPosts(state) { return state.blog_posts.slice(0, 2); },
+        blogCards(state) { return state.blog_posts.slice(2, 6); },
+        edit(state) { return state.edit; }
     }
 });
