@@ -43,8 +43,12 @@ export default {
     --nav-clr: var(--blog-clr);
 }
 
-#sidenav-mobile {
-    width: var(--sidenav-width);
+#topnav {
+    background-color: var(--blog-clr);
+}
+
+side-nav {
+    min-width: var(--sidenav-width);
 }
 
 .filled {
@@ -78,8 +82,6 @@ export default {
     flex-direction: column;
     background-color: #fff;
     position: relative;
-    overflow: auto;
-    height: 100%;
     width: 100%;
 }
 

@@ -50,6 +50,12 @@ export default {
         background-color: #f1f1f1;
         border-radius: 0 0 0 25px;
 
+        @media screen and (max-width: 450px) {
+            & {
+                margin-top: var(--topnav-height);
+            }
+        }
+
         span {
             margin-right: 16px;
         }

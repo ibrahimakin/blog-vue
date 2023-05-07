@@ -82,6 +82,12 @@ export default {
             z-index: 1;
         }
     }
+
+    @media screen and (max-width: 750px) {
+        .auth-branding .header {
+            margin-top: 10px;
+        }
+    }
 }
 
 .auth-background {

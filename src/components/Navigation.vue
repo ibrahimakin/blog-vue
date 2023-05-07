@@ -359,5 +359,21 @@ header {
         transform: rotateZ(-45deg) translateY(calc(-1 * var(--arrow-y))) translateX(var(--arrow-x));
         width: var(--arrow-w);
     }
+
+    @media screen and (max-width: 450px) {
+        & {
+            top: var(--topnav-height);
+        }
+    }
+
+    @media screen and (max-width: 750px) {
+        nav {
+            padding: 10px 0;
+        }
+
+        .con {
+            top: 11px;
+        }
+    }
 }
 </style>
