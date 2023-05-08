@@ -148,6 +148,10 @@ export default {
     }
 }
 
+.blog-wrapper.no-user {
+    box-shadow: none;
+}
+
 .no-user {
     .blog-content {
         background-color: var(--blog-clr);

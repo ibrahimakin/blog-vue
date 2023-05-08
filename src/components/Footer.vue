@@ -60,6 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 footer {
+    position: relative;
     margin-top: auto;
     padding: 100px 25px;
     background-color: var(--blog-clr);

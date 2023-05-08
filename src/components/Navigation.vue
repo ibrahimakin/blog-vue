@@ -131,7 +131,7 @@ header {
 
     nav {
         display: flex;
-        padding: 25px 0;
+        padding: 15px 0;
 
         .branding {
             display: flex;
@@ -181,9 +181,10 @@ header {
 
                 .profile-menu {
                     position: absolute;
-                    top: 60px;
+                    top: 50px;
                     right: 0;
                     width: 250px;
+                    border-radius: 0 0 10px 10px;
                     background-color: var(--blog-clr);
                     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 

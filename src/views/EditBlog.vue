@@ -266,7 +266,7 @@ export default {
     }
 
     .editor {
-        height: 60vh;
+        height: 65vh;
         display: flex;
         flex-direction: column;
 

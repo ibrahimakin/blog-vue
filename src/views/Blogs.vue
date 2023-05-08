@@ -46,9 +46,9 @@ export default {
         display: flex;
         align-items: center;
         position: fixed;
-        padding: 15px 10px;
+        padding: 15px 20px 10px 10px;
         background-color: #f1f1f1;
-        border-radius: 0 0 0 25px;
+        border-radius: 0 0 0 15px;
 
         @media screen and (max-width: 450px) {
             & {
@@ -68,8 +68,8 @@ export default {
             appearance: none;
             background-color: #fff;
             outline: none;
-            width: 80px;
-            height: 30px;
+            width: 65px;
+            height: 25px;
             border-radius: 20px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
         }
@@ -77,8 +77,8 @@ export default {
         input[type="checkbox"]:before {
             content: "";
             position: absolute;
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             border-radius: 20px;
             top: 0;
             left: 0;
@@ -90,7 +90,7 @@ export default {
 
         input:checked[type="checkbox"]:before {
             background: #fff;
-            left: 52px;
+            left: 40px;
         }
     }
 }

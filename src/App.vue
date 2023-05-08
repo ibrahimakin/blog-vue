@@ -48,7 +48,7 @@ export default {
 }
 
 side-nav {
-    min-width: var(--sidenav-width);
+    width: var(--sidenav-width);
 }
 
 .filled {
@@ -78,11 +78,8 @@ side-nav {
 }
 
 #app {
-    display: flex;
-    flex-direction: column;
     background-color: #fff;
     position: relative;
-    width: 100%;
 }
 
 .container {
