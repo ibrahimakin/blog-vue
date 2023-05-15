@@ -7,16 +7,16 @@
                     <input type="checkbox" v-model="edit">
                 </div>
             </div>
-            <BlogCard :post="post" v-for="(post, index) in blogCards" :key="index" />
+            <Card :post="post" v-for="(post, index) in blogCards" :key="index" />
         </div>
     </div>
 </template>
 
 <script>
-import BlogCard from '../components/BlogCard.vue';
+import Card from '../components/Card.vue';
 export default {
-    name: 'Blogs',
-    components: { BlogCard },
+    name: 'Blog',
+    components: { Card },
     computed: {
         blogCards() { return this.$store.state.blog_posts; },
         edit: {
@@ -49,12 +49,6 @@ export default {
         padding: 15px 20px 10px 10px;
         background-color: #f1f1f1;
         border-radius: 0 0 0 15px;
-
-        @media screen and (max-width: 450px) {
-            & {
-                margin-top: var(--topnav-height);
-            }
-        }
 
         span {
             margin-right: 16px;

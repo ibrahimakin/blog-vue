@@ -1,7 +1,7 @@
 <template>
     <div class="auth-nav">
         <div class="auth-branding">
-            <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+            <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
         </div>
     </div>
     <div class="auth-background">

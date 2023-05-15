@@ -1,5 +1,5 @@
 <template>
-    <router-link :title="post.title" class="blog-card" :to="{ name: 'ViewBlog', params: { id: post.id } }">
+    <router-link :title="post.title" class="blog-card" :to="{ name: 'ViewPost', params: { id: post.id } }">
         <div v-show="edit" class="icons">
             <div @click.prevent="editPost" class="icon">
                 <Edit class="edit" />
@@ -25,12 +25,12 @@ import Arrow from '../assets/icons/arrow.svg';
 import Delete from '../assets/icons/trash.svg';
 import Edit from '../assets/icons/edit.svg';
 export default {
-    name: 'BlogCard',
+    name: 'Card',
     props: ['post'],
     components: { Arrow, Delete, Edit },
     methods: {
         deletePost() { this.$store.dispatch('deletePost', this.post.id); },
-        editPost() { this.$router.push({ name: 'EditBlog', params: { id: this.post.id } }); }
+        editPost() { this.$router.push({ name: 'EditPost', params: { id: this.post.id } }); }
     },
     computed: { edit() { return this.$store.getters.edit; } }
 };

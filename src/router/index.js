@@ -1,16 +1,16 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { getAuth } from 'firebase/auth';
 import Home from '../views/Home.vue';
-import Blogs from '../views/Blogs.vue';
+import Blog from '../views/Blog.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgotPassword from '../views/ForgotPassword.vue';
 import Profile from '../views/Profile.vue';
 import Admin from '../views/Admin.vue';
 import CreatePost from '../views/CreatePost.vue';
-import BlogPreview from '../views/BlogPreview.vue';
-import ViewBlog from '../views/ViewBlog.vue';
-import EditBlog from '../views/EditBlog.vue';
+import PreviewPost from '../views/PreviewPost.vue';
+import ViewPost from '../views/ViewPost.vue';
+import EditPost from '../views/EditPost.vue';
 import store from '../store';
 
 const router = createRouter({
@@ -22,9 +22,9 @@ const router = createRouter({
             component: Home
         },
         {
-            path: '/blogs',
-            name: 'Blogs',
-            component: Blogs
+            path: '/blog',
+            name: 'Blog',
+            component: Blog
         },
         {
             path: '/login',
@@ -84,8 +84,8 @@ const router = createRouter({
         },
         {
             path: '/preview',
-            name: 'BlogPreview',
-            component: BlogPreview,
+            name: 'PreviewPost',
+            component: PreviewPost,
             meta: {
                 auth: true,
                 admin: true,
@@ -94,16 +94,16 @@ const router = createRouter({
         },
         {
             path: '/view/:id',
-            name: 'ViewBlog',
-            component: ViewBlog,
+            name: 'ViewPost',
+            component: ViewPost,
             meta: {
                 title: 'View'
             }
         },
         {
             path: '/edit/:id',
-            name: 'EditBlog',
-            component: EditBlog,
+            name: 'EditPost',
+            component: EditPost,
             meta: {
                 auth: true,
                 admin: true,
@@ -114,8 +114,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.title) document.title = `${to.meta.title} | Blogs`;
-    else document.title = 'Blogs';
+    if (to.meta.title) document.title = `${to.meta.title} | Blog`;
+    else document.title = 'Blog';
     next();
 });
 

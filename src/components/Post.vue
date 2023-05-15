@@ -8,7 +8,7 @@
                     Login / Register
                     <Arrow class="arrow arrow-light" />
                 </router-link>
-                <router-link class="link" v-else :to="{ name: 'ViewBlog', params: { id: post.id } }">
+                <router-link class="link" v-else :to="{ name: 'ViewPost', params: { id: post.id } }">
                     View The Post
                     <Arrow class="arrow" />
                 </router-link>
@@ -23,7 +23,7 @@
 <script>
 import Arrow from '../assets/icons/arrow.svg';
 export default {
-    name: 'BlogPost',
+    name: 'Post',
     props: ['post'],
     components: { Arrow }
 };

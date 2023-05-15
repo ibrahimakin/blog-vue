@@ -2,12 +2,12 @@
     <header>
         <nav class="container">
             <div class="branding">
-                <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+                <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
             </div>
             <div class="nav-links">
                 <div class="routers" v-show="!mobile">
                     <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-                    <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
+                    <router-link class="link" :to="{ name: 'Blog' }">Blog</router-link>
                     <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
                     <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login / Register</router-link>
                     <div v-if="user" @click="toggleMenu" class="profile" ref="profile">
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-                <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
+                <router-link class="link" :to="{ name: 'Blog' }">Blog</router-link>
                 <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
                 <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login / Register</router-link>
                 <router-link v-if="user" class="link" :to="{ name: 'Profile' }">Profile</router-link>

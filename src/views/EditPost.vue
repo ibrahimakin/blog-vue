@@ -6,7 +6,7 @@
         </div>
     </div>
     <div v-else class="create-post">
-        <BlogCoverPreview v-show="this.$store.state.blog_photo_preview" />
+        <CoverPreview v-show="this.$store.state.blog_photo_preview" />
         <div class="container">
             <div class="err-message" :class="{ invisible: !info }">
                 <p>{{ this.infoMsg }}</p>
@@ -27,7 +27,7 @@
             </div>
             <div class="blog-actions">
                 <button @click="updateBlog">Save Changes</button>
-                <router-link class="router-button" :to="{ name: 'BlogPreview' }">Preview Changes</router-link>
+                <router-link class="router-button" :to="{ name: 'PreviewPost' }">Preview Changes</router-link>
             </div>
         </div>
     </div>
@@ -40,14 +40,14 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { VueEditor } from 'vue3-editor';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module-plus';
-import BlogCoverPreview from '../components/BlogCoverPreview.vue';
+import CoverPreview from '../components/CoverPreview.vue';
 import Loading from '../components/Loading.vue';
 import db, { app } from '../firebase/init';
 window.Quill = Quill;
 Quill.register('modules/imageResize', ImageResize);
 export default {
-    name: 'EditBlog',
-    components: { VueEditor, BlogCoverPreview, Loading },
+    name: 'EditPost',
+    components: { VueEditor, CoverPreview, Loading },
     data() {
         return {
             file: null,
@@ -93,9 +93,10 @@ export default {
         },
         fileChange() {
             this.file = this.$refs.blogPhoto.files[0];
-            const fileName = this.file.name;
-            this.$store.commit('fileNameChange', fileName);
-            this.$store.commit('createFileURL', URL.createObjectURL(this.file));
+            if (this.file) {
+                this.$store.commit('fileNameChange', this.file.name);
+                this.$store.commit('createFileURL', URL.createObjectURL(this.file));
+            }
         },
         openPreview() { this.$store.commit('openPhotoPreview'); },
         imageHandler(file, editor, cursorLocation, resetUploader) {
@@ -172,125 +173,3 @@ export default {
     }
 };
 </script>
-
-<style lang="scss">
-.create-post {
-    position: relative;
-    height: 100%;
-
-    .router-button {
-        text-decoration: none;
-    }
-
-    .container {
-        position: relative;
-        height: 100%;
-        padding: 10px 25px 60px;
-
-        button,
-        label {
-            margin-top: 0;
-        }
-
-        .invisible {
-            opacity: 0;
-        }
-    }
-
-    // error styling
-    .err-message {
-        width: 100%;
-        padding: 12px;
-        border-radius: 8px;
-        color: #fff;
-        margin-bottom: 10px;
-        background-color: var(--blog-clr);
-        opacity: 1;
-        transition: .5s ease opacity;
-
-        p {
-            font-size: 14px;
-        }
-
-        span {
-            font-weight: 600;
-        }
-    }
-
-    .blog-info {
-        display: flex;
-        flex-wrap: wrap;
-        margin-bottom: 32px;
-
-        input:first-child {
-            min-width: 300px;
-            margin-right: 16px;
-        }
-
-        input {
-            padding: 10px 4px;
-            border: none;
-            border-bottom: 1px solid var(--blog-clr);
-
-            &:focus {
-                outline: none;
-                box-shadow: 0 1px 0 0 var(--blog-clr);
-            }
-        }
-
-        button,
-        label {
-            text-transform: initial;
-        }
-
-        .upload-file {
-            flex: 1;
-            position: relative;
-            display: flex;
-
-            input {
-                display: none;
-            }
-
-            .preview {
-                margin-left: 16px;
-                text-transform: initial;
-            }
-
-            span {
-                font-size: 12px;
-                margin-left: 16px;
-                align-self: center;
-            }
-        }
-    }
-
-    .editor {
-        height: 65vh;
-        display: flex;
-        flex-direction: column;
-
-        .quillWrapper {
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            height: 100%;
-        }
-
-        .ql-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            overflow: auto;
-        }
-    }
-
-    .blog-actions {
-        margin-top: 32px;
-
-        button {
-            margin-right: 16px;
-        }
-    }
-}
-</style>

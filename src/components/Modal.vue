@@ -14,17 +14,17 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .modal {
     display: flex;
     justify-content: center;
     align-items: center;
     position: fixed;
-    width: 100%;
     height: 100%;
+    width: 100%;
     top: 0;
-    background-color: rgba(0, 0, 0, .7);
-    z-index: 2;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 3;
 
     .modal-content {
         display: flex;

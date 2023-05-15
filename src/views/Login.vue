@@ -1,7 +1,7 @@
 <template>
     <div class="auth-nav">
         <div class="auth-branding">
-            <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+            <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
         </div>
     </div>
     <div class="auth-background">
@@ -13,7 +13,7 @@
                         Register
                     </RouterLink>
                 </p>
-                <h2>Login to Blogs</h2>
+                <h2>Login to Blog</h2>
                 <div class="inputs">
                     <div class="input">
                         <input type="text" placeholder="e-mail" v-model="email">

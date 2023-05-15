@@ -136,8 +136,6 @@ export default {
                     padding: 8px;
                     height: 50px;
 
-                    @media (min-width: 900px) {}
-
                     &:focus {
                         outline: none;
                     }

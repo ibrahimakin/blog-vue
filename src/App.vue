@@ -66,7 +66,7 @@ side-nav {
 }
 
 @media screen and (max-width: 450px) {
-    #app .mobile-nav {
+    #root .mobile-nav {
         top: var(--topnav-height);
     }
 }
@@ -77,9 +77,15 @@ side-nav {
     font-family: "Quicksand", sans-serif;
 }
 
-#app {
+#root {
+    display: flex;
+    flex-direction: column;
     background-color: #fff;
     position: relative;
+    font-size: 15px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -182,15 +188,15 @@ button,
         gap: 32px;
         grid-template-columns: 1fr;
 
-        @media (min-width: 500px) {
+        @media (min-width: 600px) {
             grid-template-columns: repeat(2, 1fr);
         }
 
-        @media (min-width: 900px) {
+        @media (min-width: 1000px) {
             grid-template-columns: repeat(3, 1fr);
         }
 
-        @media (min-width: 1200px) {
+        @media (min-width: 1300px) {
             grid-template-columns: repeat(4, 1fr);
         }
     }

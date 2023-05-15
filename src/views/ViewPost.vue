@@ -17,7 +17,7 @@
 import Loading from '../components/Loading.vue';
 import LoadingInline from '../components/LoadingInline.vue';
 export default {
-    name: 'ViewBlog',
+    name: 'ViewPost',
     components: { Loading, LoadingInline },
     data() { return { blog: null, routeID: null }; },
     beforeRouteUpdate(to, from, next) {

@@ -1,12 +1,12 @@
 <template>
-    <div class="home">
-        <BlogPost v-if="!user" :post="welcome" />
-        <BlogPost :post="post" v-for="(post, index) in blogPosts" :key="index" />
+    <div>
+        <Post v-if="!user" :post="welcome" />
+        <Post :post="post" v-for="(post, index) in blogPosts" :key="index" />
         <div class="blog-card-wrap">
             <div class="container">
-                <h3 v-if="this.$store.state.blog_posts.length > 2">View More Recent Blogs</h3>
+                <h3 v-if="this.$store.state.blog_posts.length > 2">View More Recent Posts</h3>
                 <div class="blog-cards">
-                    <BlogCard :post="post" v-for="(post, index) in blogCards" :key="index" />
+                    <Card :post="post" v-for="(post, index) in blogCards" :key="index" />
                 </div>
             </div>
         </div>
@@ -14,7 +14,7 @@
             <div class="container">
                 <h2>Never miss a post. Register for your free account today!</h2>
                 <router-link class="router-button" :to="{ name: 'Register' }">
-                    Register for Blogs
+                    Register for Blog
                     <Arrow class="arrow arrow-light" />
                 </router-link>
             </div>
@@ -23,12 +23,12 @@
 </template>
 
 <script>
-import BlogPost from '../components/BlogPost.vue';
-import BlogCard from '../components/BlogCard.vue';
+import Post from '../components/Post.vue';
+import Card from '../components/Card.vue';
 import Arrow from '../assets/icons/arrow.svg';
 export default {
     name: 'Home',
-    components: { BlogPost, BlogCard, Arrow },
+    components: { Post, Card, Arrow },
     data() {
         return {
             welcome: {
