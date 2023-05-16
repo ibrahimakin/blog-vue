@@ -3,7 +3,7 @@
         <div class="container">
             <div class="left">
                 <div class="col-1">
-                    <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+                    <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
                     <ul>
                         <li>
                             <a title="GitHub" href="https://github.com/ibrahimakin" target="_blank">
@@ -30,7 +30,7 @@
                 <div class="col-2">
                     <ul>
                         <li><router-link class="link" :to="{ name: 'Home' }">Home</router-link></li>
-                        <li><router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link></li>
+                        <li><router-link class="link" :to="{ name: 'Blog' }">Blog</router-link></li>
                         <li v-if="admin"><router-link class="link" :to="{ name: 'CreatePost' }">Create Post</router-link></li>
                         <li v-if="!user"><router-link class="link" :to="{ name: 'Login' }">Login / Register</router-link></li>
                     </ul>
@@ -52,18 +52,15 @@ export default {
     name: 'Footer',
     components: { Github, Twitter, Instagram, Linkedin },
     computed: {
-        user() {
-            return this.$store.state.user;
-        },
-        admin() {
-            return this.$store.state.admin;
-        }
+        admin() { return this.$store.state.admin; },
+        user() { return this.$store.state.user; }
     }
 };
 </script>
 
 <style lang="scss" scoped>
 footer {
+    position: relative;
     margin-top: auto;
     padding: 100px 25px;
     background-color: var(--blog-clr);

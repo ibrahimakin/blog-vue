@@ -1,7 +1,7 @@
 <template>
     <div class="auth-nav">
         <div class="auth-branding">
-            <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+            <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
         </div>
     </div>
     <div class="auth-background">
@@ -13,7 +13,7 @@
                         Register
                     </RouterLink>
                 </p>
-                <h2>Login to Blogs</h2>
+                <h2>Login to Blog</h2>
                 <div class="inputs">
                     <div class="input">
                         <input type="text" placeholder="e-mail" v-model="email">
@@ -42,17 +42,10 @@ import password from '../assets/icons/lock.svg';
 export default {
     name: 'Login',
     components: { email, password },
-    data() {
-        return {
-            email: '',
-            password: '',
-            errorMsg: '',
-            error: null
-        };
-    },
+    data() { return { email: '', password: '', errorMsg: '', error: null }; },
     methods: {
-        async signIn() {
-            const auth = await getAuth();
+        signIn() {
+            const auth = getAuth();
             signInWithEmailAndPassword(auth, this.email, this.password).then(() => {
                 this.$router.push({ name: 'Home' });
                 this.errorMsg = '';
@@ -85,8 +78,14 @@ export default {
             font-weight: 600;
             font-size: 24px;
             color: #000;
-            margin-top: 25px;
+            margin-top: 15px;
             z-index: 1;
+        }
+    }
+
+    @media screen and (max-width: 750px) {
+        .auth-branding .header {
+            margin-top: 10px;
         }
     }
 }
@@ -95,7 +94,7 @@ export default {
     width: 100%;
     height: 100%;
     background-size: cover;
-    background-image: url('background.png');
+    background-image: url(/assets/images/blog/background.png);
     overflow: auto;
 }
 

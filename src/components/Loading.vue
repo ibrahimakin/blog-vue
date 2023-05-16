@@ -30,15 +30,13 @@ export default {
     }
 
     span {
-        display: block;
         width: 60px;
         height: 60px;
-        margin: 0 auto;
         border: 3px solid transparent;
         border-top-color: #fff;
         border-bottom-color: #fff;
         border-radius: 50%;
-        animation: spin ease 1000ms infinite;
+        animation: spin ease 1s infinite;
     }
 }
 </style>

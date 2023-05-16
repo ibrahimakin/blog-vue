@@ -1,7 +1,7 @@
 <template>
     <div class="auth-nav">
         <div class="auth-branding">
-            <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+            <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
         </div>
     </div>
     <div class="auth-background">
@@ -38,14 +38,7 @@ import Modal from '../components/Modal.vue';
 export default {
     name: 'ForgotPassword',
     components: { email, Loading, Modal },
-    data() {
-        return {
-            email: '',
-            loading: null,
-            modalActive: null,
-            modalMessage: ''
-        };
-    },
+    data() { return { email: '', loading: null, modalActive: null, modalMessage: '' }; },
     methods: {
         resetPassword() {
             this.loading = true;

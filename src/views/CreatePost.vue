@@ -1,6 +1,6 @@
 <template>
     <div class="create-post">
-        <BlogCoverPreview v-show="this.$store.state.blog_photo_preview" />
+        <CoverPreview v-show="this.$store.state.blog_photo_preview" />
         <div class="container">
             <div class="err-message" :class="{ invisible: !error }">
                 <p><span>Error:</span> {{ this.errorMsg }}</p>
@@ -10,7 +10,7 @@
                 <div class="upload-file">
                     <label for="blog-photo">Upload Cover Photo</label>
                     <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, .jpeg" />
-                    <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }">
+                    <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blog_photo_url }">
                         Preview Photo
                     </button>
                     <span>File Chosen: {{ this.blogPhotoName }}</span>
@@ -21,7 +21,7 @@
             </div>
             <div class="blog-actions">
                 <button @click="uploadBlog">Publish Blog</button>
-                <router-link class="router-button" :to="{ name: 'BlogPreview' }">Post Preview</router-link>
+                <router-link class="router-button" :to="{ name: 'PreviewPost' }">Post Preview</router-link>
             </div>
         </div>
     </div>
@@ -34,14 +34,14 @@ import { collection, addDoc, setDoc, doc } from 'firebase/firestore';
 import { VueEditor } from 'vue3-editor';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module-plus';
-import BlogCoverPreview from '../components/BlogCoverPreview.vue';
+import CoverPreview from '../components/CoverPreview.vue';
 import Loading from '../components/Loading.vue';
 import db, { app } from '../firebase/init';
 window.Quill = Quill;
 Quill.register('modules/imageResize', ImageResize);
 export default {
     name: 'CreatePost',
-    components: { VueEditor, BlogCoverPreview, Loading },
+    components: { VueEditor, CoverPreview, Loading },
     data() {
         return {
             file: null,
@@ -58,27 +58,22 @@ export default {
     methods: {
         fileChange() {
             this.file = this.$refs.blogPhoto.files[0];
-            const fileName = this.file.name;
-            this.$store.commit('fileNameChange', fileName);
-            this.$store.commit('createFileURL', URL.createObjectURL(this.file));
+            if (this.file) {
+                this.$store.commit('fileNameChange', this.file.name);
+                this.$store.commit('createFileURL', URL.createObjectURL(this.file));
+            }
         },
-        openPreview() {
-            this.$store.commit('openPhotoPreview');
-        },
+        openPreview() { this.$store.commit('openPhotoPreview'); },
         imageHandler(file, editor, cursorLocation, resetUploader) {
             const storage = getStorage(app);
             const storageRef = ref(storage, `documents/BlogPostPhotos/${file.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
-            uploadTask.on('state_changed',
-                () => { },
-                () => { },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-                        editor.insertEmbed(cursorLocation, 'image', downloadURL);
-                        resetUploader();
-                    });
-                }
-            );
+            uploadTask.on('state_changed', () => { }, () => { }, () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+                    editor.insertEmbed(cursorLocation, 'image', downloadURL);
+                    resetUploader();
+                });
+            });
         },
         uploadBlog() {
             if (this.blogTitle.length != 0 && this.blogHTML.length != 0) {
@@ -101,7 +96,7 @@ export default {
                             await setDoc(doc(db, 'details', result.id), { html: this.blogHTML });
                             this.$store.dispatch('getPosts');
                             this.loading = false;
-                            this.$router.push({ name: 'ViewBlog', params: { id: result.id } });
+                            this.$router.push({ name: 'ViewPost', params: { id: result.id } });
                         })
                         .catch(() => this.loading = false);
                     return;
@@ -117,27 +112,15 @@ export default {
         }
     },
     computed: {
-        profileId() {
-            return this.$store.state.id;
-        },
-        blogPhotoName() {
-            return this.$store.state.blog_photo_name;
-        },
+        profileId() { return this.$store.state.id; },
+        blogPhotoName() { return this.$store.state.blog_photo_name; },
         blogTitle: {
-            get() {
-                return this.$store.state.blogTitle;
-            },
-            set(payload) {
-                this.$store.commit('updateBlogTitle', payload);
-            }
+            get() { return this.$store.state.blog_title; },
+            set(payload) { this.$store.commit('updateBlogTitle', payload); }
         },
         blogHTML: {
-            get() {
-                return this.$store.state.blog_html;
-            },
-            set(payload) {
-                this.$store.commit('newBlogPost', payload);
-            }
+            get() { return this.$store.state.blog_html; },
+            set(payload) { this.$store.commit('newBlogPost', payload); }
         }
     }
 };
@@ -149,6 +132,7 @@ export default {
     height: 100%;
 
     .router-button {
+        margin-top: 5px;
         text-decoration: none;
     }
 
@@ -173,7 +157,6 @@ export default {
         padding: 12px;
         border-radius: 8px;
         color: #fff;
-        margin-bottom: 10px;
         background-color: var(--blog-clr);
         opacity: 1;
         transition: .5s ease opacity;
@@ -190,11 +173,13 @@ export default {
     .blog-info {
         display: flex;
         flex-wrap: wrap;
-        margin-bottom: 32px;
+        align-items: end;
+        margin-bottom: 10px;
 
         input:first-child {
-            min-width: 300px;
-            margin-right: 16px;
+            width: 100%;
+            margin-top: 5px;
+            max-width: 300px;
         }
 
         input {
@@ -216,6 +201,7 @@ export default {
         .upload-file {
             flex: 1;
             position: relative;
+            margin-top: 5px;
             display: flex;
 
             input {
@@ -236,7 +222,7 @@ export default {
     }
 
     .editor {
-        height: 60vh;
+        height: 65vh;
         display: flex;
         flex-direction: column;
 
@@ -256,9 +242,12 @@ export default {
     }
 
     .blog-actions {
-        margin-top: 32px;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 20px;
 
         button {
+            margin-top: 5px;
             margin-right: 16px;
         }
     }

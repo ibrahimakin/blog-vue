@@ -2,12 +2,12 @@
     <header>
         <nav class="container">
             <div class="branding">
-                <router-link class="header" :to="{ name: 'Home' }">Blogs</router-link>
+                <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
             </div>
             <div class="nav-links">
                 <div class="routers" v-show="!mobile">
                     <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-                    <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
+                    <router-link class="link" :to="{ name: 'Blog' }">Blog</router-link>
                     <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
                     <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login / Register</router-link>
                     <div v-if="user" @click="toggleMenu" class="profile" ref="profile">
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-                <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
+                <router-link class="link" :to="{ name: 'Blog' }">Blog</router-link>
                 <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
                 <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login / Register</router-link>
                 <router-link v-if="user" class="link" :to="{ name: 'Profile' }">Profile</router-link>
@@ -78,63 +78,34 @@ import SignOut from '../assets/icons/sign-out.svg';
 export default {
     name: 'Navigation',
     components: { User, Admin, SignOut },
-    data() {
-        return {
-            mobile: null,
-            mobileNav: null,
-            windowWidth: null,
-            profileMenu: null
-        };
-    },
+    data() { return { mobile: null, mobileNav: null, windowWidth: null, profileMenu: null }; },
     created() {
         window.addEventListener('resize', this.checkScreen);
         this.checkScreen();
         document.addEventListener('click', e => {
             if (this.profileMenu) {
                 let isClosest = e.target.closest('.profile-menu');
-                if (!isClosest && e.target !== this.$refs.profile) {
-                    this.profileMenu = false;
-                }
+                if (!isClosest && e.target !== this.$refs.profile) this.profileMenu = false;
             }
             if (this.mobileNav) {
                 let isClosest = e.target.closest('.mobile-nav');
-                if (!isClosest && e.target !== this.$refs.menu) {
-                    this.mobileNav = false;
-                }
+                if (!isClosest && e.target !== this.$refs.menu) this.mobileNav = false;
             }
         });
     },
     methods: {
         checkScreen() {
             this.windowWidth = window.innerWidth;
-            if (this.windowWidth <= 750) {
-                this.mobile = true;
-                return;
-            }
-            this.mobile = false;
-            this.mobileNav = false;
-            return;
+            if (this.windowWidth <= 750) this.mobile = true;
+            else { this.mobile = false; this.mobileNav = false; }
         },
-        toggleMobileNav() {
-            this.mobileNav = !this.mobileNav;
-        },
-        toggleMenu(e) {
-            if (e.target === this.$refs.profile) {
-                this.profileMenu = !this.profileMenu;
-            }
-        },
-        signOut() {
-            signOut(getAuth());
-            window.location.reload();
-        }
+        toggleMobileNav() { this.mobileNav = !this.mobileNav; },
+        toggleMenu(e) { if (e.target === this.$refs.profile) this.profileMenu = !this.profileMenu; },
+        signOut() { signOut(getAuth()); window.location.reload(); }
     },
     computed: {
-        user() {
-            return this.$store.state.user;
-        },
-        admin() {
-            return this.$store.state.admin;
-        }
+        admin() { return this.$store.state.admin; },
+        user() { return this.$store.state.user; }
     }
 }
 </script>
@@ -160,7 +131,7 @@ header {
 
     nav {
         display: flex;
-        padding: 25px 0;
+        padding: 15px 0;
 
         .branding {
             display: flex;
@@ -210,9 +181,10 @@ header {
 
                 .profile-menu {
                     position: absolute;
-                    top: 60px;
+                    top: 50px;
                     right: 0;
                     width: 250px;
+                    border-radius: 0 0 10px 10px;
                     background-color: var(--blog-clr);
                     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 
@@ -387,6 +359,22 @@ header {
         -o-transform: rotateZ(-45deg) translateY(-5px);
         transform: rotateZ(-45deg) translateY(calc(-1 * var(--arrow-y))) translateX(var(--arrow-x));
         width: var(--arrow-w);
+    }
+
+    @media screen and (max-width: 450px) {
+        & {
+            top: var(--topnav-height);
+        }
+    }
+
+    @media screen and (max-width: 750px) {
+        nav {
+            padding: 10px 0;
+        }
+
+        .con {
+            top: 11px;
+        }
     }
 }
 </style>
