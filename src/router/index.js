@@ -95,10 +95,7 @@ const router = createRouter({
         {
             path: '/view/:id',
             name: 'ViewPost',
-            component: ViewPost,
-            meta: {
-                title: 'View'
-            }
+            component: ViewPost
         },
         {
             path: '/edit/:id',

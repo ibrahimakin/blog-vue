@@ -8,36 +8,36 @@
         <div class="form-wrap">
             <form class="register">
                 <p class="login-register">
-                    Already have an account?
-                    <RouterLink class="router-link" :to="{ name: 'Login' }">
-                        Login
+                    <span lang-tag="already">{{ lang_blog[lang]['already'] }}</span>&nbsp;
+                    <RouterLink class="router-link" :to="{ name: 'Login' }" lang-tag="login">
+                        {{ lang_blog[lang]['login'] }}
                     </RouterLink>
                 </p>
-                <h2>Create Your Blog Account</h2>
+                <h2 lang-tag="create_account">{{ lang_blog[lang]['create_account'] }}</h2>
                 <div class="inputs">
                     <div class="input">
-                        <input type="text" placeholder="First Name" v-model="firstName">
+                        <input type="text" :placeholder="lang_blog[lang]['first_name']" v-model="firstName" lang-tag="first_name">
                         <user class="icon" />
                     </div>
                     <div class="input">
-                        <input type="text" placeholder="Last Name" v-model="lastName">
+                        <input type="text" :placeholder="lang_blog[lang]['last_name']" v-model="lastName" lang-tag="last_name">
                         <user class="icon" />
                     </div>
                     <div class="input">
-                        <input type="text" placeholder="Username" v-model="username">
+                        <input type="text" :placeholder="lang_blog[lang]['username']" v-model="username" lang-tag="username">
                         <user class="icon" />
                     </div>
                     <div class="input">
-                        <input type="text" placeholder="e-mail" v-model="email">
+                        <input type="email" :placeholder="lang_blog[lang]['email']" v-model="email" lang-tag="email">
                         <email class="icon" />
                     </div>
                     <div class="input">
-                        <input type="password" placeholder="password" v-model="password">
+                        <input type="password" :placeholder="lang_blog[lang]['password']" v-model="password" lang-tag="password">
                         <password class="icon" />
                     </div>
-                    <div v-show="error" class="error">{{ this.errorMsg }}</div>
+                    <div v-show="error" class="error" :lang-tag="lang_tag">{{ this.errorMsg }}</div>
                 </div>
-                <button @click.prevent="register">Sign Up</button>
+                <button @click.prevent="register" lang-tag="sign_up">{{ lang_blog[lang]['sign_up'] }}</button>
             </form>
             <div class="background"></div>
         </div>
@@ -51,11 +51,15 @@ import user from '../assets/icons/user.svg';
 import email from '../assets/icons/envelope.svg';
 import password from '../assets/icons/lock.svg';
 import db from '../firebase/init';
+import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'Register',
     components: { user, email, password },
     data() {
         return {
+            lang: getLangBlog(),
+            lang_blog,
+            lang_tag: null,
             firstName: '',
             lastName: '',
             username: '',
@@ -73,21 +77,28 @@ export default {
                 this.lastName !== '' &&
                 this.username !== '') {
                 this.errorMsg = '';
+                this.lang_tag = null;
                 this.error = false;
-                const auth = getAuth();
-                const result = await createUserWithEmailAndPassword(auth, this.email, this.password);
-                await setDoc(doc(db, 'users', result.user.uid), {
-                    firstname: this.firstName,
-                    lastname: this.lastName,
-                    username: this.username,
-                    email: this.email
-                });
-                this.$router.push({ name: 'Home' });
+                try {
+                    const auth = getAuth();
+                    const result = await createUserWithEmailAndPassword(auth, this.email, this.password);
+                    await setDoc(doc(db, 'users', result.user.uid), {
+                        firstname: this.firstName,
+                        lastname: this.lastName,
+                        username: this.username,
+                        email: this.email
+                    });
+                    this.$router.push({ name: 'Home' });
+                } catch (e) {
+                    this.errorMsg = e.message;
+                    this.lang_tag = null;
+                    this.error = true;
+                }
                 return;
             }
-            this.errorMsg = 'Please fill out all the fields!';
+            this.errorMsg = lang_blog[this.lang]['fill'];
+            this.lang_tag = 'fill';
             this.error = true;
-            return;
         }
     }
 };

@@ -2,14 +2,14 @@
     <div class="blog-wrapper" :class="{ 'no-user': post.welcome }">
         <div class="blog-content">
             <div>
-                <h2 lang="tr">{{ post.title }}</h2>
-                <p :class="!post.welcome && 'content-preview'" v-html="post.html"></p>
+                <h2 lang="tr" :lang-tag="post.welcome && 'welcome'">{{ post.title }}</h2>
+                <p :class="!post.welcome && 'content-preview'" :lang-tag="post.welcome && 'html'" v-html="post.html"></p>
                 <router-link class="link link-light" v-if="post.welcome" :to="{ name: 'Login' }">
-                    Login / Register
+                    <span lang-tag="login_register">{{ lang_blog[lang]['login_register'] }}</span>
                     <Arrow class="arrow arrow-light" />
                 </router-link>
                 <router-link class="link" v-else :to="{ name: 'ViewPost', params: { id: post.id } }">
-                    View The Post
+                    <span lang-tag="view">{{ lang_blog[lang]['view'] }}</span>
                     <Arrow class="arrow" />
                 </router-link>
             </div>
@@ -22,10 +22,12 @@
 
 <script>
 import Arrow from '../assets/icons/arrow.svg';
+import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'Post',
     props: ['post'],
-    components: { Arrow }
+    components: { Arrow },
+    data() { return { lang_blog, lang: getLangBlog() }; }
 };
 </script>
 

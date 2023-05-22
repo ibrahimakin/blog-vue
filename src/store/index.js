@@ -25,6 +25,7 @@ export default createStore({
             { id: '5', title: 'Blog Card #3', photo: '/src/assets/cards/stock-4.jpg', date: 'May 1, 2021' },
             { id: '6', title: 'Blog Card #4', photo: '/src/assets/cards/stock-5.jpg', date: 'May 1, 2021' }
         ],
+        update: false,
         post_loaded: null,
         blog_posts: [],
         blog_title: '',

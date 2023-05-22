@@ -8,27 +8,27 @@
         <div class="form-wrap">
             <form class="login">
                 <p class="login-register">
-                    Don't have an account?
-                    <RouterLink class="router-link" :to="{ name: 'Register' }">
-                        Register
+                    <span lang-tag="account">{{ lang_blog[lang]['account'] }}</span>&nbsp;
+                    <RouterLink class="router-link" :to="{ name: 'Register' }" lang-tag="register">
+                        {{ lang_blog[lang]['register'] }}
                     </RouterLink>
                 </p>
-                <h2>Login to Blog</h2>
+                <h2 lang-tag="login_blog">{{ lang_blog[lang]['login_blog'] }}</h2>
                 <div class="inputs">
                     <div class="input">
-                        <input type="text" placeholder="e-mail" v-model="email">
+                        <input type="email" :placeholder="lang_blog[lang]['email']" v-model="email" lang-tag="email">
                         <email class="icon" />
                     </div>
                     <div class="input">
-                        <input type="password" placeholder="password" v-model="password">
+                        <input type="password" :placeholder="lang_blog[lang]['password']" v-model="password" lang-tag="password">
                         <password class="icon" />
                     </div>
                     <div v-show="error" class="error">{{ this.errorMsg }}</div>
                 </div>
-                <RouterLink class="forgot-password" :to="{ name: 'ForgotPassword' }">
-                    Forgot your password?
+                <RouterLink class="forgot-password" :to="{ name: 'ForgotPassword' }" lang-tag="forgot">
+                    {{ lang_blog[lang]['forgot'] }}
                 </RouterLink>
-                <button @click.prevent="signIn">Sign In</button>
+                <button @click.prevent="signIn" lang-tag="sign_in">{{ lang_blog[lang]['sign_in'] }}</button>
             </form>
             <div class="background"></div>
         </div>
@@ -39,10 +39,11 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import email from '../assets/icons/envelope.svg';
 import password from '../assets/icons/lock.svg';
+import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'Login',
     components: { email, password },
-    data() { return { email: '', password: '', errorMsg: '', error: null }; },
+    data() { return { lang_blog, lang: getLangBlog(), email: '', password: '', errorMsg: '', error: null }; },
     methods: {
         signIn() {
             const auth = getAuth();
@@ -50,8 +51,8 @@ export default {
                 this.$router.push({ name: 'Home' });
                 this.errorMsg = '';
                 this.error = false;
-            }).catch(err => {
-                this.errorMsg = err.message;
+            }).catch(e => {
+                this.errorMsg = e.message;
                 this.error = true;
             });
         }

@@ -4,37 +4,35 @@
             <div class="branding">
                 <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
             </div>
-            <div class="nav-links">
-                <div class="routers" v-show="!mobile">
-                    <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-                    <router-link class="link" :to="{ name: 'Blog' }">Blog</router-link>
-                    <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
-                    <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login / Register</router-link>
-                    <div v-if="user" @click="toggleMenu" class="profile" ref="profile">
-                        <span>{{ this.$store.state.initials }}</span>
-                        <div v-show="profileMenu" class="profile-menu">
-                            <span></span>
-                            <div class="info">
-                                <p class="initials">{{ this.$store.state.initials }}</p>
-                                <div class="right">
-                                    <p>{{ this.$store.state.firstname }} {{ this.$store.state.lastname }}</p>
-                                    <p>{{ this.$store.state.username }}</p>
-                                    <p>{{ this.$store.state.email }}</p>
-                                </div>
+            <div class="routers" v-show="!mobile">
+                <router-link class="link" :to="{ name: 'Home' }" lang-tag="home">{{ lang_blog[lang]['home'] }}</router-link>
+                <router-link class="link" :to="{ name: 'Blog' }">BLOG</router-link>
+                <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }" lang-tag="create">{{ lang_blog[lang]['create'] }}</router-link>
+                <router-link v-if="!user" class="link" :to="{ name: 'Login' }" lang-tag="login_register">{{ lang_blog[lang]['login_register'] }}</router-link>
+                <div v-if="user" @click="toggleMenu" class="profile" ref="profile">
+                    <span>{{ this.$store.state.initials }}</span>
+                    <div v-show="profileMenu" class="profile-menu">
+                        <span></span>
+                        <div class="info">
+                            <p class="initials">{{ this.$store.state.initials }}</p>
+                            <div class="right">
+                                <p>{{ this.$store.state.firstname }} {{ this.$store.state.lastname }}</p>
+                                <p>{{ this.$store.state.username }}</p>
+                                <p>{{ this.$store.state.email }}</p>
                             </div>
-                            <div class="options">
-                                <router-link class="option" :to="{ name: 'Profile' }">
-                                    <User class="icon" />
-                                    <p>Profile</p>
-                                </router-link>
-                                <router-link v-if="admin" class="option" :to="{ name: 'Admin' }">
-                                    <Admin class="icon" />
-                                    <p>Admin</p>
-                                </router-link>
-                                <div @click="signOut" class="option">
-                                    <SignOut class="icon" />
-                                    <p>Sign Out</p>
-                                </div>
+                        </div>
+                        <div class="options">
+                            <router-link class="option" :to="{ name: 'Profile' }">
+                                <User class="icon" />
+                                <p lang-tag="profile_t">{{ lang_blog[lang]['profile_t'] }}</p>
+                            </router-link>
+                            <router-link v-if="admin" class="option" :to="{ name: 'Admin' }">
+                                <Admin class="icon" />
+                                <p lang-tag="admin_t">{{ lang_blog[lang]['admin_t'] }}</p>
+                            </router-link>
+                            <div @click="signOut" class="option">
+                                <SignOut class="icon" />
+                                <p lang-tag="sign_out_t">{{ lang_blog[lang]['sign_out_t'] }}</p>
                             </div>
                         </div>
                     </div>
@@ -58,13 +56,13 @@
                         </div>
                     </div>
                 </div>
-                <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-                <router-link class="link" :to="{ name: 'Blog' }">Blog</router-link>
-                <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
-                <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login / Register</router-link>
-                <router-link v-if="user" class="link" :to="{ name: 'Profile' }">Profile</router-link>
-                <router-link v-if="admin" class="link" :to="{ name: 'Admin' }">Admin</router-link>
-                <div v-if="user" @click="signOut" class="link">Sign Out</div>
+                <router-link class="link" :to="{ name: 'Home' }" lang-tag="home">{{ lang_blog[lang]['home'] }}</router-link>
+                <router-link class="link" :to="{ name: 'Blog' }">BLOG</router-link>
+                <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }" lang-tag="create">{{ lang_blog[lang]['create'] }}</router-link>
+                <router-link v-if="!user" class="link" :to="{ name: 'Login' }" lang-tag="login_register">{{ lang_blog[lang]['login_register'] }}</router-link>
+                <router-link v-if="user" class="link" :to="{ name: 'Profile' }" lang-tag="profile">{{ lang_blog[lang]['profile'] }}</router-link>
+                <router-link v-if="admin" class="link" :to="{ name: 'Admin' }" lang-tag="admin">{{ lang_blog[lang]['admin'] }}</router-link>
+                <div v-if="user" @click="signOut" class="link" lang-tag="sign_out">{{ lang_blog[lang]['sign_out'] }}</div>
             </div>
         </transition>
     </header>
@@ -75,10 +73,16 @@ import { getAuth, signOut } from 'firebase/auth';
 import User from '../assets/icons/user.svg';
 import Admin from '../assets/icons/user-crown.svg';
 import SignOut from '../assets/icons/sign-out.svg';
+import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'Navigation',
     components: { User, Admin, SignOut },
-    data() { return { mobile: null, mobileNav: null, windowWidth: null, profileMenu: null }; },
+    data() {
+        return {
+            lang_blog, lang: getLangBlog(), mobile: null, mobileNav: null,
+            windowWidth: null, profileMenu: null
+        };
+    },
     created() {
         window.addEventListener('resize', this.checkScreen);
         this.checkScreen();
@@ -119,6 +123,10 @@ header {
     z-index: 2;
     top: 0;
 
+    .container {
+        justify-content: space-between;
+    }
+
     .link {
         font-weight: 500;
         padding: 0 8px;
@@ -131,7 +139,7 @@ header {
 
     nav {
         display: flex;
-        padding: 15px 0;
+        padding: 10px 0;
 
         .branding {
             display: flex;
@@ -145,65 +153,61 @@ header {
             }
         }
 
-        .nav-links {
-            position: relative;
+
+        .routers {
             display: flex;
-            flex: 1;
-            height: 30px;
             align-items: center;
-            justify-content: flex-end;
+            height: 40px;
 
-            .routers {
-                .link {
-                    margin-right: 32px;
-                }
-
-                .link:last-child {
-                    margin-right: 0;
-                }
+            .link {
+                margin-right: 32px;
             }
 
-            .profile {
-                position: relative;
-                cursor: pointer;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                color: #fff;
+            .link:last-child {
+                margin-right: 0;
+            }
+        }
+
+        .profile {
+            position: relative;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: #fff;
+            background-color: var(--blog-clr);
+
+            span {
+                pointer-events: none;
+            }
+
+            .profile-menu {
+                position: absolute;
+                top: 50px;
+                right: 0;
+                width: 250px;
+                border-radius: 0 0 10px 10px;
                 background-color: var(--blog-clr);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 
                 span {
-                    pointer-events: none;
+                    position: absolute;
+                    right: 10px;
+                    top: -10px;
+                    border-left: 10px solid transparent;
+                    border-right: 10px solid transparent;
+                    border-bottom: 10px solid var(--blog-clr);
                 }
 
-                .profile-menu {
-                    position: absolute;
-                    top: 50px;
-                    right: 0;
-                    width: 250px;
-                    border-radius: 0 0 10px 10px;
-                    background-color: var(--blog-clr);
-                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+                .info {
+                    padding: 15px;
+                }
 
-                    span {
-                        position: absolute;
-                        right: 10px;
-                        top: -10px;
-                        border-left: 10px solid transparent;
-                        border-right: 10px solid transparent;
-                        border-bottom: 10px solid var(--blog-clr);
-                    }
-
-                    .info {
-                        padding: 15px;
-                    }
-
-                    .options {
-                        padding: 15px;
-                    }
+                .options {
+                    padding: 15px;
                 }
             }
         }
@@ -316,7 +320,7 @@ header {
     .con {
         cursor: pointer;
         position: absolute;
-        top: 28px;
+        top: 11px;
         right: 25px;
         z-index: 1;
         --arrow-w: 12px;
@@ -364,16 +368,6 @@ header {
     @media screen and (max-width: 450px) {
         & {
             top: var(--topnav-height);
-        }
-    }
-
-    @media screen and (max-width: 750px) {
-        nav {
-            padding: 10px 0;
-        }
-
-        .con {
-            top: 11px;
         }
     }
 }

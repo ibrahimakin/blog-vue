@@ -29,15 +29,15 @@
                 </div>
                 <div class="col-2">
                     <ul>
-                        <li><router-link class="link" :to="{ name: 'Home' }">Home</router-link></li>
-                        <li><router-link class="link" :to="{ name: 'Blog' }">Blog</router-link></li>
-                        <li v-if="admin"><router-link class="link" :to="{ name: 'CreatePost' }">Create Post</router-link></li>
-                        <li v-if="!user"><router-link class="link" :to="{ name: 'Login' }">Login / Register</router-link></li>
+                        <li><router-link class="link" :to="{ name: 'Home' }" lang-tag="home">{{ lang_blog[lang]['home'] }}</router-link></li>
+                        <li><router-link class="link" :to="{ name: 'Blog' }">BLOG</router-link></li>
+                        <li v-if="admin"><router-link class="link" :to="{ name: 'CreatePost' }" lang-tag="create">{{ lang_blog[lang]['create'] }}</router-link></li>
+                        <li v-if="!user"><router-link class="link" :to="{ name: 'Login' }" lang-tag="login_register">{{ lang_blog[lang]['login_register'] }}</router-link></li>
                     </ul>
                 </div>
             </div>
             <div class="right">
-                <p>Copyright 2023 All Rights Reserved</p>
+                <p lang-tag="copyright">{{ lang_blog[lang]['copyright'] }}</p>
             </div>
         </div>
     </footer>
@@ -48,9 +48,11 @@ import Github from '../assets/icons/github.svg';
 import Twitter from '../assets/icons/twitter.svg';
 import Instagram from '../assets/icons/instagram.svg';
 import Linkedin from '../assets/icons/linkedin.svg';
+import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'Footer',
     components: { Github, Twitter, Instagram, Linkedin },
+    data() { return { lang_blog, lang: getLangBlog() }; },
     computed: {
         admin() { return this.$store.state.admin; },
         user() { return this.$store.state.user; }
@@ -62,7 +64,7 @@ export default {
 footer {
     position: relative;
     margin-top: auto;
-    padding: 100px 25px;
+    padding: 80px 25px;
     background-color: var(--blog-clr);
     z-index: 2;
 
@@ -159,8 +161,16 @@ footer {
                     flex-direction: row;
                     flex-wrap: wrap;
 
+                    li {
+                        text-align: center;
+                    }
+
                     @media (min-width: 800px) {
                         flex-direction: column;
+
+                        li {
+                            text-align: unset;
+                        }
                     }
 
                     .link {
@@ -187,6 +197,7 @@ footer {
 
         p {
             margin-top: auto;
+            text-align: center;
         }
     }
 }

@@ -11,9 +11,9 @@
         <img :src="post.photo" alt="Blog Card">
         <div class="info">
             <h4>{{ post.title }}</h4>
-            <h6>Posted on: {{ new Date(post.date).toLocaleString('en-us', { dateStyle: 'long' }) }}</h6>
+            <h6><span lang-tag="posted">{{ lang_blog[lang]['posted'] }}</span>: {{ new Date(post.date).toDateString() }}</h6>
             <div class="link">
-                View The Post
+                <span lang-tag="view">{{ lang_blog[lang]['view'] }}</span>
                 <Arrow class="arrow" />
             </div>
         </div>
@@ -24,10 +24,12 @@
 import Arrow from '../assets/icons/arrow.svg';
 import Delete from '../assets/icons/trash.svg';
 import Edit from '../assets/icons/edit.svg';
+import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'Card',
     props: ['post'],
     components: { Arrow, Delete, Edit },
+    data() { return { lang_blog, lang: getLangBlog() }; },
     methods: {
         deletePost() { this.$store.dispatch('deletePost', this.post.id); },
         editPost() { this.$router.push({ name: 'EditPost', params: { id: this.post.id } }); }

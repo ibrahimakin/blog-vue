@@ -3,25 +3,25 @@
         <CoverPreview v-show="this.$store.state.blog_photo_preview" />
         <div class="container">
             <div class="err-message" :class="{ invisible: !error }">
-                <p><span>Error:</span> {{ this.errorMsg }}</p>
+                <p><span lang-tag="error">{{ lang_blog[lang]['error'] }}</span> <span :lang-tag="errorMsg">{{ lang_blog[lang][errorMsg] }}</span></p>
             </div>
             <div class="blog-info">
-                <input type="text" placeholder="Enter Blog Title" v-model="blogTitle">
+                <input type="text" :placeholder="lang_blog[lang]['title']" lang-tag="title" v-model="blogTitle">
                 <div class="upload-file">
-                    <label for="blog-photo">Upload Cover Photo</label>
+                    <label for="blog-photo" lang-tag="upload">{{ lang_blog[lang]['upload'] }}</label>
                     <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, .jpeg" />
-                    <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blog_photo_url }">
-                        Preview Photo
+                    <button @click="openPreview" class="preview" lang-tag="preview_photo" :class="{ 'button-inactive': !this.$store.state.blog_photo_url }">
+                        {{ lang_blog[lang]['preview_photo'] }}
                     </button>
-                    <span>File Chosen: {{ this.blogPhotoName }}</span>
+                    <span><span lang-tag="file">{{ lang_blog[lang]['file'] }}</span>: {{ this.blogPhotoName }}</span>
                 </div>
             </div>
             <div class="editor">
                 <vue-editor :editorOptions="editorSettings" v-model="blogHTML" useCustomImageHandler @image-added="imageHandler" />
             </div>
             <div class="blog-actions">
-                <button @click="uploadBlog">Publish Blog</button>
-                <router-link class="router-button" :to="{ name: 'PreviewPost' }">Post Preview</router-link>
+                <button @click="uploadBlog" lang-tag="publish">{{ lang_blog[lang]['publish'] }}</button>
+                <router-link class="router-button" :to="{ name: 'PreviewPost' }" lang-tag="preview">{{ lang_blog[lang]['preview'] }}</router-link>
             </div>
         </div>
     </div>
@@ -37,13 +37,27 @@ import ImageResize from 'quill-image-resize-module-plus';
 import CoverPreview from '../components/CoverPreview.vue';
 import Loading from '../components/Loading.vue';
 import db, { app } from '../firebase/init';
+import { lang_blog, getLangBlog } from '../lang';
 window.Quill = Quill;
 Quill.register('modules/imageResize', ImageResize);
 export default {
     name: 'CreatePost',
     components: { VueEditor, CoverPreview, Loading },
+    beforeMount() {
+        if (this.$store.state.update) {
+            this.$store.commit('setBlogState', {
+                html: 'Write your blog here...',
+                photo_name: '',
+                photo: null,
+                title: ''
+            });
+            this.$store.state.update = false;
+        }
+    },
     data() {
         return {
+            lang: getLangBlog(),
+            lang_blog,
             file: null,
             error: null,
             errorMsg: null,
@@ -101,10 +115,10 @@ export default {
                         .catch(() => this.loading = false);
                     return;
                 }
-                this.errorMsg = 'Please ensure you uploaded a cover photo.';
+                this.errorMsg = 'ensure_cover';
             }
             else {
-                this.errorMsg = 'Please ensure Blog Title & Blog Post has been filled.';
+                this.errorMsg = 'ensure';
             }
             this.error = true;
             setTimeout(() => this.error = false, 5000);
@@ -133,6 +147,7 @@ export default {
 
     .router-button {
         margin-top: 5px;
+        font-size: 13px;
         text-decoration: none;
     }
 
@@ -165,7 +180,7 @@ export default {
             font-size: 14px;
         }
 
-        span {
+        span:first-child {
             font-weight: 600;
         }
     }
@@ -177,13 +192,14 @@ export default {
         margin-bottom: 10px;
 
         input:first-child {
+            font-size: 24px;
+            padding: 5px 8px 5px 0;
             width: 100%;
-            margin-top: 5px;
+            margin-top: 3px;
             max-width: 300px;
         }
 
         input {
-            padding: 10px 4px;
             border: none;
             border-bottom: 1px solid var(--blog-clr);
 
@@ -193,15 +209,10 @@ export default {
             }
         }
 
-        button,
-        label {
-            text-transform: initial;
-        }
-
         .upload-file {
             flex: 1;
             position: relative;
-            margin-top: 5px;
+            margin-top: 9px;
             display: flex;
 
             input {
@@ -210,10 +221,9 @@ export default {
 
             .preview {
                 margin-left: 16px;
-                text-transform: initial;
             }
 
-            span {
+            >span {
                 font-size: 12px;
                 margin-left: 16px;
                 align-self: center;
@@ -222,7 +232,7 @@ export default {
     }
 
     .editor {
-        height: 65vh;
+        height: 70vh;
         display: flex;
         flex-direction: column;
 

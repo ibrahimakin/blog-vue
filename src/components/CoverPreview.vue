@@ -15,14 +15,16 @@ export default {
     computed: { blogCoverPhoto() { return this.$store.state.blog_photo_url; } }
 };
 </script>
-  
+
 <style lang="scss" scoped>
 .modal {
     .modal-content {
         border-radius: 12px;
         position: relative;
-        height: 400px;
-        width: 600px;
+        height: 100%;
+        width: 100%;
+        max-width: 600px;
+        max-height: 400px;
         padding: 50px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
 

@@ -1,43 +1,50 @@
 <template>
     <div class="profile">
         <div class="container">
-            <h2>Account Settings</h2>
+            <h2 lang-tag="account_settings">{{ lang_blog[lang]['account_settings'] }}</h2>
             <div class="profile-info">
                 <div class="initials">{{ $store.state.initials }}</div>
                 <div class="admin-badge" v-if="this.$store.state.admin">
                     <Admin class="icon" />
-                    <span>admin</span>
+                    <span lang-tag="admin_t">{{ lang_blog[lang]['admin_t'] }}</span>
                 </div>
                 <div class="input">
-                    <label for="firstname">First Name:</label>
+                    <label for="firstname" lang-tag="first_name_t">{{ lang_blog[lang]['first_name_t'] }}</label>
                     <input type="text" id="firstname" v-model="firstname" />
                 </div>
                 <div class="input">
-                    <label for="lastname">Last Name:</label>
+                    <label for="lastname" lang-tag="last_name_t">{{ lang_blog[lang]['last_name_t'] }}</label>
                     <input type="text" id="lastname" v-model="lastname" />
                 </div>
                 <div class="input">
-                    <label for="username">Username:</label>
+                    <label for="username" lang-tag="username_t">{{ lang_blog[lang]['username_t'] }}</label>
                     <input type="text" id="username" v-model="username" />
                 </div>
                 <div class="input">
-                    <label for="email">Email:</label>
-                    <input disabled type="text" id="email" v-model="email" />
+                    <label for="email" lang-tag="email">{{ lang_blog[lang]['email'] }}</label>
+                    <input disabled type="email" id="email" v-model="email" />
                 </div>
-                <button @click="updateProfile">Save Changes</button>
+                <button @click="updateProfile" lang-tag="save">{{ lang_blog[lang]['save'] }}</button>
             </div>
         </div>
-        <Modal v-if="modalActive" :message="modalMessage" v-on:close-modal="close" />
+        <Modal v-if="modalActive" :message="modalMessage" v-on:close-modal="close" lang_tag="saved" />
     </div>
 </template>
 
 <script>
 import Admin from '../assets/icons/user-crown.svg';
 import Modal from '../components/Modal.vue';
+import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'Profile',
     components: { Admin, Modal },
-    data() { return { modalMessage: 'Changes were saved!', modalActive: null }; },
+    data() {
+        const lang = getLangBlog();
+        return {
+            lang_blog, lang, modalActive: null,
+            modalMessage: lang_blog[lang]['saved']
+        };
+    },
     methods: {
         updateProfile() {
             this.$store.dispatch('updateUser');
@@ -110,7 +117,6 @@ export default {
                 background-color: var(--blog-clr);
                 margin: 16px 0;
                 text-align: center;
-                text-transform: capitalize;
 
                 .icon {
                     width: 14px;
