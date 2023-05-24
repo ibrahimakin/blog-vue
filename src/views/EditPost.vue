@@ -1,6 +1,6 @@
 <template>
     <Loading v-if="!this.loaded" />
-    <div v-else-if="blog.notfound" class="post-view">
+    <div v-else-if="blog?.notfound" class="post-view">
         <div class="container">
             <h2 class="title">{{ blog.title }}</h2>
         </div>
@@ -9,25 +9,25 @@
         <CoverPreview v-show="this.$store.state.blog_photo_preview" />
         <div class="container">
             <div class="err-message" :class="{ invisible: !info }">
-                <p>{{ this.infoMsg }}</p>
+                <p :lang-tag="infoMsg">{{ lang_blog[lang][infoMsg] }}&nbsp;</p>
             </div>
             <div class="blog-info">
-                <input type="text" placeholder="Enter Blog Title" v-model="blogTitle">
+                <input type="text" :placeholder="lang_blog[lang]['title']" lang-tag="title" v-model="blogTitle">
                 <div class="upload-file">
-                    <label for="blog-photo">Upload Cover Photo</label>
+                    <label for="blog-photo" lang-tag="upload">{{ lang_blog[lang]['upload'] }}</label>
                     <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, .jpeg" />
-                    <button @click="openPreview" class="preview" :class="{ 'button-inactive': !this.$store.state.blog_photo_url }">
-                        Preview Photo
+                    <button @click="openPreview" class="preview" lang-tag="preview_photo" :class="{ 'button-inactive': !this.$store.state.blog_photo_url }">
+                        {{ lang_blog[lang]['preview_photo'] }}
                     </button>
-                    <span>File Chosen: {{ this.blogPhotoName }}</span>
+                    <span><span lang-tag="file">{{ lang_blog[lang]['file'] }}</span>: {{ this.blogPhotoName }}</span>
                 </div>
             </div>
             <div class="editor">
                 <vue-editor :editorOptions="editorSettings" v-model="blogHTML" useCustomImageHandler @image-added="imageHandler" />
             </div>
             <div class="blog-actions">
-                <button @click="updateBlog">Save Changes</button>
-                <router-link class="router-button" :to="{ name: 'PreviewPost' }">Preview Changes</router-link>
+                <button @click="updateBlog" lang-tag="save">{{ lang_blog[lang]['save'] }}</button>
+                <router-link class="router-button" :to="{ name: 'PreviewPost' }" lang-tag="preview">{{ lang_blog[lang]['preview'] }}</router-link>
             </div>
         </div>
     </div>
@@ -38,18 +38,17 @@
 import { ref, getStorage, getDownloadURL, uploadBytes, uploadBytesResumable } from 'firebase/storage';
 import { doc, updateDoc } from 'firebase/firestore';
 import { VueEditor } from 'vue3-editor';
-import Quill from 'quill';
-import ImageResize from 'quill-image-resize-module-plus';
 import CoverPreview from '../components/CoverPreview.vue';
 import Loading from '../components/Loading.vue';
 import db, { app } from '../firebase/init';
-window.Quill = Quill;
-Quill.register('modules/imageResize', ImageResize);
+import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'EditPost',
     components: { VueEditor, CoverPreview, Loading },
     data() {
         return {
+            lang: getLangBlog(),
+            lang_blog,
             file: null,
             info: null,
             blog: null,
@@ -65,6 +64,7 @@ export default {
         };
     },
     beforeRouteUpdate(to, from, next) {
+        if (from.name === 'EditPost') this.$store.state.update = false;
         this.routeID = to.params.id;
         this.getPost();
         next();
@@ -73,22 +73,17 @@ export default {
         this.routeID = this.$route.params.id;
         this.getPost();
     },
-    beforeUnmount() {
-        this.$store.commit('setBlogState', {
-            html: 'Write your blog here...',
-            photo_name: '',
-            photo: null,
-            title: ''
-        });
-    },
+    beforeUnmount() { this.$store.state.update = true; },
     methods: {
         async getPost() {
-            let m_blog = this.$store.state.blog_posts.find(post => post.id === this.routeID);
-            if (!m_blog) m_blog = { id: this.routeID };
-            await this.$store.dispatch('getPost', m_blog);
-            if (!m_blog.notfound) this.$store.commit('setBlogState', m_blog);
-            document.title = 'Edit | ' + m_blog.title;
-            this.blog = m_blog;
+            if (!this.$store.state.update) {
+                let m_blog = this.$store.state.blog_posts.find(post => post.id === this.routeID);
+                if (!m_blog) m_blog = { id: this.routeID };
+                await this.$store.dispatch('getPost', m_blog);
+                if (!m_blog.notfound) this.$store.commit('setBlogState', m_blog);
+                document.title = 'Edit | ' + m_blog.title;
+                this.blog = m_blog;
+            }
             this.loaded = true;
         },
         fileChange() {
@@ -103,16 +98,12 @@ export default {
             const storage = getStorage(app);
             const storageRef = ref(storage, `documents/BlogPostPhotos/${file.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
-            uploadTask.on('state_changed',
-                () => { },
-                () => { },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-                        editor.insertEmbed(cursorLocation, 'image', downloadURL);
-                        resetUploader();
-                    });
-                }
-            );
+            uploadTask.on('state_changed', () => { }, () => { }, () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+                    editor.insertEmbed(cursorLocation, 'image', downloadURL);
+                    resetUploader();
+                });
+            });
         },
         async updateBlog() {
             if (this.blogTitle.length != 0 && this.blogHTML.length != 0) {
@@ -148,12 +139,12 @@ export default {
                     await this.$store.dispatch('updatePost', this.routeID);
                     this.loading = false;
                 }
-                this.infoMsg = 'Changes Saved.';
+                this.infoMsg = 'saved';
                 this.info = true;
                 setTimeout(() => this.info = false, 5000);
                 return;
             }
-            this.infoMsg = 'Error: Please ensure Blog Title & Blog Post has been filled.';
+            this.infoMsg = 'ensure';
             this.info = true;
             setTimeout(() => this.info = false, 5000);
             return;

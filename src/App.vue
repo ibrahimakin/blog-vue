@@ -96,7 +96,6 @@ side-nav {
 .link {
     cursor: pointer;
     text-decoration: none;
-    text-transform: uppercase;
     color: black;
 }
 
@@ -126,7 +125,6 @@ button,
     border-radius: 20px;
     border: none;
     color: #fff;
-    text-transform: uppercase;
 
     &:focus {
         outline: none;

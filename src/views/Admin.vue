@@ -1,23 +1,24 @@
 <template>
     <div class="admin">
         <div class="container">
-            <h2>Administration</h2>
+            <h2 lang-tag="administration">{{ lang_blog[lang]['administration'] }}</h2>
             <div class="admin-info">
-                <h2>Add Admin</h2>
+                <h2 lang-tag="add">{{ lang_blog[lang]['add'] }}</h2>
                 <div class="input">
-                    <input placeholder="Enter user email to make them an admin" type="text" id="addAdmins" v-model="adminEmail" />
+                    <input :placeholder="lang_blog[lang]['enter']" lang-tag="enter" type="text" id="addAdmins" v-model="adminEmail" />
                 </div>
                 <span>{{ this.functionMsg }}</span>
-                <button @click="addAdmin" class="button">Submit</button>
+                <button @click="addAdmin" class="button" lang-tag="submit">{{ lang_blog[lang]['submit'] }}</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'Admin',
-    data() { return { adminEmail: '', functionMsg: null } },
+    data() { return { lang_blog, lang: getLangBlog(), adminEmail: '', functionMsg: null } },
     methods: { addAdmin() { } }
 };
 </script>

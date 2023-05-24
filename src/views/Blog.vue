@@ -3,7 +3,7 @@
         <div class="blog-cards container">
             <div class="toggle-container">
                 <div class="toggle-edit" v-if="this.$store.state.admin">
-                    <span>Toggle Editing Post</span>
+                    <span lang-tag="toggle">{{ lang_blog[lang]['toggle'] }}</span>
                     <input type="checkbox" v-model="edit">
                 </div>
             </div>
@@ -14,9 +14,11 @@
 
 <script>
 import Card from '../components/Card.vue';
+import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'Blog',
     components: { Card },
+    data() { return { lang_blog, lang: getLangBlog() }; },
     computed: {
         blogCards() { return this.$store.state.blog_posts; },
         edit: {
