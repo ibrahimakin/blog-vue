@@ -1,37 +1,30 @@
 <template>
-    <div class="auth-nav">
-        <div class="auth-branding">
-            <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
-        </div>
-    </div>
-    <div class="auth-background">
-        <div class="form-wrap">
-            <form class="login">
-                <p class="login-register">
-                    <span lang-tag="account">{{ lang_blog[lang]['account'] }}</span>&nbsp;
-                    <RouterLink class="router-link" :to="{ name: 'Register' }" lang-tag="register">
-                        {{ lang_blog[lang]['register'] }}
-                    </RouterLink>
-                </p>
-                <h2 lang-tag="login_blog">{{ lang_blog[lang]['login_blog'] }}</h2>
-                <div class="inputs">
-                    <div class="input">
-                        <input type="email" :placeholder="lang_blog[lang]['email']" v-model="email" lang-tag="email">
-                        <email class="icon" />
-                    </div>
-                    <div class="input">
-                        <input type="password" :placeholder="lang_blog[lang]['password']" v-model="password" lang-tag="password">
-                        <password class="icon" />
-                    </div>
-                    <div v-show="error" class="error">{{ this.errorMsg }}</div>
-                </div>
-                <RouterLink class="forgot-password" :to="{ name: 'ForgotPassword' }" lang-tag="forgot">
-                    {{ lang_blog[lang]['forgot'] }}
+    <div class="form-wrap">
+        <form class="login">
+            <p class="login-register">
+                <span lang-tag="account">{{ lang_blog[lang]['account'] }}</span>&nbsp;
+                <RouterLink class="router-link" :to="{ name: 'Register' }" lang-tag="register">
+                    {{ lang_blog[lang]['register'] }}
                 </RouterLink>
-                <button @click.prevent="signIn" lang-tag="sign_in">{{ lang_blog[lang]['sign_in'] }}</button>
-            </form>
-            <div class="background"></div>
-        </div>
+            </p>
+            <h2 lang-tag="login_blog">{{ lang_blog[lang]['login_blog'] }}</h2>
+            <div class="inputs">
+                <div class="input">
+                    <input type="email" :placeholder="lang_blog[lang]['email']" v-model="email" lang-tag="email">
+                    <email class="icon" />
+                </div>
+                <div class="input">
+                    <input type="password" :placeholder="lang_blog[lang]['password']" v-model="password" lang-tag="password">
+                    <password class="icon" />
+                </div>
+                <div v-show="error" class="error">{{ this.errorMsg }}</div>
+            </div>
+            <RouterLink class="forgot-password" :to="{ name: 'ForgotPassword' }" lang-tag="forgot">
+                {{ lang_blog[lang]['forgot'] }}
+            </RouterLink>
+            <button @click.prevent="signIn" lang-tag="sign_in">{{ lang_blog[lang]['sign_in'] }}</button>
+        </form>
+        <div class="background"></div>
     </div>
 </template>
 
@@ -61,44 +54,6 @@ export default {
 </script>
 
 <style lang="scss">
-.auth-nav {
-    display: flex;
-    justify-content: center;
-    position: absolute;
-    padding: 0 25px;
-    width: 100%;
-    top: 0;
-
-    .auth-branding {
-        width: 100%;
-        max-width: calc(1440px + 1%);
-
-        .header {
-            position: absolute;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 24px;
-            color: #000;
-            margin-top: 15px;
-            z-index: 1;
-        }
-    }
-
-    @media screen and (max-width: 750px) {
-        .auth-branding .header {
-            margin-top: 10px;
-        }
-    }
-}
-
-.auth-background {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-image: url(/assets/images/blog/background.png);
-    overflow: auto;
-}
-
 .form-wrap {
     display: flex;
     justify-content: center;
@@ -110,6 +65,8 @@ export default {
 
         .router-link {
             color: #000;
+            position: relative;
+            z-index: 2;
         }
     }
 
@@ -123,7 +80,7 @@ export default {
         background-color: #fff;
         flex: 2;
 
-        @media (min-width: 940px) {
+        @media (min-width: 1050px) {
             padding: 0 50px;
             flex: 1;
         }
