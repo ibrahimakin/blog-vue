@@ -117,8 +117,9 @@ export default {
 
 <style lang="scss" scoped>
 header {
-    background-color: #fff;
     padding: 0 25px;
+    background-color: #fff;
+    transition: box-shadow 1s linear;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
     position: sticky;
     z-index: 2;
@@ -388,7 +389,7 @@ header {
     }
 
     @media screen and (max-width: 450px) {
-        & {
+        &:not(.auth) {
             top: var(--topnav-height);
         }
     }

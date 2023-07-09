@@ -61,7 +61,8 @@ export default {
     width: 100%;
 
     .login-register {
-        margin-bottom: 32px;
+        margin: 45px 0 32px 0;
+        text-align: center;
 
         .router-link {
             color: #000;
@@ -130,6 +131,7 @@ export default {
 
         .forgot-password {
             text-decoration: none;
+            text-align: center;
             color: #000;
             cursor: pointer;
             font-size: 14px;
@@ -140,6 +142,10 @@ export default {
             &:hover {
                 border-color: var(--blog-clr);
             }
+        }
+
+        button {
+            margin-bottom: 45px;
         }
     }
 
