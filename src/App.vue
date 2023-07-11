@@ -5,15 +5,15 @@ import Footer from './components/Footer.vue';
 </script>
 
 <template>
-    <Navigation v-if="!navigation" />
+    <Navigation :auth="auth" />
     <RouterView />
-    <Footer v-if="!navigation" />
+    <Footer v-if="!auth" />
 </template>
 
 <script>
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 export default {
-    data() { return { navigation: null }; },
+    data() { return { auth: null }; },
     created() {
         onAuthStateChanged(getAuth(), user => {
             this.$store.commit('updateUser', user);
@@ -24,10 +24,12 @@ export default {
     methods: {
         checkRoute() {
             if (['Login', 'Register', 'ForgotPassword'].includes(this.$route.name)) {
-                this.navigation = true;
+                document.getElementById('root').style.backgroundColor = 'unset';
+                this.auth = true;
                 return;
             }
-            this.navigation = false;
+            document.getElementById('root').removeAttribute('style');
+            this.auth = false;
         }
     },
     watch: { $route() { this.checkRoute(); } }
@@ -43,12 +45,13 @@ export default {
     --nav-clr: var(--blog-clr);
 }
 
-#topnav {
-    background-color: var(--blog-clr);
+body {
+    background-image: url(/assets/images/blog/background.png);
+    background-size: cover;
 }
 
-side-nav {
-    width: var(--sidenav-width);
+#topnav {
+    background-color: #fff;
 }
 
 .filled {

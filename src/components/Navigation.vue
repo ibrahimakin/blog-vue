@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header :class="{ 'auth': auth }">
         <nav class="container">
             <div class="branding">
                 <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
@@ -39,13 +39,13 @@
                 </div>
             </div>
         </nav>
-        <div @click.stop="toggleMobileNav" v-show="mobile" ref="menu" :class="{ 'open': mobileNav }" class="con">
+        <div @click.stop="toggleMobileNav" v-show="mobile && !auth" ref="menu" :class="{ 'open': mobileNav }" class="con">
             <div class="bar arrow-top"></div>
             <div class="bar"></div>
             <div class="bar arrow-bottom"></div>
         </div>
         <transition name="mobile-nav">
-            <div class="mobile-nav" v-show="mobileNav">
+            <div class="mobile-nav" v-show="mobileNav && !auth">
                 <div v-if="user" class="profile-menu">
                     <div class="info">
                         <p class="initials">{{ this.$store.state.initials }}</p>
@@ -77,6 +77,7 @@ import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'Navigation',
     components: { User, Admin, SignOut },
+    props: ['auth'],
     data() {
         return {
             lang_blog, lang: getLangBlog(), mobile: null, mobileNav: null,
@@ -93,7 +94,7 @@ export default {
             }
             if (this.mobileNav) {
                 let isClosest = e.target.closest('.mobile-nav');
-                if (!isClosest && e.target !== this.$refs.menu) this.mobileNav = false;
+                if (this.auth || !isClosest && e.target !== this.$refs.menu) this.mobileNav = false;
             }
         });
     },
@@ -116,12 +117,34 @@ export default {
 
 <style lang="scss" scoped>
 header {
-    background-color: #fff;
     padding: 0 25px;
+    background-color: #fff;
+    transition: box-shadow 1s linear;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
     position: sticky;
     z-index: 2;
     top: 0;
+
+    &::before {
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: var(--sidenav-width);
+        left: calc(-1 * var(--sidenav-width));
+        box-shadow: 15px -15px 0 10px #fff;
+        border-top-right-radius: 100%;
+    }
+
+    &.auth {
+        background-color: unset;
+        position: absolute;
+        box-shadow: none;
+        width: 100%;
+
+        .routers, .con {
+            visibility: hidden;
+        }
+    }
 
     .container {
         justify-content: space-between;
@@ -366,7 +389,7 @@ header {
     }
 
     @media screen and (max-width: 450px) {
-        & {
+        &:not(.auth) {
             top: var(--topnav-height);
         }
     }

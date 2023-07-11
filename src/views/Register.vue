@@ -1,46 +1,39 @@
 <template>
-    <div class="auth-nav">
-        <div class="auth-branding">
-            <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
-        </div>
-    </div>
-    <div class="auth-background">
-        <div class="form-wrap">
-            <form class="register">
-                <p class="login-register">
-                    <span lang-tag="already">{{ lang_blog[lang]['already'] }}</span>&nbsp;
-                    <RouterLink class="router-link" :to="{ name: 'Login' }" lang-tag="login">
-                        {{ lang_blog[lang]['login'] }}
-                    </RouterLink>
-                </p>
-                <h2 lang-tag="create_account">{{ lang_blog[lang]['create_account'] }}</h2>
-                <div class="inputs">
-                    <div class="input">
-                        <input type="text" :placeholder="lang_blog[lang]['first_name']" v-model="firstName" lang-tag="first_name">
-                        <user class="icon" />
-                    </div>
-                    <div class="input">
-                        <input type="text" :placeholder="lang_blog[lang]['last_name']" v-model="lastName" lang-tag="last_name">
-                        <user class="icon" />
-                    </div>
-                    <div class="input">
-                        <input type="text" :placeholder="lang_blog[lang]['username']" v-model="username" lang-tag="username">
-                        <user class="icon" />
-                    </div>
-                    <div class="input">
-                        <input type="email" :placeholder="lang_blog[lang]['email']" v-model="email" lang-tag="email">
-                        <email class="icon" />
-                    </div>
-                    <div class="input">
-                        <input type="password" :placeholder="lang_blog[lang]['password']" v-model="password" lang-tag="password">
-                        <password class="icon" />
-                    </div>
-                    <div v-show="error" class="error" :lang-tag="lang_tag">{{ this.errorMsg }}</div>
+    <div class="form-wrap">
+        <form class="register">
+            <p class="login-register">
+                <span lang-tag="already">{{ lang_blog[lang]['already'] }}</span>&nbsp;
+                <RouterLink class="router-link" :to="{ name: 'Login' }" lang-tag="login">
+                    {{ lang_blog[lang]['login'] }}
+                </RouterLink>
+            </p>
+            <h2 lang-tag="create_account">{{ lang_blog[lang]['create_account'] }}</h2>
+            <div class="inputs">
+                <div class="input">
+                    <input type="text" :placeholder="lang_blog[lang]['first_name']" v-model="firstName" lang-tag="first_name">
+                    <user class="icon" />
                 </div>
-                <button @click.prevent="register" lang-tag="sign_up">{{ lang_blog[lang]['sign_up'] }}</button>
-            </form>
-            <div class="background"></div>
-        </div>
+                <div class="input">
+                    <input type="text" :placeholder="lang_blog[lang]['last_name']" v-model="lastName" lang-tag="last_name">
+                    <user class="icon" />
+                </div>
+                <div class="input">
+                    <input type="text" :placeholder="lang_blog[lang]['username']" v-model="username" lang-tag="username">
+                    <user class="icon" />
+                </div>
+                <div class="input">
+                    <input type="email" :placeholder="lang_blog[lang]['email']" v-model="email" lang-tag="email">
+                    <email class="icon" />
+                </div>
+                <div class="input">
+                    <input type="password" :placeholder="lang_blog[lang]['password']" v-model="password" lang-tag="password">
+                    <password class="icon" />
+                </div>
+                <div v-show="error" class="error" :lang-tag="lang_tag">{{ this.errorMsg }}</div>
+            </div>
+            <button @click.prevent="register" lang-tag="sign_up">{{ lang_blog[lang]['sign_up'] }}</button>
+        </form>
+        <div class="background"></div>
     </div>
 </template>
 
