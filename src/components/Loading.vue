@@ -17,11 +17,15 @@ export default {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, .5);
-    position: absolute;
+    position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 3;
+
+    @media screen and (max-width: 800px) and (min-width: 450px) {
+        padding-left: var(--sidenav-width);
+    }
 
     @keyframes spin {
         to {

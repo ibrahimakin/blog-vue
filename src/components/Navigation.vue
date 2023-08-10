@@ -393,5 +393,19 @@ header {
             top: var(--topnav-height);
         }
     }
+
+    @media screen and (max-height: 450px) {
+        nav {
+            padding: 5px 0;
+
+            .profile .profile-menu {
+                top: 45px;
+            }
+        }
+
+        .con {
+            top: 6px;
+        }
+    }
 }
 </style>
