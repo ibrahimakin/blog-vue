@@ -32,6 +32,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.blog-card-wrap {
+    flex: 1;
+}
+
 .blog-cards {
     position: relative;
 
