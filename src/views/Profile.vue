@@ -72,6 +72,8 @@ export default {
 
 <style lang="scss" scoped>
 .profile {
+    padding-left: var(--sidenav-width);
+
     .container {
         max-width: 1000px;
         padding: 60px 25px;

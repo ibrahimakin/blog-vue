@@ -68,6 +68,10 @@ export default {
                 padding: 0 24px;
             }
 
+            @media (max-width: 1200px) and (min-width: 450px) {
+                padding-left: var(--sidenav-width);
+            }
+
             h2 {
                 font-size: 32px;
                 font-weight: 300;
@@ -142,6 +146,12 @@ export default {
     &:nth-child(even) {
         .blog-content {
             order: 2;
+
+            @media (min-width: 700px) {
+                div {
+                    padding-left: 24px;
+                }
+            }
         }
 
         .blog-photo {

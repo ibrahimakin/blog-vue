@@ -71,6 +71,7 @@ footer {
     .container {
         display: flex;
         flex-direction: column;
+        padding-left: var(--sidenav-width);
         gap: 32px;
 
         @media (min-width: 800px) {

@@ -57,6 +57,7 @@ export default {
 .form-wrap {
     display: flex;
     justify-content: center;
+    padding-left: var(--sidenav-width);
     min-height: 100%;
     width: 100%;
 
@@ -78,7 +79,6 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: #fff;
         flex: 2;
 
         @media (min-width: 1050px) {
@@ -155,6 +155,8 @@ export default {
         flex: 2;
         width: 100%;
         overflow: hidden;
+        background-image: url(/assets/images/blog/background.png);
+        background-size: cover;
 
         &::before {
             content: '';

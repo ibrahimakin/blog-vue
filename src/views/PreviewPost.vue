@@ -21,6 +21,8 @@ export default {
 
 <style lang="scss">
 .post-view {
+    padding-left: var(--sidenav-width);
+
     .container {
         max-width: 1000px;
         padding: 60px 25px;

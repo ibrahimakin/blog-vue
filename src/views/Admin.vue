@@ -25,6 +25,8 @@ export default {
 
 <style lang="scss" scoped>
 .admin {
+    padding-left: var(--sidenav-width);
+
     .container {
         max-width: 1000px;
         padding: 60px 25px;

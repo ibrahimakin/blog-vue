@@ -24,11 +24,9 @@ export default {
     methods: {
         checkRoute() {
             if (['Login', 'Register', 'ForgotPassword'].includes(this.$route.name)) {
-                document.getElementById('root').style.backgroundColor = 'unset';
                 this.auth = true;
                 return;
             }
-            document.getElementById('root').removeAttribute('style');
             this.auth = false;
         }
     },
@@ -40,14 +38,13 @@ export default {
 @import url(https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap);
 
 :root {
+    --bg-clr: #fff;
     --blog-clr: #303030;
-    --bg-clr: var(--blog-clr);
     --nav-clr: var(--blog-clr);
 }
 
-body {
-    background-image: url(/assets/images/blog/background.png);
-    background-size: cover;
+side-nav {
+    width: 0;
 }
 
 #topnav {
@@ -55,7 +52,7 @@ body {
 }
 
 .filled {
-    border: 1px solid var(--bg-clr);
+    border: 1px solid var(--blog-clr);
 }
 
 .filled::before {
@@ -69,6 +66,10 @@ body {
 }
 
 @media screen and (max-width: 450px) {
+    :root {
+        --sidenav-width: 0;
+    }
+
     #root .mobile-nav {
         top: var(--topnav-height);
     }
@@ -83,7 +84,6 @@ body {
 #root {
     display: flex;
     flex-direction: column;
-    background-color: #fff;
     position: relative;
     font-size: 15px;
     text-rendering: optimizeLegibility;
@@ -183,6 +183,10 @@ button,
 .blog-card-wrap {
     padding: 80px 16px;
     background-color: #f1f1f1;
+
+    .container {
+        padding-left: var(--sidenav-width);
+    }
 
     .blog-cards {
         display: grid;
