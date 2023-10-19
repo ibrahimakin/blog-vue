@@ -125,16 +125,6 @@ header {
     z-index: 2;
     top: 0;
 
-    &::before {
-        content: '';
-        position: absolute;
-        height: 100%;
-        width: var(--sidenav-width);
-        left: calc(-1 * var(--sidenav-width));
-        box-shadow: 15px -15px 0 10px #fff;
-        border-top-right-radius: 100%;
-    }
-
     &.auth {
         background-color: unset;
         position: absolute;
@@ -147,6 +137,7 @@ header {
     }
 
     .container {
+        padding-left: var(--sidenav-width);
         justify-content: space-between;
     }
 

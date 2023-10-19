@@ -44,15 +44,12 @@ export default {
     name: 'CreatePost',
     components: { VueEditor, CoverPreview, Loading },
     beforeMount() {
-        if (this.$store.state.update) {
-            this.$store.commit('setBlogState', {
-                html: 'Write your blog here...',
-                photo_name: '',
-                photo: null,
-                title: ''
-            });
-            this.$store.state.update = false;
-        }
+        this.$store.commit('setBlogState', {
+            html: 'Write your blog here...',
+            photo_name: '',
+            photo: null,
+            title: ''
+        });
     },
     data() {
         return {
@@ -143,6 +140,7 @@ export default {
 <style lang="scss">
 .create-post {
     position: relative;
+    padding-left: var(--sidenav-width);
     height: 100%;
 
     .router-button {

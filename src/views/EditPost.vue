@@ -64,7 +64,7 @@ export default {
         };
     },
     beforeRouteUpdate(to, from, next) {
-        if (from.name === 'EditPost') this.$store.state.update = false;
+        if (from.name === 'EditPost') this.loaded = false;
         this.routeID = to.params.id;
         this.getPost();
         next();
@@ -73,17 +73,14 @@ export default {
         this.routeID = this.$route.params.id;
         this.getPost();
     },
-    beforeUnmount() { this.$store.state.update = true; },
     methods: {
         async getPost() {
-            if (!this.$store.state.update) {
-                let m_blog = this.$store.state.blog_posts.find(post => post.id === this.routeID);
-                if (!m_blog) m_blog = { id: this.routeID };
-                await this.$store.dispatch('getPost', m_blog);
-                if (!m_blog.notfound) this.$store.commit('setBlogState', m_blog);
-                document.title = 'Edit | ' + m_blog.title;
-                this.blog = m_blog;
-            }
+            let m_blog = this.$store.state.blog_posts.find(post => post.id === this.routeID);
+            if (!m_blog) m_blog = { id: this.routeID };
+            await this.$store.dispatch('getPost', m_blog);
+            if (!m_blog.notfound) this.$store.commit('setBlogState', m_blog);
+            document.title = 'Edit | ' + m_blog.title;
+            this.blog = m_blog;
             this.loaded = true;
         },
         fileChange() {

@@ -61,6 +61,8 @@ export default {
 }
 
 .updates {
+    padding-left: var(--sidenav-width);
+
     .container {
         padding: 100px 25px;
         display: flex;
