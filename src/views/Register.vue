@@ -10,7 +10,7 @@
             <h2 lang-tag="create_account">{{ lang_blog[lang]['create_account'] }}</h2>
             <div class="inputs">
                 <div class="input">
-                    <input type="text" :placeholder="lang_blog[lang]['first_name']" v-model="firstName" lang-tag="first_name">
+                    <input type="text" :placeholder="lang_blog[lang]['first_name']" v-model="firstName" lang-tag="first_name" ref="input">
                     <user class="icon" />
                 </div>
                 <div class="input">
@@ -62,6 +62,7 @@ export default {
             error: null
         };
     },
+    mounted() { this.$refs.input.focus(); },
     methods: {
         async register() {
             if (this.email !== '' &&

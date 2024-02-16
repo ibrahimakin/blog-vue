@@ -10,7 +10,7 @@
             <h2 lang-tag="login_blog">{{ lang_blog[lang]['login_blog'] }}</h2>
             <div class="inputs">
                 <div class="input">
-                    <input type="email" :placeholder="lang_blog[lang]['email']" v-model="email" lang-tag="email">
+                    <input type="email" :placeholder="lang_blog[lang]['email']" v-model="email" lang-tag="email" ref="input">
                     <email class="icon" />
                 </div>
                 <div class="input">
@@ -37,6 +37,7 @@ export default {
     name: 'Login',
     components: { email, password },
     data() { return { lang_blog, lang: getLangBlog(), email: '', password: '', errorMsg: '', error: null }; },
+    mounted() { this.$refs.input.focus(); },
     methods: {
         signIn() {
             const auth = getAuth();
@@ -135,7 +136,7 @@ export default {
             color: #000;
             cursor: pointer;
             font-size: 14px;
-            margin: 16px 0;
+            margin: 16px 0 0;
             border-bottom: 1px solid transparent;
             transition: .5s ease border-color;
 

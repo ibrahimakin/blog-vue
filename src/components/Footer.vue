@@ -11,8 +11,8 @@
                             </a>
                         </li>
                         <li>
-                            <a title="Twitter" href="https://twitter.com/iibrahimAKIN" target="_blank">
-                                <Twitter class="svg-icon" />
+                            <a title="X" href="https://x.com/iibrahimAKIN" target="_blank">
+                                <X class="svg-icon" />
                             </a>
                         </li>
                         <li>
@@ -45,13 +45,13 @@
 
 <script>
 import Github from '../assets/icons/github.svg';
-import Twitter from '../assets/icons/twitter.svg';
+import X from '../assets/icons/x.svg';
 import Instagram from '../assets/icons/instagram.svg';
 import Linkedin from '../assets/icons/linkedin.svg';
 import { lang_blog, getLangBlog } from '../lang';
 export default {
     name: 'Footer',
-    components: { Github, Twitter, Instagram, Linkedin },
+    components: { Github, X, Instagram, Linkedin },
     data() { return { lang_blog, lang: getLangBlog() }; },
     computed: {
         admin() { return this.$store.state.admin; },
@@ -124,6 +124,7 @@ footer {
                 flex: 1;
 
                 @media (min-width: 800px) {
+                    align-items: baseline;
                     gap: 0;
                 }
             }
