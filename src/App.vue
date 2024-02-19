@@ -60,8 +60,9 @@ side-nav {
 }
 
 #collapse:hover+.filled::before,
-.pin-menu:hover+.filled::before,
-.filled:hover::before {
+.menu.hvr>.pin-menu:hover+.filled::before,
+:not(.menu)>.filled:hover::before,
+.menu.hvr>.filled:hover::before {
     background-color: rgba(48, 48, 48, .7);
 }
 
@@ -76,8 +77,6 @@ side-nav {
 }
 
 * {
-    margin: 0;
-    padding: 0;
     font-family: "Quicksand", sans-serif;
 }
 
@@ -99,7 +98,7 @@ side-nav {
 .link {
     cursor: pointer;
     text-decoration: none;
-    color: black;
+    color: #000;
 }
 
 .link-light {
@@ -204,6 +203,16 @@ button,
         @media (min-width: 1300px) {
             grid-template-columns: repeat(4, 1fr);
         }
+    }
+}
+
+@media print {
+    :root {
+        --sidenav-width: 0;
+    }
+
+    header, footer, .updates {
+        display: none;
     }
 }
 </style>

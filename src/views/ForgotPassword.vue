@@ -11,7 +11,7 @@
             <p lang-tag="forgot_email">{{ lang_blog[lang]['forgot_email'] }}</p>
             <div class="inputs">
                 <div class="input">
-                    <input type="email" :placeholder="lang_blog[lang]['email']" v-model="email" lang-tag="email">
+                    <input type="email" :placeholder="lang_blog[lang]['email']" v-model="email" lang-tag="email" ref="input">
                     <email class="icon" />
                 </div>
             </div>
@@ -35,6 +35,7 @@ export default {
     data() {
         return { lang_blog, lang: getLangBlog(), email: '', loading: null, modalActive: null, modalMessage: '', lang_tag: null };
     },
+    mounted() { this.$refs.input.focus(); },
     methods: {
         resetPassword() {
             this.loading = true;

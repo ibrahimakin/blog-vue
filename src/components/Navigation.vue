@@ -1,44 +1,46 @@
 <template>
     <header :class="{ 'auth': auth }">
-        <nav class="container">
-            <div class="branding">
-                <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
-            </div>
-            <div class="routers" v-show="!mobile">
-                <router-link class="link" :to="{ name: 'Home' }" lang-tag="home">{{ lang_blog[lang]['home'] }}</router-link>
-                <router-link class="link" :to="{ name: 'Blog' }">BLOG</router-link>
-                <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }" lang-tag="create">{{ lang_blog[lang]['create'] }}</router-link>
-                <router-link v-if="!user" class="link" :to="{ name: 'Login' }" lang-tag="login_register">{{ lang_blog[lang]['login_register'] }}</router-link>
-                <div v-if="user" @click="toggleMenu" class="profile" ref="profile">
-                    <span>{{ this.$store.state.initials }}</span>
-                    <div v-show="profileMenu" class="profile-menu">
-                        <span></span>
-                        <div class="info">
-                            <p class="initials">{{ this.$store.state.initials }}</p>
-                            <div class="right">
-                                <p>{{ this.$store.state.firstname }} {{ this.$store.state.lastname }}</p>
-                                <p>{{ this.$store.state.username }}</p>
-                                <p>{{ this.$store.state.email }}</p>
+        <div>
+            <nav class="container">
+                <div class="branding">
+                    <router-link class="header" :to="{ name: 'Home' }">Blog</router-link>
+                </div>
+                <div class="routers" v-show="!mobile">
+                    <router-link class="link" :to="{ name: 'Home' }" lang-tag="home">{{ lang_blog[lang]['home'] }}</router-link>
+                    <router-link class="link" :to="{ name: 'Blog' }">BLOG</router-link>
+                    <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }" lang-tag="create">{{ lang_blog[lang]['create'] }}</router-link>
+                    <router-link v-if="!user" class="link" :to="{ name: 'Login' }" lang-tag="login_register">{{ lang_blog[lang]['login_register'] }}</router-link>
+                    <div v-if="user" @click="toggleMenu" class="profile" ref="profile">
+                        <span>{{ this.$store.state.initials }}</span>
+                        <div v-show="profileMenu" class="profile-menu">
+                            <span></span>
+                            <div class="info">
+                                <p class="initials">{{ this.$store.state.initials }}</p>
+                                <div class="right">
+                                    <p>{{ this.$store.state.firstname }} {{ this.$store.state.lastname }}</p>
+                                    <p>{{ this.$store.state.username }}</p>
+                                    <p>{{ this.$store.state.email }}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="options">
-                            <router-link class="option" :to="{ name: 'Profile' }">
-                                <User class="icon" />
-                                <p lang-tag="profile_t">{{ lang_blog[lang]['profile_t'] }}</p>
-                            </router-link>
-                            <router-link v-if="admin" class="option" :to="{ name: 'Admin' }">
-                                <Admin class="icon" />
-                                <p lang-tag="admin_t">{{ lang_blog[lang]['admin_t'] }}</p>
-                            </router-link>
-                            <div @click="signOut" class="option">
-                                <SignOut class="icon" />
-                                <p lang-tag="sign_out_t">{{ lang_blog[lang]['sign_out_t'] }}</p>
+                            <div class="options">
+                                <router-link class="option" :to="{ name: 'Profile' }">
+                                    <User class="icon" />
+                                    <p lang-tag="profile_t">{{ lang_blog[lang]['profile_t'] }}</p>
+                                </router-link>
+                                <router-link v-if="admin" class="option" :to="{ name: 'Admin' }">
+                                    <Admin class="icon" />
+                                    <p lang-tag="admin_t">{{ lang_blog[lang]['admin_t'] }}</p>
+                                </router-link>
+                                <div @click="signOut" class="option">
+                                    <SignOut class="icon" />
+                                    <p lang-tag="sign_out_t">{{ lang_blog[lang]['sign_out_t'] }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
         <div @click.stop="toggleMobileNav" v-show="mobile && !auth" ref="menu" :class="{ 'open': mobileNav }" class="con">
             <div class="bar arrow-top"></div>
             <div class="bar"></div>
@@ -119,11 +121,14 @@ export default {
 header {
     padding: 0 25px;
     background-color: #fff;
-    transition: box-shadow 1s linear;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
     position: sticky;
     z-index: 2;
     top: 0;
+
+    >div:first-child {
+        width: min(100vw - 3%, 100vw - 50px);
+    }
 
     &.auth {
         background-color: unset;
@@ -166,7 +171,6 @@ header {
                 text-decoration: none;
             }
         }
-
 
         .routers {
             display: flex;
