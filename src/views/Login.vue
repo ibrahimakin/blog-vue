@@ -46,7 +46,7 @@ export default {
                 this.errorMsg = '';
                 this.error = false;
             }).catch(e => {
-                this.errorMsg = e.message;
+                this.errorMsg = e.code.split('/')[1].replaceAll('-', ' ');
                 this.error = true;
             });
         }
@@ -101,6 +101,7 @@ export default {
         .inputs {
             width: 100%;
             max-width: 350px;
+            position: relative;
 
             .input {
                 position: relative;
@@ -136,7 +137,7 @@ export default {
             color: #000;
             cursor: pointer;
             font-size: 14px;
-            margin: 16px 0 0;
+            margin: 20px 0 0;
             border-bottom: 1px solid transparent;
             transition: .5s ease border-color;
 

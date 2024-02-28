@@ -46,7 +46,7 @@ export default {
                 this.loading = false;
                 this.modalActive = true;
             }).catch(err => {
-                this.modalMessage = err.message;
+                this.modalMessage = err.code.split('/')[1].replaceAll('-', ' ');
                 this.loading = false;
                 this.modalActive = true;
                 this.lang_tag = null;

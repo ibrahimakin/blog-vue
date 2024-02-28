@@ -119,7 +119,6 @@ side-nav {
 button,
 .create-post label,
 .router-button {
-    cursor: pointer;
     margin-top: 24px;
     padding: 12px 24px;
     background-color: var(--blog-clr);
@@ -128,12 +127,20 @@ button,
     border: none;
     color: #fff;
 
+    &:not(:disabled) {
+        cursor: pointer;
+    }
+
     &:focus {
         outline: none;
     }
 
-    &:hover {
+    &:not(:disabled):hover {
         background-color: rgba(48, 48, 48, .7);
+    }
+
+    &:disabled {
+        opacity: .5;
     }
 }
 
@@ -169,7 +176,9 @@ button,
 }
 
 .error {
+    width: 100%;
     text-align: center;
+    position: absolute;
     font-size: 12px;
     color: #f00;
 }
