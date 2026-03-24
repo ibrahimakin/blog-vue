@@ -13,7 +13,7 @@ dist
 dist-ssr
 coverage
 *.local
-package-lock.json
+.env
 
 /cypress/videos/
 /cypress/screenshots/
@@ -26,5 +26,3 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
-
-.env
