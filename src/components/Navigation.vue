@@ -300,9 +300,10 @@ header {
     .mobile-nav {
         padding: 20px;
         width: 70%;
-        max-width: 250px;
+        max-width: 220px;
         display: flex;
         flex-direction: column;
+        align-items: flex-start;
         position: fixed;
         height: 100%;
         background-color: var(--blog-clr);
